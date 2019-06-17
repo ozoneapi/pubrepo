@@ -1,0 +1,33 @@
+{
+  "title": "Schema for Jwt.sign",
+  "type": "object",
+  "properties": {
+    "header": {
+      "type": "object",
+      "properties": {
+        "alg": {
+          "type": "string",
+          "enum": [ "none", "HS256", "PS256", "RS256", "ES256" ]
+        }
+      },
+      "required": [ "alg" ],
+      "additionalProperties": true
+    },
+
+    "body": {
+      "type": "object",
+      "additionalProperties": true
+    },
+
+    "secret": { "type": "string"},
+
+    "signingKeyFileName": { "type": "string" },
+    "signingKeyPEM": { "type": "string" },
+    "logLevel": {
+      "type": "string",
+      "enum": [ "silent", "info", "debug", "error" ]
+    }
+  },
+  "required": ["header", "body"],
+  "additionalProperties": false
+}

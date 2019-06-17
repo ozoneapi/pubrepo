@@ -1,0 +1,7 @@
+/nbproject/
+**/node_modules/
+*.log
+*.tgz
+*.zip
+package-lock.json
+**/experiments/trusona-server-sdk-js/*

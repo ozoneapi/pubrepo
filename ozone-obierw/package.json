@@ -1,0 +1,24 @@
+{
+  "name": "ozone-obierw",
+  "version": "0.0.1",
+  "description": "A client for OBIE read-write APIs",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OzoneFinancialTech/monorepo.git"
+  },
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "ozone-http-client": "file:../ozone-http-client",
+    "ozone-oidc-client": "file:../ozone-oidc-client",
+    "ozone-jwt": "file:../ozone-jwt",
+    "uuid": "3.1.0",
+    "jsonschema": "1.2.4"
+  },
+  "devDependencies": {
+    "eslint": "5.16.0",
+    "eslint-config-airbnb-base": "11.3.1",
+    "eslint-plugin-import": "2.17.3"
+  }
+}

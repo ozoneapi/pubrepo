@@ -1,0 +1,16 @@
+{
+  "title": "Schema for OidcClient",
+  "type": "object",
+  "properties": {
+
+    "clientConfig": {
+      "type": "object",
+      "additionalProperties": true
+    },
+
+    "rs": { "type": "string" },
+    "financialId": { "type": "string" }
+  },
+  "required": ["clientConfig", "rs", "financialId"],
+  "additionalProperties": false
+}

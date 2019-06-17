@@ -1,0 +1,22 @@
+{
+  "name": "ozone-http-client",
+  "version": "0.0.1",
+  "description": "A veneer over superagent",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OzoneFinancialTech/monorepo.git"
+  },
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "jsonschema": "1.2.4",
+    "loglevel": "1.6.3",
+    "superagent": "5.0.6"
+  },
+  "devDependencies": {
+    "eslint": "5.16.0",
+    "eslint-config-airbnb-base": "11.3.1",
+    "eslint-plugin-import": "2.17.3"
+  }
+}
