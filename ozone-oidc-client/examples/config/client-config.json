@@ -1,0 +1,18 @@
+{
+  "logLevels": {
+    "oidcClient": "silent",
+    "http": "info"
+  },
+  "issuer": "https://o3in-auth1-ui.o3bank.co.uk/.well-known/openid-configuration",
+  "certs": {
+    "ca": "c:\\usr\\freddi\\projects\\ozone\\ca\\certs\\ob-sandbox-issuing-chain.pem",
+    "cert": "c:\\usr\\freddi\\projects\\ozone\\ca\\certs\\ozone-sandbox-transport.pem",
+    "key": "c:\\usr\\freddi\\projects\\ozone\\ca\\keys\\ozone-sandbox-transport.key"
+  },
+  "token_endpoint_auth_method": "private_key_jwt",
+  "token_endpoint_auth_signing_alg": "PS256",
+  "client_id": "6158519d-e038-4c28-95d5-a1a80689e66a",
+  "client_secret": "b2b6fcb4-5964-4c74-b1d4-b238d423ab9a",
+  "signingKeyKid": "dISF5OP0NEnErg-TfWVc4eFjiZg",
+  "signingKeyFileName": "c:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\o3-internal\\dISF5OP0NEnErg-TfWVc4eFjiZg.key"
+}
