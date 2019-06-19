@@ -1,0 +1,85 @@
+{
+  "title": "Schema for Dcr.registerClient",
+  "type": "object",
+  "properties": {
+    "issuer": { "type": "string" },
+    "software_statement": { "type": "string" },
+    "iss": { "type": "string" },
+    "redirect_uris": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "token_endpoint_auth_method": {
+      "type": "string",
+      "enum": ["client_secret_basic", "private_key_jwt", "tls_client_auth"]
+    },
+    "token_endpoint_auth_signing_alg": {
+      "type": "string",
+      "enum": ["none", "HS256", "PS256", "ES256", "RS256"]
+    },
+    "id_token_signed_response_alg": {
+      "type": "string",
+      "enum": ["none", "HS256", "PS256", "ES256", "RS256"]
+    },
+    "request_object_signing_alg": {
+      "type": "string",
+      "enum": ["none", "HS256", "PS256", "ES256", "RS256"]
+    },
+    "grant_types": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "authorization_code",
+          "client_credentials",
+          "urn:openid:params:grant-type:ciba"
+        ]
+      }
+    },
+    "backchannel_token_delivery_mode": {
+      "type": "string",
+      "enum": ["poll", "ping"]
+    },
+    "backchannel_authentication_request_signing_alg": {
+      "type": "string",
+      "enum": ["none", "HS256", "PS256", "ES256", "RS256"]
+    },
+    "backchannel_user_code_parameter": { "type": "boolean" },
+    "backchannel_client_notification_endpoint": { "type": "string"},
+    "registrationJws": {
+      "type": "object",
+      "properties": {
+        "alg": {"type": "string"},
+        "signingKeyKid": {"type": "string"},
+        "signingKeyFileName": {"type": "string"}
+      },
+      "required": [ "alg", "signingKeyKid", "signingKeyFileName"],
+      "additionalProperties": false
+    },
+    "certs": {
+      "type": "object",
+      "properties": {
+        "ca": {"type": "string"},
+        "cert": {"type": "string"},
+        "key": {"type": "string"}
+      },
+      "required": [ "ca", "cert", "key"],
+      "additionalProperties": false
+    },
+    "emulateSubject": {"type": "string"}
+  },
+  "required": [
+    "issuer",
+    "software_statement",
+    "iss",
+    "redirect_uris",
+    "token_endpoint_auth_method",
+    "id_token_signed_response_alg",
+    "request_object_signing_alg",
+    "grant_types",
+    "registrationJws"
+  ],
+  "additionalProperties": false
+}
