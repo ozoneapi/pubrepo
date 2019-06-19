@@ -32,7 +32,7 @@ class OidcClient {
 
     this.clientConfig = clientConfig;
   }
-
+  
   async getWellKnownConfiguration() {
     log.info('OidcClient.getWellKnownConfiguration: get .wellknown - start');
     if (this.wellKnownConfiguration !== undefined) {
