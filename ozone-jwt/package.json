@@ -10,6 +10,7 @@
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "dependencies": {
+    "ozone-http-client": "file:../ozone-http-client",
     "jsonschema": "1.2.4",
     "jws": "3.2.2",
     "loglevel": "1.6.3",
