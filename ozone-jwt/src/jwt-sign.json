@@ -22,11 +22,7 @@
     "secret": { "type": "string"},
 
     "signingKeyFileName": { "type": "string" },
-    "signingKeyPEM": { "type": "string" },
-    "logLevel": {
-      "type": "string",
-      "enum": [ "silent", "info", "debug", "error" ]
-    }
+    "signingKeyPEM": { "type": "string" }
   },
   "required": ["header", "body"],
   "additionalProperties": false

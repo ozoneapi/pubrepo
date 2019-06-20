@@ -1,0 +1,22 @@
+{
+  "title": "Schema for Jwt.verify",
+  "type": "object",
+  "properties": {
+    "signature": { "type": "string"},
+
+    "alg": {
+      "type": "string",
+      "enum": [ "none", "HS256", "PS256", "RS256", "ES256" ]
+    },
+
+    "secret": { "type": "string"},
+
+    "body": { "type": "object"},
+
+    "jwks": { "type": "object"},
+
+    "jwksUrl": { "type": "string"}
+  },
+  "required": ["signature", "alg"],
+  "additionalProperties": false
+}
