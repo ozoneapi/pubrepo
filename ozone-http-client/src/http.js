@@ -2,7 +2,7 @@ const request = require('superagent');
 const fs = require('fs');
 const schema = require('./http-do-schema.json');
 const Validator = require('jsonschema').Validator;
-const log = require('loglevel');
+const log = require('loglevel').getLogger('ozone-http');
 
 class Http {
   static async do(params) {

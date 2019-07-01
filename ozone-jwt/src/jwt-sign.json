@@ -15,14 +15,45 @@
     },
 
     "body": {
-      "type": "object",
+      "type": ["object", "string"],
       "additionalProperties": true
     },
 
     "secret": { "type": "string"},
 
     "signingKeyFileName": { "type": "string" },
-    "signingKeyPEM": { "type": "string" }
+    "signingKeyPEM": { "type": "string" },
+    "signingKeyJwk": {
+      "type": "object",
+      "properties": {
+        "kty":  {
+          "type": "string",
+          "enum": ["RSA"]
+        },
+        "kid": { "type": "string" },
+        "use":  {
+          "type": "string",
+          "enum": ["sig"]
+        },
+        "alg":  {
+          "type": "string",
+          "enum": ["RSA"]
+        },
+        "e": { "type": "string" },
+        "n": { "type": "string" },
+        "d": { "type": "string" },
+        "p": { "type": "string" },
+        "q": { "type": "string" },
+        "dp": { "type": "string" },
+        "dq": { "type": "string" },
+        "qi": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "kty", "kid", "use",
+        "e","n","d","p","q", "dp","dq","qi"
+      ]
+    }
   },
   "required": ["header", "body"],
   "additionalProperties": false
