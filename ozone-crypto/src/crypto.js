@@ -13,7 +13,6 @@ class Crypto {
     const keystore = jose.JWK.createKeyStore();
 
     const props = {
-      alg: 'RSA',
       use
     };
 
