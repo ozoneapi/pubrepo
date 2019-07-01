@@ -71,6 +71,12 @@ class Jwt {
       return privateKey;
     }
 
+    if (params.signingKeyJwk !== undefined) {
+      log.info(`Jwt._getSigningKey: using JWK with kid ${params.signingKeyJwk.kid}`);
+      const privateKey = await jose.JWK.asKey(params.signingKeyJwk);
+      return privateKey;
+    }
+
     throw new Error('signingKeyFileName or signingKeyPEM must be specified for asymmetric algorithms');
   }
 

@@ -11,8 +11,8 @@
     "token_endpoint_auth_method": "client_secret_basic",
     "token_endpoint_auth_signing_alg": "PS256",
     "backchannel_authentication_request_signing_alg": "PS256",
-    "client_id": "6158519d-e038-4c28-95d5-a1a80689e66a",
-    "client_secret": "b2b6fcb4-5964-4c74-b1d4-b238d423ab9a",
+    "client_id": "acabea76-7e63-4a38-981f-916b34833f47",
+    "client_secret": "247f7bb8-8cdc-4462-8bc1-89bb91b99788",
     "signingKeyKid": "dISF5OP0NEnErg-TfWVc4eFjiZg",
     "signingKeyFileName": "c:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\o3-internal\\dISF5OP0NEnErg-TfWVc4eFjiZg.key"
   }
