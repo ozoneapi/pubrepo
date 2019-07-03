@@ -1,6 +1,6 @@
 const Payments311 = require('../src/pisp/payments-311.js');
 const OidcHelper = require('../src/oidc/oidc-helper.js');
-const config = require('./config/config.json');
+const config = require('./config/config-ob19.json');
 
 async function go() {
   const payments = new Payments311(config);
@@ -21,7 +21,8 @@ async function go() {
   // bc-authorize it
   const oidcHelper = new OidcHelper(config);
   const authReq = await oidcHelper.doBcAuthorizeModeC(paymentConsentId, 'payments', 'nothing');
-
+  console.log(authReq);
+  
   // get the token
   console.log('Created bc_authorize');
   console.log(`Authorise consent with consent id ${paymentConsentId} and auth_req_id ${authReq.auth_req_id}`);

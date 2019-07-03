@@ -1,5 +1,5 @@
 const Payments311 = require('../src/pisp/payments-311.js');
-const config = require('./config/config.json');
+const config = require('./config/config-ob19.json');
 
 async function go() {
   const payments = new Payments311(config);
