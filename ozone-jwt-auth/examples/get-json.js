@@ -12,7 +12,7 @@ async function go() {
     alg: 'RS256',
     iss: 'OpenBanking',
     sub: '0015800001041RHAAY',
-    validity: 40,
+    validity: 30,
     privateKey: {
       kty: 'RSA',
       kid: 'W7DIWbfwsfxZIJl_PlaSS8vgQ3-cEtWtiNCAIXmJJMk',
