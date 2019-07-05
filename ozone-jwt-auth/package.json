@@ -1,0 +1,26 @@
+{
+  "name": "o3-http-client",
+  "version": "0.0.1",
+  "description": "A template for npm packages used in o3",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OzoneFinancialTech/monorepo.git"
+  },
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "ozone-http-client": "file:../ozone-http-client",
+    "ozone-jwt": "file:../ozone-jwt",
+    "lodash": "4.17.11",
+    "jsonschema": "1.2.4",
+    "loglevel": "1.6.3",
+    "uuid": "3.1.0"
+  },
+  "devDependencies": {
+    "ajv": "6.9.1",
+    "eslint": "4.4.1",
+    "eslint-config-airbnb-base": "11.3.1",
+    "eslint-plugin-import": "2.7.0"
+  }
+}

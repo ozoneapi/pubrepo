@@ -236,10 +236,9 @@ class Jwt {
 
   static decode(signature) {
     const toRet = jws.decode(signature);
-    if (toRet === null) {
-      throw new Error('signature is not a valid jwt');
+    if ((toRet === null) || (toRet === undefined)) {
+      throw new Error('could not parse and decode signature');
     }
-
     return toRet;
   }
 }
