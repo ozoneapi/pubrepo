@@ -10,8 +10,8 @@
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "UNLICENSED",
   "dependencies": {
-    "ozone-http-client": "file:../../pubrepo/ozone-http-client",
-    "ozone-jwt": "file:../../pubrepo/ozone-jwt",
+    "ozone-http-client": "file:../ozone-http-client",
+    "ozone-jwt": "file:../ozone-jwt",
     "lodash": "4.17.11",
     "jsonschema": "1.2.4",
     "loglevel": "1.6.3",

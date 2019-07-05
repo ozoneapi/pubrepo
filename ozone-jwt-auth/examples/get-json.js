@@ -1,4 +1,4 @@
-const HttpClient = require('../src/http-client.js');
+const JwtAuth = require('../src/jwt-auth.js');
 
 async function go() {
   const httpClientParams = {
@@ -30,7 +30,7 @@ async function go() {
     }
   };
 
-  return HttpClient.doWithJwtAuth(httpClientParams, signingParams);
+  return JwtAuth.do(httpClientParams, signingParams);
 }
 
 go()

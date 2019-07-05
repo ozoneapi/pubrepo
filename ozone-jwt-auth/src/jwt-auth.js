@@ -2,7 +2,7 @@ const log = require('loglevel').getLogger('ozone-jwt-auth');
 const Validator = require('jsonschema').Validator;
 const signingParamsSchema = require('./signing-params-schema.json');
 const Jwt = require('ozone-jwt');
-const JwtAuth = require('ozone-http-client');
+const HttpClient = require('ozone-http-client');
 const uuidv4 = require('uuid/v4');
 const _ = require('lodash');
 
@@ -67,7 +67,7 @@ class JwtAuth {
     _.set(httpParams, 'headers.authorization', `Bearer ${authHeader}`);
 
     // do the HTTP operation
-    return JwtAuth.do(httpParams);
+    return HttpClient.do(httpParams);
   }
 }
 
