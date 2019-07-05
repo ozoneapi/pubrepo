@@ -235,7 +235,11 @@ class Jwt {
   }
 
   static decode(signature) {
-    return jws.decode(signature);
+    const toRet = jws.decode(signature);
+    if ((toRet === null) || (toRet === undefined)) {
+      throw new Error('could not parse and decode signature');
+    }
+    return toRet;
   }
 }
 
