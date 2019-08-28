@@ -44,6 +44,20 @@ class Payments311 {
     return toRet;
   }
 
+
+  async postSimpleDomesticPayment(token, domesticPaymentConsentResponse) {
+    const domesticPaymentRequest = {
+      Data: {
+        ConsentId: domesticPaymentConsentResponse.Data.ConsentId,
+        Initiation: domesticPaymentConsentResponse.Data.Initiation
+      },
+      Risk: {}
+    };
+
+    const toRet = await this.postDomesticPayments(domesticPaymentRequest, undefined, token);
+    return toRet;
+  }
+
   async postDomesticPaymentsConsent(body, headers, token) {
     // get an access token
     if (token === undefined) {
@@ -83,6 +97,32 @@ class Payments311 {
     headers['x-fapi-financial-id'] = this.config.financialId;
 
     return headers;
+  }
+
+  async postDomesticPayments(body, headers, token) {
+    if (token.access_token === undefined) {
+      throw new Error('invalid access token');
+    }
+
+    // update the headers
+    headers = this._updateHeaders(headers, token);
+
+    const httpParams = {
+      verb: 'post',
+      url: `${this.config.rs}/open-banking/v3.1/pisp/domestic-payments`,
+      headers,
+      body,
+      certs: this.config.clientConfig.certs,
+      parseJson: true
+    };
+
+    // make the call
+    const response = await Http.do(httpParams);
+    if (response.json !== undefined) {
+      return response.json;
+    }
+
+    throw new Error(`failed to post payment ${response.data}`);
   }
 }
 module.exports = Payments311;

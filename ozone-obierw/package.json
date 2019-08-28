@@ -10,15 +10,16 @@
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "dependencies": {
+    "jsonschema": "1.2.4",
+    "open": "6.4.0",
     "ozone-http-client": "file:../ozone-http-client",
-    "ozone-oidc-client": "file:../ozone-oidc-client",
     "ozone-jwt": "file:../ozone-jwt",
-    "uuid": "3.1.0",
-    "jsonschema": "1.2.4"
+    "ozone-oidc-client": "file:../ozone-oidc-client",
+    "uuid": "3.1.0"
   },
   "devDependencies": {
     "eslint": "5.16.0",
-    "eslint-config-airbnb-base": "11.3.1",
+    "eslint-config-airbnb-base": "13.2.0",
     "eslint-plugin-import": "2.17.3"
   }
 }

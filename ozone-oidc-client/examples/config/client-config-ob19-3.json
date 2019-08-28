@@ -8,8 +8,8 @@
   "token_endpoint_auth_method": "client_secret_basic",
   "token_endpoint_auth_signing_alg": "PS256",
   "backchannel_authentication_request_signing_alg": "PS256",
-  "client_id": "7a6d6b9c-a635-496b-8910-34f39672a764",
-  "client_secret": "4c335ec2-20a4-440f-83fd-0c2fddffcff4",
+  "client_id": "e10ec216-3fce-4270-abda-3cfe91acc892",
+  "client_secret": "8303b5e5-0f71-40b6-8cac-f47eab7085fd",
   "signingKeyKid": "oLyjFIQzA-RfmoAqd7jn5T9_kK8",
   "signingKeyFileName": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\tpp2019-HQuZPIt3ipkh33Uxytox1E\\signing-HQuZPIt3ipkh33Uxytox1E.key"
 }
