@@ -9,19 +9,29 @@ const _ = require('lodash');
 class JwtAuth {
   static async do(httpParams, signingParams) {
     log.setLevel(httpParams.logLevel || 'silent');
-
     log.info('JwtAuth.do: started');
     log.debug('JwtAuth.do: signingParams');
     log.debug(signingParams);
     log.debug('JwtAuth.do ------------------');
 
+    const jws = await JwtAuth.getJws(signingParams);
+    // add to authorization header
+    _.set(httpParams, 'headers.authorization', `Bearer ${jws}`);
+
+    // do the HTTP operation
+    return HttpClient.do(httpParams);
+  }
+
+  static async getJws(signingParams) {
+    log.info('JwtAuth.getJws: started');
+
     // validate the signingParams
-    log.info('JwtAuth.do: validate signing params schema - start');
+    log.info('JwtAuth.jws: validate signing params schema - start');
     const jsonSchemaValidator = new Validator();
     const validationResult = jsonSchemaValidator.validate(signingParams, signingParamsSchema);
     if (validationResult.errors.length > 0) {
-      log.error('JwtAuth.do: validate signing params schema - failed');
-      throw new Error(`JwtAuth.do - signing params failed validation. ${validationResult.errors}`);
+      log.error('JwtAuth.jws: validate signing params schema - failed');
+      throw new Error(`JwtAuth.jws - signing params failed validation. ${validationResult.errors}`);
     }
 
     // create the Jwt body
@@ -29,17 +39,17 @@ class JwtAuth {
       alg: signingParams.alg,
       typ: 'JOSE',
       cty: 'json',
-      kid: signingParams.privateKey.kid,
+      kid: _.get(signingParams, 'privateKey.kid')
     };
 
     const now = Date.now() / 1000;
-    const body = {
-      iss: signingParams.iss,
-      sub: signingParams.sub,
-      exp: now + signingParams.validity,
-      iat: now,
-      nbf: now
-    };
+
+    const body = (signingParams.customClaims || {});
+    body.iss = signingParams.iss;
+    body.sub = signingParams.sub;
+    body.exp = now + signingParams.validity;
+    body.iat = now;
+    body.nbf = now;
 
     if (signingParams.jti === undefined) {
       body.jti = uuidv4();
@@ -54,20 +64,16 @@ class JwtAuth {
       signingKeyJwk: signingParams.privateKey
     };
 
-    log.debug('JwtAuth.do: jwt');
+    log.debug('JwtAuth.jws: jwt');
     log.debug(jwtSigningParams);
-    log.debug('JwtAuth.do ------------------');
-    const authHeader = await Jwt.sign(jwtSigningParams);
+    log.debug('JwtAuth.jws ------------------');
+    const jws = await Jwt.sign(jwtSigningParams);
 
-    log.debug('JwtAuth.do: jws');
-    log.debug(authHeader);
-    log.debug('JwtAuth.do ------------------');
+    log.debug('JwtAuth.jws: jws');
+    log.debug(jws);
+    log.debug('JwtAuth.jws ------------------');
 
-    // add to authorization header
-    _.set(httpParams, 'headers.authorization', `Bearer ${authHeader}`);
-
-    // do the HTTP operation
-    return HttpClient.do(httpParams);
+    return jws;
   }
 }
 

@@ -9,7 +9,12 @@
 
     "alg": {
       "type": "string",
-      "enum": ["RS256", "PS256"]
+      "enum": ["RS256", "PS256", "HS256", "none"]
+    },
+
+    "customClaims": {
+      "type": "object",
+      "additionalProperties": true
     },
 
     "privateKey": {
@@ -45,6 +50,6 @@
     }
   },
 
-  "required": ["iss", "sub", "alg", "validity", "privateKey"],
+  "required": ["iss", "sub", "alg", "validity"],
   "additionalProperties": false
 }
