@@ -42,6 +42,7 @@ class Dcr {
       id_token_signed_response_alg: params.id_token_signed_response_alg,
       request_object_signing_alg: params.request_object_signing_alg,
       grant_types: params.grant_types,
+      scope: params.scope,
       application_type: 'web',
       backchannel_token_delivery_mode: params.backchannel_token_delivery_mode,
       backchannel_authentication_request_signing_alg: params.backchannel_authentication_request_signing_alg,
