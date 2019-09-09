@@ -14,6 +14,7 @@ async function go() {
     id_token_signed_response_alg: 'PS256',
     request_object_signing_alg: 'PS256',
     grant_types: ['authorization_code', 'client_credentials'],
+    scope: 'openid accounts fundsconfirmations',
     registrationJws: {
       alg: 'PS256',
       signingKeyKid: 'oLyjFIQzA-RfmoAqd7jn5T9_kK8',

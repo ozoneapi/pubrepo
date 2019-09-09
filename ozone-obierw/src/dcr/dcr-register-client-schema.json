@@ -27,6 +27,7 @@
       "type": "string",
       "enum": ["none", "HS256", "PS256", "ES256", "RS256"]
     },
+    "scope": { "type": "string" },
     "grant_types": {
       "type": "array",
       "items": {

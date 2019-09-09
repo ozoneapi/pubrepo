@@ -13,6 +13,10 @@ async function go() {
     iss: 'OpenBanking',
     sub: '0015800001041RHAAY',
     validity: 30,
+    customClaims: {
+      alpha: '10',
+      gamma: 20
+    },
     privateKey: {
       kty: 'RSA',
       kid: 'W7DIWbfwsfxZIJl_PlaSS8vgQ3-cEtWtiNCAIXmJJMk',
