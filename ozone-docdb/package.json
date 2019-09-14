@@ -1,0 +1,21 @@
+{
+  "name": "ozone-docdb",
+  "version": "0.0.1",
+  "description": "Command line utility for managing data in document db (or mongodb)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OzoneFinancialTech/pubrepo.git"
+  },
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "1.2.0",
+    "mongodb": "3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "13.2.0",
+    "eslint-plugin-import": "2.18.1"
+  }
+}
