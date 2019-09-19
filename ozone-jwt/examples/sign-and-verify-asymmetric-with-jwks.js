@@ -1,25 +1,17 @@
-const JwtAuth = require('../src/jwt-auth.js');
+const Jwt = require('../src/jwt.js');
 
 async function go() {
-  const httpClientParams = {
-    url: 'http://localhost:3050/hello-with-jwt',
-    headers: {
-      // 'x-cert-dn': 'CN=HQuZPIt3ipkh33Uxytox1E,OU=0015800001041RHAAY,O=OpenBanking,C=GB'
-      'x-cert-dn': 'CN=HQuZPIt3ipkh33Uxytox1E,OU=b,O=OpenBanking,C=GB'
-    }
-  };
-
-  const signingParams = {
-    alg: 'PS256',
-    iss: 'OpenBanking',
-//    sub: '0015800001041RHAAY',
-    sub: 'b',
-    validity: 30,
-    customClaims: {
-      alpha: '10',
-      gamma: 2
+  const params = {
+    'header': {
+      'alg': 'PS256'
     },
-    privateKey: {
+    body: {
+      lorem: 'ipsum',
+      sit: 'dolor',
+      boo: true,
+      in: 10
+    },
+    signingKeyJwk: {
       kty: 'RSA',
       kid: '1szqu9t73biQj5d22U4NoZIj1-O6_eLUxcKM9FgKWoY',
       use: 'sig',
@@ -34,7 +26,33 @@ async function go() {
     }
   };
 
-  return JwtAuth.do(httpClientParams, signingParams);
+  const signature = await Jwt.sign(params);
+  console.log('Stage 1: Generate signature');
+  console.log('---------------------------');
+  console.log(signature);
+  console.log('---------------------------');
+
+  // verify it now
+  const verifyParams = {
+    alg: params.header.alg,
+    signature,
+    jwks: {
+      keys: [
+        {
+          kty: 'RSA',
+          kid: '1szqu9t73biQj5d22U4NoZIj1-O6_eLUxcKM9FgKWoY',
+          use: 'sig',
+          e: 'AQAB',
+          n: 'urbdNsukdY1N9ilJXQ9HHOaIVE7UfhiSq6XUoR-OwhevBe6EdcQJhDvS5KZpP6GYFcqKL-H3hsfUvqNcMBbwWa-wXhQPurmeDXbzLpbIr2zXeYMZ980-zIWdUn_M91C7AYX2MdkahdormpF2Gky_GqaDXB9tBgGZVpsLibF-MmHf9oNIW0FaJaY9zQueZ3upMGGYU6JDrehDMgx6dHhXGNS_mCdGbhXEhU3qMvY5YDWuKYotUSQag88nyqHBvjf9ipnymTSEEUlg0FZu55cA-OOsFwXoQMUJyUpfZhQvhBeKo5GeXtDRXXxESbop4YYGrFfItMggjn5qVzzTLr-85w'
+        }
+      ]
+    }
+  };
+
+  const verified = await Jwt.verify(verifyParams);
+  console.log(`Verified: ${verified}`);
+
+  return Jwt.decode(signature);
 }
 
 go()

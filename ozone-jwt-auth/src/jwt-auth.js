@@ -73,6 +73,7 @@ class JwtAuth {
     log.debug(jws);
     log.debug('JwtAuth.jws ------------------');
 
+    console.log(jws);
     return jws;
   }
 }
