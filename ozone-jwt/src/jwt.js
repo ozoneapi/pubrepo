@@ -89,6 +89,7 @@ class Jwt {
       fields: params.header,
       format: 'compact'
     };
+
     log.debug('Jwt._signAsym - signatureConfig');
     log.debug(signatureConfig);
     log.debug('Jwt._signAsym -----------------');
@@ -120,7 +121,6 @@ class Jwt {
 
     return disjointedSignature;
   }
-
 
   static async verify(params) {
     // log the parameters if required
@@ -205,6 +205,15 @@ class Jwt {
     try {
       await verifier.verify(params.signature);
       log.info('Jwt._verifyAsym - verification successful');
+
+      // ERROR IN LIBRARY
+      //
+      // It looks like the library is not asserting that the algorithm in the JWS matches the params.alg
+      const jws = Jwt.decode(params.signature);
+      if (params.alg !== jws.header.alg) {
+        return false;
+      }
+
       return true;
     } catch (err) {
       log.error(err);

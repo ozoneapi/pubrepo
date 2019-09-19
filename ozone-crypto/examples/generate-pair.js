@@ -1,7 +1,7 @@
 const Crypto = require('../src/crypto.js');
 
 async function go() {
-  return Crypto.generateRSAKeyPair(512, 'sig');
+  return Crypto.generateRSAKeyPair(2048, 'sig');
 }
 
 go()
