@@ -29,8 +29,10 @@ class Dcr {
     // start assembling the jwt
     const now = Date.now() / 1000;
 
+    const financial_id = '0015800001041RHAAY';
+
     const registrationJwt = {
-      aud: oidcConfig.issuer,
+      aud: financial_id ,
       iat: now,
       jti: uuidv4(),
       exp: now + 300,
