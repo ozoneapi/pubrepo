@@ -4,6 +4,7 @@
   "properties": {
     "iss": { "type": "string" },
     "sub": { "type": "string" },
+    "aud": { "type": "string" },
     "validity": { "type": "number" },
     "jti": { "type": "string" },
 
@@ -50,6 +51,6 @@
     }
   },
 
-  "required": ["iss", "sub", "alg", "validity"],
+  "required": ["iss", "sub", "aud", "alg", "validity"],
   "additionalProperties": false
 }

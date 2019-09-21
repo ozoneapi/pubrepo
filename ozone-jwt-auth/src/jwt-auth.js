@@ -47,6 +47,7 @@ class JwtAuth {
     const body = (signingParams.customClaims || {});
     body.iss = signingParams.iss;
     body.sub = signingParams.sub;
+    body.aud = signingParams.aud;
     body.exp = now + signingParams.validity;
     body.iat = now;
     body.nbf = now;
