@@ -3,6 +3,7 @@ const Crypto = require('ozone-jwt');
 const Validator = require('jsonschema').Validator;
 const schema = require('./dcr-register-client-schema.json');
 const uuidv4 = require('uuid/v4');
+const _ = require('lodash');
 
 class Dcr {
   static async registerClient(params) {
@@ -30,7 +31,7 @@ class Dcr {
     const now = Date.now() / 1000;
 
     const registrationJwt = {
-      aud: oidcConfig.issuer,
+      aud:  _.get(params, 'aud', oidcConfig.issuer), // use aud if specified, or default to issuer
       iat: now,
       jti: uuidv4(),
       exp: now + 300,

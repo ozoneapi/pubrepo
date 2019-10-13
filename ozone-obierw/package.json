@@ -15,7 +15,8 @@
     "ozone-http-client": "file:../ozone-http-client",
     "ozone-jwt": "file:../ozone-jwt",
     "ozone-oidc-client": "file:../ozone-oidc-client",
-    "uuid": "3.1.0"
+    "uuid": "3.1.0",
+    "lodash": "4.17.13"
   },
   "devDependencies": {
     "eslint": "5.16.0",
