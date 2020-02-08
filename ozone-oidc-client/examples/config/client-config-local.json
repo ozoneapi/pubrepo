@@ -1,0 +1,16 @@
+{
+    "issuer": "http://localhost:5700/.well-known/openid-configuration",
+    "certs": {
+      "ca": "/Users/rajeshchawan/TowerGITHUBOzone/repos/monorepo/crypto/certs/obie/sandbox/ob-sandbox-issuing-chain.pem",
+      "cert": "/Users/rajeshchawan/TowerGITHUBOzone/repos/monorepo/crypto/certs/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk/transport-5aRav7KBdrEqqs1e1fwNgk.pem",
+      "key": "/Users/rajeshchawan/TowerGITHUBOzone/repos/monorepo/crypto/certs/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk/transport-5aRav7KBdrEqqs1e1fwNgk.key"
+    },
+    "token_endpoint_auth_method": "private_key_jwt",
+    "token_endpoint_auth_signing_alg": "PS256",
+    "backchannel_authentication_request_signing_alg": "PS256",
+    "client_id": "02e30923-8d4f-43ce-a1e7-c00c81f597e1",
+    "client_secret": "b658dce7-d749-4d8c-949d-e48036362da9",
+    "signingKeyKid": "oLyjFIQzA-RfmoAqd7jn5T9_kK8",
+    "signingKeyFileName": "/Users/rajeshchawan/TowerGITHUBOzone/repos/monorepo/crypto/certs/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk/signing-5aRav7KBdrEqqs1e1fwNgk.key"
+  }
+  
