@@ -8,8 +8,8 @@
     "token_endpoint_auth_method": "private_key_jwt",
     "token_endpoint_auth_signing_alg": "PS256",
     "backchannel_authentication_request_signing_alg": "PS256",
-    "client_id": "02e30923-8d4f-43ce-a1e7-c00c81f597e1",
-    "client_secret": "b658dce7-d749-4d8c-949d-e48036362da9",
+    "client_id": "6f6f18c9-8014-4efc-bc08-8e77693385e4",
+    "client_secret": "4a539b33-11ed-462d-a2c9-62050e16eb02",
     "signingKeyKid": "oLyjFIQzA-RfmoAqd7jn5T9_kK8",
     "signingKeyFileName": "/Users/rajeshchawan/TowerGITHUBOzone/repos/monorepo/crypto/certs/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk/signing-5aRav7KBdrEqqs1e1fwNgk.key"
   }

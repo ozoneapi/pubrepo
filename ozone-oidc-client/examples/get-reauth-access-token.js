@@ -4,8 +4,14 @@ const clientConfig = require('./config/client-config-local.json');
 async function go() {
   const oidcClient = new OidcClient(clientConfig);
   const args = process.argv.slice(2);
-  const intentID = args[0];
-  return oidcClient.getTokenByJWTGrant('accounts openid', intentID);
+
+  if(args.length == 0){
+    console.log("Please provide intentID. e.g. node get-reauth-access-token.js <intentID>");
+  }else{
+    const intentID = args[0];
+    return oidcClient.getTokenByJWTGrant('accounts openid', intentID);
+  }
+
 }
 
 go()
