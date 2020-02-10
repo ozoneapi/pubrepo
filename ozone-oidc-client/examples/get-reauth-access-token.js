@@ -1,5 +1,5 @@
 const OidcClient = require('../src/oidc-client.js');
-const clientConfig = require('./config/client-config-local.json');
+const clientConfig = require('./config/client-config-tide-pre-oz2.json');
 
 async function go() {
   const oidcClient = new OidcClient(clientConfig);
