@@ -1,8 +1,9 @@
+/* eslint-disable prefer-destructuring */
 const request = require('superagent');
 const fs = require('fs');
-const schema = require('./http-do-schema.json');
 const Validator = require('jsonschema').Validator;
 const log = require('loglevel').getLogger('ozone-http-client');
+const schema = require('./http-do-schema.json');
 
 class Http {
   static async do(params) {
@@ -26,30 +27,42 @@ class Http {
     // set the url
     let doRequest;
 
+    // Can also be split in defaults for each verb
+    params.timeout = params.timeout || {
+      response: 5000, // Wait 5 seconds for the server to start sending,
+      deadline: 60000, // but allow 1 minute for the file to finish loading.
+    };
+
     switch (params.verb) {
       case 'get':
-        doRequest = request.get(params.url);
+        doRequest = request.get(params.url).timeout(params.timeout);
         break;
 
       case 'post':
-        doRequest = request.post(params.url);
+        doRequest = request.post(params.url).timeout(params.timeout);
         break;
 
       case 'delete':
-        doRequest = request.delete(params.url);
+        doRequest = request.delete(params.url).timeout(params.timeout);
         break;
 
       case 'put':
-        doRequest = request.put(params.url);
+        doRequest = request.put(params.url).timeout(params.timeout);
         break;
 
       case 'patch':
-        doRequest = request.patch(params.url);
+        doRequest = request.patch(params.url).timeout(params.timeout);
         break;
 
       default:
-        doRequest = request.get(params.url);
+        doRequest = request.get(params.url).timeout(params.timeout);
     }
+
+    // might work to clean up the switch....
+    // doRequest.timeout = params.timeout || {
+    //   response: 5000, // Wait 5 seconds for the server to start sending,
+    //   deadline: 60000, // but allow 1 minute for the file to finish loading.
+    // }
 
     // process certificates
     log.debug('Http.do: add certs - start');
