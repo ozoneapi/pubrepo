@@ -108,8 +108,6 @@ class OidcClient {
     fields.grant_type = grantType;
     fields.scope = scope;
 
-    
-
     // start building up the request params
     const params = {
       verb: 'post',
@@ -142,6 +140,10 @@ class OidcClient {
 
   async getTokenByClientCredentialsGrant(scope) {
     return this._getAccessToken(scope, 'client_credentials');
+  }
+
+  async getTokenByRefreshGrant(scope, refreshToken) {
+    return this._getAccessToken(scope, 'refresh_token', { refresh_token: refreshToken });
   }
 
   async getTokenByJWTGrant(scope, intentID) {
@@ -230,21 +232,20 @@ class OidcClient {
       throw new Error('token_endpoint_auth_method missing in client config');
     }
 
-
-
     switch (this.clientConfig.token_endpoint_auth_method) {
       case 'client_secret_basic':
         await this._addClientSecretBasicAuthenticationMethod(params);
         break;
 
       case 'private_key_jwt':
-        if(grantType === "urn:ietf:params:oauth:grant-type:jwt-bearer"){
+        if (grantType === 'urn:ietf:params:oauth:grant-type:jwt-bearer') {
           await this._addPrivateKeyJwtAuthenticationMethodForReauth(params, intentID);
-        }else{
+        } else {
           await this._addPrivateKeyJwtAuthenticationMethod(params);
         }
         
         break;
+
       case 'tls_client_auth':
         await this._addTlsClientAuthAuthenticationMethod(params);
         break;
