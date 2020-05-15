@@ -11,10 +11,6 @@ class OidcClient {
     const logLevel = _.get(clientConfig, 'logLevels.oidcClient');
     log.setLevel(logLevel || 'silent');
 
-    log.debug('OidcClient.ctor clientConfig');
-    log.debug(clientConfig);
-    log.debug('----------------------------');
-
     // validate the client config
     log.info('OidcClient.ctor: validating client config - start');
     const jsonSchemaValidator = new Validator();
