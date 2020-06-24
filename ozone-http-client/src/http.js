@@ -3,9 +3,11 @@ const fs = require('fs');
 const schema = require('./http-do-schema.json');
 const Validator = require('jsonschema').Validator;
 const log = require('loglevel').getLogger('ozone-http-client');
+const path = require('path');
+const _ = require('lodash');
 
 class Http {
-  static async do(params) {
+  static async do(params, baseFolder) {
     // set the loglevel
     log.setLevel(params.logLevel || 'silent');
 
@@ -53,6 +55,19 @@ class Http {
 
     // process certificates
     log.debug('Http.do: add certs - start');
+
+    // adjust base folder
+    if (baseFolder !== undefined) {
+      log.debug(`Http.do: Base folder is ${baseFolder}. Adjusting all paths`);
+      if (params.certs !== undefined) {
+        params.certs = {
+          ca: path.join(baseFolder, _.get(params, 'certs.ca')),
+          cert: path.join(baseFolder, _.get(params, 'certs.cert')),
+          key: path.join(baseFolder, _.get(params, 'certs.key'))
+        };
+      }
+    }
+
     if (params.certs !== undefined) {
       if (params.certs.ca !== undefined) {
         const caFile = fs.readFileSync(params.certs.ca);

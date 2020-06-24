@@ -1,13 +1,14 @@
-const schema = require('./oidc-client-schema.json');
 const Validator = require('jsonschema').Validator;
 const Http = require('ozone-http-client');
 const Jwt = require('ozone-jwt');
 const uuidv4 = require('uuid/v4');
 const log = require('loglevel');
 const _ = require('lodash');
+const path = require('path');
+const schema = require('./oidc-client-schema.json');
 
 class OidcClient {
-  constructor(clientConfig) {
+  constructor(clientConfig, baseFolder) {
     const logLevel = _.get(clientConfig, 'logLevels.oidcClient');
     log.setLevel(logLevel || 'silent');
 
@@ -26,7 +27,22 @@ class OidcClient {
 
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
 
-    this.clientConfig = clientConfig;
+    this.clientConfig = _.clone(clientConfig);
+    
+    if (baseFolder !== undefined) {
+      log.info(`Base folder is ${baseFolder}. Adjusting all paths`);
+      if (clientConfig.certs !== undefined) {
+        this.clientConfig.certs = {
+          ca: path.join(baseFolder, _.get(clientConfig, 'certs.ca')),
+          cert: path.join(baseFolder, _.get(clientConfig, 'certs.cert')),
+          key: path.join(baseFolder, _.get(clientConfig, 'certs.key'))
+        };
+      }
+
+      if (_.get(clientConfig, 'signingKeyFileName') !== undefined) {
+        this.clientConfig.signingKeyFileName = path.join(baseFolder,  _.get(clientConfig, 'signingKeyFileName'));
+      }
+    }
   }
   
   async getWellKnownConfiguration() {
@@ -151,6 +167,17 @@ class OidcClient {
       scope,
       'urn:openid:params:grant-type:ciba',
       { auth_req_id: authReqId }
+    );
+  }
+
+  async getTokenByAuthCodeGrant(scope, redirectUri, code) {
+    return this._getAccessToken(
+      scope,
+      'authorization_code',
+      { 
+        code,
+        redirect_uri: redirectUri 
+      }
     );
   }
 
@@ -356,6 +383,63 @@ class OidcClient {
 
     // set other http params
     params.fields.assertion = jws; // eslint-disable-line no-param-reassign
+  }
+
+  async getAuthorizationCodeUrl(scope, redirectUri, responseType, claims, useRequestObject) {
+    // ensure we have the .well-known
+    await this.getWellKnownConfiguration();    
+
+    const authorizationEndPoint = this.wellKnownConfiguration.authorization_endpoint;
+    if (authorizationEndPoint === undefined) {
+      const err = 'Oidc.getAuthorizationCode: authorization_endpoint not defined in well-known config';
+      throw new Error(err);
+    }
+
+    let url = `${authorizationEndPoint}?`;
+    url += await this._getAuthorizationCodeUrlParams(scope, redirectUri, responseType, claims, useRequestObject);
+
+    return url;
+  }
+
+  async _getAuthorizationCodeUrlParams(scope, redirectUri, responseType, claims, useRequestObject) {
+    let urlParams = `client_id=${this.clientConfig.client_id}`;
+    urlParams += `&redirect_uri=${redirectUri}`;
+    urlParams += `&response_type=${responseType}`;
+
+    if (useRequestObject) {
+      urlParams += '&scope=openid';
+      const signedRequestObject = await this._getSignedRequestObject(scope, redirectUri, claims);
+      urlParams += `&request=${signedRequestObject}`;
+    } else {
+      urlParams += `&scope=${scope}`;
+      urlParams += `&claims=${claims}`;
+    }
+
+    return urlParams;
+  }
+
+  async _getSignedRequestObject(scope, redirectUri, claims) {
+    const requestObject = {
+      aud: this.wellKnownConfiguration.issuer,
+      iss: this.clientConfig.client_id,   
+      exp: (Date.now() / 1000) + 300,
+      state: uuidv4(),   
+      nonce: uuidv4(),
+      scope,
+      redirect_uri: redirectUri,
+      claims
+    };
+
+    const requestJws = await Jwt.sign({
+      header: {
+        alg: this.clientConfig.request_object_signing_alg,
+        kid: this.clientConfig.signingKeyKid
+      },
+      body: requestObject,
+      signingKeyFileName: this.clientConfig.signingKeyFileName
+    });
+
+    return requestJws;
   }
 }
 

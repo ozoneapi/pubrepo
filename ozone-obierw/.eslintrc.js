@@ -39,6 +39,8 @@ module.exports = {
       { 'code': 200,
         'ignoreComments': true
       }
-    ]
+    ],
+
+    'prefer-destructuring': ['off']
   }
 };

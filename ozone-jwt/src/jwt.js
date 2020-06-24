@@ -5,12 +5,14 @@ const fs = require('fs');
 const jws = require('jws');
 const jose = require('node-jose');
 const log = require('loglevel').getLogger('ozone-jwt');
+const path = require('path');
 const Http = require('ozone-http-client');
 
 class Jwt {
-  static async sign(params) {
+  static async sign(params, baseFolder) {
     log.debug('Jwt.sign: Started Jwt.sign with params:');
     log.debug(params);
+    log.debug(`baseFolder: ${baseFolder}`);
     log.debug('Jwt.sign: -----------------------------');
 
     // validate the params
@@ -34,7 +36,7 @@ class Jwt {
 
       default:
         log.info('Jwt.sign: signing with an asymmetric algorithm');
-        signature = await Jwt._signAsym(params);
+        signature = await Jwt._signAsym(params, baseFolder);
     }
 
     log.debug('Jwt.sign: returning');
@@ -54,12 +56,21 @@ class Jwt {
     });
   }
 
-  static async _getSigningKey(params) {
+  static async _getSigningKey(params, baseFolder) {
     log.info('Jwt._getSigningKey: retrieving signing key - start');
 
     if (params.signingKeyFileName !== undefined) {
       log.info(`Jwt._getSigningKey: using signing key file ${params.signingKeyFileName}`);
-      const key = fs.readFileSync(params.signingKeyFileName, 'utf8');
+      
+      let signingKeyFileName = params.signingKeyFileName;
+
+      // adjust base folder
+      if (baseFolder !== undefined) {
+        log.debug(`Jwt._getSigningKey:: Base folder is ${baseFolder}. Adjusting all signingKeyFileName`);
+        signingKeyFileName = path.join(baseFolder, signingKeyFileName);
+      }
+
+      const key = fs.readFileSync(signingKeyFileName, 'utf8');
       const privateKey = await jose.JWK.asKey(key, 'pem');
       return privateKey;
     }
@@ -80,9 +91,9 @@ class Jwt {
     throw new Error('signingKeyFileName or signingKeyPEM must be specified for asymmetric algorithms');
   }
 
-  static async _signAsym(params) {
+  static async _signAsym(params, baseFolder) {
     log.info('Jwt._signAsym: signing with asymmetric key');
-    const privateKey = await Jwt._getSigningKey(params);
+    const privateKey = await Jwt._getSigningKey(params, baseFolder);
 
     // sign
     const signatureConfig = {
@@ -103,23 +114,20 @@ class Jwt {
     return toRet;
   }
 
-  static async signDisjointed(params) {
-    log.info('Jwt.signDisjointed - start');
-
-    // add the b64 flag
-    params.header.b64 = false;
+  static async signDetached(params, baseFolder) {
+    log.info('Jwt.signDetached - start');
 
     // sign it
-    const signature = await Jwt.sign(params);
+    const signature = await Jwt.sign(params, baseFolder);
     const signatureParts = signature.split('.');
 
-    const disjointedSignature = `${signatureParts[0]}..${signatureParts[2]}`;
+    const detachedSignature = `${signatureParts[0]}..${signatureParts[2]}`;
 
-    log.debug('Jwt.signDisjointed - returning disjointed signature');
-    log.debug(disjointedSignature);
-    log.debug('Jwt.signDisjointed -------------------');
+    log.debug('Jwt.signDetached - returning detached signature');
+    log.debug(detachedSignature);
+    log.debug('Jwt.signDetached -------------------');
 
-    return disjointedSignature;
+    return detachedSignature;
   }
 
   static async verify(params) {
@@ -222,8 +230,8 @@ class Jwt {
     }
   }
 
-  static async verifyDisjointed(params) {
-    log.info('Jwt.verifyDisjointed - start');
+  static async verifydetached(params) {
+    log.info('Jwt.verifydetached - start');
 
     // reconstitute the signature
     const signedWithNone = await Jwt.sign({
@@ -234,11 +242,11 @@ class Jwt {
     const signedWithNoneParts = signedWithNone.split('.');
     const signatureParts = params.signature.split('.');
     params.signature = `${signatureParts[0]}.${signedWithNoneParts[1]}.${signatureParts[2]}`;
-    log.debug('Jwt.verifyDisjointed - reconstituted signature');
+    log.debug('Jwt.verifydetached - reconstituted signature');
     log.debug(`header: ${signatureParts[0]}`);
     log.debug(`header: ${signedWithNoneParts[1]}`);
     log.debug(`header: ${signatureParts[2]}`);
-    log.debug('Jwt.verifyDisjointed ----------------');
+    log.debug('Jwt.verifydetached ----------------');
 
     return Jwt.verify(params);
   }

@@ -7,22 +7,23 @@ const uuidv4 = require('uuid/v4');
 const _ = require('lodash');
 
 class JwtAuth {
-  static async do(httpParams, signingParams) {
+  static async do(httpParams, signingParams, baseFolder) {
     log.setLevel(httpParams.logLevel || 'silent');
     log.info('JwtAuth.do: started');
     log.debug('JwtAuth.do: signingParams');
     log.debug(signingParams);
+    log.debug(`baseFolder: ${baseFolder}`);
     log.debug('JwtAuth.do ------------------');
 
-    const jws = await JwtAuth.getJws(signingParams);
+    const jws = await JwtAuth.getJws(signingParams, baseFolder);
     // add to authorization header
     _.set(httpParams, 'headers.authorization', `Bearer ${jws}`);
 
     // do the HTTP operation
-    return HttpClient.do(httpParams);
+    return HttpClient.do(httpParams, baseFolder);
   }
 
-  static async getJws(signingParams) {
+  static async getJws(signingParams, baseFolder) {
     log.info('JwtAuth.getJws: started');
 
     // validate the signingParams
@@ -68,13 +69,12 @@ class JwtAuth {
     log.debug('JwtAuth.jws: jwt');
     log.debug(jwtSigningParams);
     log.debug('JwtAuth.jws ------------------');
-    const jws = await Jwt.sign(jwtSigningParams);
+    const jws = await Jwt.sign(jwtSigningParams, baseFolder);
 
     log.debug('JwtAuth.jws: jws');
     log.debug(jws);
     log.debug('JwtAuth.jws ------------------');
 
-    console.log(jws);
     return jws;
   }
 }

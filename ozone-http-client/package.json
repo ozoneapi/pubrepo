@@ -12,6 +12,7 @@
   "dependencies": {
     "jsonschema": "1.2.4",
     "loglevel": "1.6.3",
+    "lodash": "4.17.13",
     "superagent": "5.0.6"
   },
   "devDependencies": {

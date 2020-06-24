@@ -22,6 +22,11 @@
       "enum": [ "none", "HS256", "PS256", "RS256", "ES256" ]
     },
 
+    "request_object_signing_alg": {
+      "type": "string",
+      "enum": [ "none", "HS256", "PS256", "RS256", "ES256" ]
+    },
+
     "certs": {
       "type": "object",
       "properties": {

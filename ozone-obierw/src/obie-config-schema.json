@@ -9,7 +9,21 @@
     },
 
     "rs": { "type": "string" },
-    "financialId": { "type": "string" }
+    "financialId": { "type": "string" },
+
+    "messageSigning": {
+      "type": "object",
+      "properties": {
+        "alg":  {
+          "type": "string",
+          "enum": [ "none", "HS256", "PS256", "RS256", "ES256" ]
+        },
+
+        "iss": { "type": "string" },
+        "tan": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
   },
   "required": ["clientConfig", "rs", "financialId"],
   "additionalProperties": false
