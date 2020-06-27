@@ -7,6 +7,7 @@ const jose = require('node-jose');
 const log = require('loglevel').getLogger('ozone-jwt');
 const path = require('path');
 const Http = require('ozone-http-client');
+const _ = require('lodash');
 
 class Jwt {
   static async sign(params, baseFolder) {
@@ -91,6 +92,21 @@ class Jwt {
     throw new Error('signingKeyFileName or signingKeyPEM must be specified for asymmetric algorithms');
   }
 
+  static _getAsString(x) {
+    if (_.isString(x)) {
+      log.info('Jwt._getAsString: treating payload as string');
+      return x;
+    }
+
+    if (Buffer.isBuffer(x)) {
+      log.info('Jwt._getAsString: treating payload as buffer');
+      return Buffer.toString(x, 'utf8');
+    }
+
+    log.info('Jwt._getAsString: treating payload as json');
+    return JSON.stringify(x);
+  }
+
   static async _signAsym(params, baseFolder) {
     log.info('Jwt._signAsym: signing with asymmetric key');
     const privateKey = await Jwt._getSigningKey(params, baseFolder);
@@ -106,8 +122,12 @@ class Jwt {
     log.debug('Jwt._signAsym -----------------');
 
     log.info('Jwt._signAsym: creating signature - start');
+
+    // what have we here ?
+    const payload = Jwt._getAsString(params.body);
+
     const toRet = await jose.JWS.createSign(signatureConfig, privateKey)
-      .update(JSON.stringify(params.body), 'utf8')
+      .update(payload, 'utf8')
       .final();
     log.info('Jwt._signAsym: creating signature - done');
 

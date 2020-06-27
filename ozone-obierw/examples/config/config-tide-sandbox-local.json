@@ -20,6 +20,6 @@
   "messageSigning": {
     "alg": "PS256",
     "iss": "0015800001041RHAAY/HQuZPIt3ipkh33Uxytox1E",
-    "tan": "openbankingtest.org.uk"
+    "tan": "openbanking.org.uk"
   }
 }

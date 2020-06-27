@@ -26,7 +26,14 @@ async function go() {
     "Risk": {}
   };
 
-  return sig.sign(consent, 'json');
+  const string = JSON.stringify(consent, undefined, '\t');
+  const buf = Buffer.from(string, 'utf8');
+  for (const b of buf) {
+    console.log(b + String.fromCharCode(b));
+  }
+
+  console.log(string);
+  return sig.sign(string, 'json');
 }
 
 go()

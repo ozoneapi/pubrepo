@@ -1,15 +1,11 @@
 const Jwt = require('ozone-jwt');
-const Validator = require('jsonschema').Validator;
 const schema = require('../obie-config-schema.json');
 
 class Signature31 {
   constructor(config, baseFolder) {
-    // validate the config
-    const jsonSchemaValidator = new Validator();
-    const validationResult = jsonSchemaValidator.validate(config, schema);
-    if (validationResult.errors.length > 0) {
-      throw new Error(`obie config failed validation. ${validationResult.errors}`);
-    }
+
+    // do a lighter validation
+    // TODO
 
     this.config = config;
     this.baseFolder = baseFolder;
@@ -22,7 +18,7 @@ class Signature31 {
         typ: 'JOSE',
         cty: contentType,
         kid: this.config.clientConfig.signingKeyKid,
-        'http://openbanking.org.uk/iat': 1000,
+        'http://openbanking.org.uk/iat': Date.now() / 1000,
         'http://openbanking.org.uk/iss': this.config.messageSigning.iss,
         'http://openbanking.org.uk/tan': this.config.messageSigning.tan,
         crit: [
@@ -31,9 +27,14 @@ class Signature31 {
           'http://openbanking.org.uk/tan'
         ]
       },
-      body,
-      signingKeyFileName: this.config.clientConfig.signingKeyFileName
+      body
     };
+
+    if (this.config.clientConfig.signingKeyFileName) {
+      params.signingKeyFileName = this.config.clientConfig.signingKeyFileName;
+    } else {
+      params.signingKeyPEM = this.config.clientConfig.signingKeyPEM;
+    }
 
     return Jwt.signDetached(params, this.baseFolder);
   }
