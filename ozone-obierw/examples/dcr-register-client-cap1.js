@@ -1,6 +1,7 @@
 const Dcr = require('../src/dcr/dcr.js');
 
-async function go() {
+async function go(basePath) {
+  const tppCertPath = `${basePath}/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk`
   const params = {
     // issuer: 'https://auth-ui-obsbox.capitalone.co.uk/',
     issuer: 'http://localhost:3605/',
@@ -21,18 +22,20 @@ async function go() {
     registrationJws: {
       alg: 'PS256',
       signingKeyKid: 'oLyjFIQzA-RfmoAqd7jn5T9_kK8',
-      signingKeyFileName: 'C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\dcr-5aRav7KBdrEqqs1e1fwNgk\\signing-5aRav7KBdrEqqs1e1fwNgk.key'
+      signingKeyFileName: `${tppCertPath}/signing-5aRav7KBdrEqqs1e1fwNgk.key`
     },
     certs: {
-      ca: 'C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\obie\\sandbox\\ob-sandbox-issuing-chain.pem',
-      cert: 'C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\dcr-5aRav7KBdrEqqs1e1fwNgk\\transport-5aRav7KBdrEqqs1e1fwNgk.pem',
-      key: 'C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\dcr-5aRav7KBdrEqqs1e1fwNgk\\transport-5aRav7KBdrEqqs1e1fwNgk.key'
+      ca: `${basePath}/obie/sandbox/ob-sandbox-issuing-chain.pem`,
+      cert: `${tppCertPath}/transport-5aRav7KBdrEqqs1e1fwNgk.pem`,
+      key: `${tppCertPath}/transport-5aRav7KBdrEqqs1e1fwNgk.key`
     }
   };
   const result = await Dcr.registerClient(params);
   return result;
 }
 
-go()
+let basePath = `${process.env.OZONE_HOME}/monorepo/crypto/certs`;
+
+go(basePath)
   .then(out => console.log(out))
   .catch(err => console.log(err));
