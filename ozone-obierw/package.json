@@ -9,6 +9,9 @@
   },
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
+  "scripts": {
+    "dcr-register-cap1": "cd examples && node dcr-register-client-cap1.js --node-args=\"--inspect-brk\""
+  },
   "dependencies": {
     "jsonschema": "1.2.4",
     "open": "6.4.0",
