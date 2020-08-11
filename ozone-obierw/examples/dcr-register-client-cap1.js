@@ -21,7 +21,7 @@ async function go(basePath) {
     grant_types: ['authorization_code', 'client_credentials'],
     registrationJws: {
       alg: 'PS256',
-      signingKeyKid: 'oLyjFIQzA-RfmoAqd7jn5T9_kK8',
+      signingKeyKid: '7bFO-HvVxf9MiODft_jh-i9nu1E',
       signingKeyFileName: `${tppCertPath}/signing-5aRav7KBdrEqqs1e1fwNgk.key`
     },
     certs: {
