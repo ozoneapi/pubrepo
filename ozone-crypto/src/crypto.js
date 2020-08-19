@@ -20,7 +20,9 @@ class Crypto {
 
     return {
       publicKey: key.toJSON(),
-      privateKey: key.toJSON(true)
+      privateKey: key.toJSON(true),
+      pemFile: key.toPEM(),
+      privateKeyFile: key.toPEM(true)
     };
   }
 }

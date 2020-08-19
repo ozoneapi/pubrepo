@@ -22,11 +22,12 @@ class Ais31 {
 
   async createConsent(body, headers, token) {
     const response = await this.createConsentRaw(body, headers, token);
-    if (response.json !== undefined) {
+
+    if ((response.status === 201) && (response.json !== undefined)) {
       return response.json;
     }
 
-    throw new Error(`failed to create account access consent ${response.data}`);
+    throw new Error(`failed to create account access consent ${JSON.stringify(response.json)}`);
   }
 
   async createConsentRaw(body, headers, token) {
@@ -112,21 +113,40 @@ class Ais31 {
     return headers;
   }
 
+  static getResourceUri(baseUri, resource, accountId) {
+    let toRet;
+    switch (resource) {
+      case 'accounts':
+        if (accountId) {
+          toRet = `${baseUri}/open-banking/v3.1/aisp/accounts/${accountId}`;
+        } else {
+          toRet = `${baseUri}/open-banking/v3.1/aisp/accounts`;
+        }
+        break;
+
+      default:
+        if (accountId) {
+          toRet = `${baseUri}/open-banking/v3.1/aisp/accounts/${accountId}/${resource}`;
+        } else {
+          toRet = `${baseUri}/open-banking/v3.1/aisp/${resource}`;
+        }
+        break;
+    }
+
+    return toRet;
+  }
+
   async getAisResource(resource, token, accountId) {
 
     const headers = this._updateHeaders(undefined, token);
 
     const httpParams = {
       verb: 'get',
-      url: `${this.config.rs}/open-banking/v3.1/aisp/${resource}`,
+      url: Ais31.getResourceUri(this.config.rs, resource, accountId),
       headers,
       certs: this.config.clientConfig.certs,
       parseJson: true
-    };
-
-    if (accountId) {
-      httpParams.url += `/${accountId}`;
-    }
+    };    
 
     // make the call
     return Http.do(httpParams, this.baseFolder);
