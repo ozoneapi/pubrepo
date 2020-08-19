@@ -3,8 +3,8 @@ const Dcr = require('../src/dcr/dcr.js');
 async function go(basePath) {
   const tppCertPath = `${basePath}/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk`
   const params = {
-    issuer: 'https://auth-ui-obsbox.capitalone.co.uk/',
-    // issuer: 'http://localhost:3605/',
+    // issuer: 'https://auth-ui-obsbox.capitalone.co.uk/',
+    issuer: 'http://localhost:3605/',
     emulateSubject: 'C=GB,O=OpenBanking,OU=0015800001041RHAAY,CN=5aRav7KBdrEqqs1e1fwNgk',
     aud: '001580000103UAQAA2',
     scope: 'openid accounts',
