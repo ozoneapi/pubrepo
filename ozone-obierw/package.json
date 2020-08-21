@@ -11,7 +11,8 @@
   "license": "MIT",
   "scripts": {
     "dcr-register-cap1": "cd examples && node dcr-register-client-cap1.js",
-    "dcr-register-cap1-local": "cd examples && node dcr-register-client-cap1-local.js"
+    "dcr-register-cap1-local": "cd examples && node dcr-register-client-cap1-local.js",
+    "dcr-test-client-cap1-local": "cd examples && node dcr-test-client-cap1-local.js"
   },
   "dependencies": {
     "jsonschema": "1.2.4",
@@ -23,8 +24,10 @@
     "lodash": "4.17.13"
   },
   "devDependencies": {
-    "eslint": "5.16.0",
-    "eslint-config-airbnb-base": "13.2.0",
-    "eslint-plugin-import": "2.17.3"
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.17.3",
+    "prettier": "^2.0.5",
+    "prettier-eslint": "^11.0.0"
   }
 }

@@ -16,8 +16,17 @@ class Dcr {
 
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
 
+    /**
+     * @type String
+     */
+    let url = params.issuer;
+
+    if (! url.endsWith("/")) {
+      url = `${url}/`;
+    }
+
     // get the well-known configuration
-    const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true });
+    const wkcResponse = await Http.do({ url: `${url}.well-known/openid-configuration`, parseJson: true });
     if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
       throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
     }
@@ -86,5 +95,53 @@ class Dcr {
 
     throw new Error(`Could not complete dynamic client registration ${response.body}`);
   }
+
+  /**
+   * 
+   * @param {String} url 
+   * @param {Object} client 
+   */
+  static async fetchClient(params, client) {
+    const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true });
+    if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
+      throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
+    }
+    const oidcConfig = wkcResponse.json;
+
+    // submit it
+    const httpParams = {
+      verb: 'get',
+      url: `${oidcConfig.registration_endpoint}/${client.client_id}`,
+      headers: {
+        'content-type': 'application/jwt',
+        'authorization': `bearer ${client.registration_access_token}`
+      },
+      certs: params.certs,
+      parseJson: true
+    };
+
+    // hackity hack for testing ozone on localhosts
+    if (params.emulateSubject !== undefined) {
+      httpParams.headers['x-cert-dn'] = params.emulateSubject;
+    }
+
+    const response = await Http.do(httpParams);
+
+    if ((response.status === 200) && (response.json !== undefined)) {
+      return response.json;
+    }
+
+    throw new Error(`Could not complete dynamic client fetch ${response.body}`);
+  }
+
+  static async deleteClient(params, client) {
+    const responseStatus = 400;
+    
+    if (responseStatus === 200) {
+      return true;
+    }
+    return false;
+  }
 }
+
 module.exports = Dcr;
