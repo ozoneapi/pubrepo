@@ -16,25 +16,7 @@ class Dcr {
 
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
 
-    /**
-     * @type String
-     */
-    let url = params.issuer;
-
-    if (! url.endsWith("/")) {
-      url = `${url}/`;
-    }
-
-    // get the well-known configuration
-    const wkcResponse = await Http.do({ url: `${url}.well-known/openid-configuration`, parseJson: true });
-    if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
-      throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
-    }
-    const oidcConfig = wkcResponse.json;
-
-    if (oidcConfig.registration_endpoint === undefined) {
-      throw new Error('could not find registration_endpoint in oidc config');
-    }
+    const oidcConfig = await fetchOidcConfig(params);
 
     // start assembling the jwt
     const now = Date.now() / 1000;
@@ -102,30 +84,11 @@ class Dcr {
    * @param {Object} client 
    */
   static async fetchClient(params, client) {
-    const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true });
-    if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
-      throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
-    }
-    const oidcConfig = wkcResponse.json;
+    const oidcConfig = await fetchOidcConfig(params);
 
+    const operation = 'get';
     // submit it
-    const httpParams = {
-      verb: 'get',
-      url: `${oidcConfig.registration_endpoint}/${client.client_id}`,
-      headers: {
-        'content-type': 'application/jwt',
-        'authorization': `bearer ${client.registration_access_token}`
-      },
-      certs: params.certs,
-      parseJson: true
-    };
-
-    // hackity hack for testing ozone on localhosts
-    if (params.emulateSubject !== undefined) {
-      httpParams.headers['x-cert-dn'] = params.emulateSubject;
-    }
-
-    const response = await Http.do(httpParams);
+    const response = await executeTokenBasedOp(operation, oidcConfig.registration_endpoint, client, params);
 
     if ((response.status === 200) && (response.json !== undefined)) {
       return response.json;
@@ -135,13 +98,49 @@ class Dcr {
   }
 
   static async deleteClient(params, client) {
-    const responseStatus = 400;
-    
-    if (responseStatus === 200) {
+    const oidcConfig = await fetchOidcConfig(params);
+
+    const operation = 'delete';
+    // submit it
+    const response = await executeTokenBasedOp(operation, oidcConfig.registration_endpoint, client, params);
+
+    if (response.status === 200) {
       return true;
     }
-    return false;
+
+    throw new Error(`Could not complete dynamic client delete: ${JSON.stringify(err)}`);
   }
 }
 
 module.exports = Dcr;
+
+async function executeTokenBasedOp(operation, endpoint, client, params) {
+  const httpParams = {
+    verb: operation,
+    url: `${endpoint}/${client.client_id}`,
+    headers: {
+      'content-type': 'application/jwt',
+      'authorization': `bearer ${client.registration_access_token}`
+    },
+    certs: params.certs,
+    parseJson: true
+  };
+
+  // hackity hack for testing ozone on localhosts
+  if (params.emulateSubject !== undefined) {
+    httpParams.headers['x-cert-dn'] = params.emulateSubject;
+  }
+
+  const response = await Http.do(httpParams);
+  return response;
+}
+
+async function fetchOidcConfig(params) {
+  const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true });
+  if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
+    throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
+  }
+  const oidcConfig = wkcResponse.json;
+  return oidcConfig;
+}
+

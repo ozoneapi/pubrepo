@@ -59,18 +59,22 @@ const runTest = async (force) => {
 
   const fetchedClient = await Dcr.fetchClient(params, client);
   if (JSON.stringify(fetchedClient) !== JSON.stringify(client) ) {
-    console.error('Fetched client mismatch');
-    console.error(fetchedClient);
-    throw new Error(client);
+    throw new Error('Fetched client mismatch');
   }
 
-  const deleteStatus = await Dcr.deleteClient(params, client);
-  if (!deleteStatus) {
-    console.error("Error while deleting client");
-    throw new Error(client);
+  const deleteClient = await Dcr.deleteClient(params, client);
+  if (!deleteClient) {
+    throw new Error("Error while deleting client");
   } else {
     // if client deleted, remove the file
     fs.unlinkSync(fileName);
+  }
+
+  try {
+    const fetchedClient = await Dcr.fetchClient(params, client);
+    throw new Error('Client login still works after delete');
+  } catch (err) {
+    console.log('Object deleted so received 404');
   }
 }
 
