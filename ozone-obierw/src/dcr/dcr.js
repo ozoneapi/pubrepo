@@ -6,7 +6,7 @@ const uuidv4 = require('uuid/v4');
 const _ = require('lodash');
 
 class Dcr {
-  static async registerClient(params) {
+  static async registerClientRaw(params, baseFolder) {
     // validate the config
     const jsonSchemaValidator = new Validator();
     const validationResult = jsonSchemaValidator.validate(params, schema);
@@ -17,7 +17,7 @@ class Dcr {
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
 
     // get the well-known configuration
-    const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true });
+    const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true }, baseFolder);
     if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
       throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
     }
@@ -59,7 +59,7 @@ class Dcr {
       },
       body: registrationJwt,
       signingKeyFileName: params.registrationJws.signingKeyFileName
-    });
+    }, baseFolder);
 
     // submit it
     const httpParams = {
@@ -78,8 +78,12 @@ class Dcr {
       httpParams.headers['x-cert-dn'] = params.emulateSubject;
     }
 
-    const response = await Http.do(httpParams);
+    return Http.do(httpParams, baseFolder);
+  }
 
+  static async registerClient(params, baseFolder) {
+    const response = Dcr.registerClientRaw(params, baseFolder);
+    
     if ((response.status === 201) && (response.json !== undefined)) {
       return response.json;
     }
