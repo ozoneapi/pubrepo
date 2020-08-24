@@ -1,4 +1,5 @@
 const Dcr = require('../src/dcr/dcr.js');
+const _ = require('lodash');
 
 const params = {
   // issuer: 'https://auth-ui-obsbox.capitalone.co.uk/',
@@ -58,7 +59,9 @@ const runTest = async (force) => {
   console.log(client);
 
   const fetchedClient = await Dcr.fetchClient(params, client);
-  if (JSON.stringify(fetchedClient) !== JSON.stringify(client) ) {
+  const diff = _.difference(fetchedClient, client);
+  if (diff && diff.length) {
+    console.error(JSON.stringify(diff));
     throw new Error('Fetched client mismatch');
   }
 
@@ -78,4 +81,6 @@ const runTest = async (force) => {
   }
 }
 
-runTest(false);
+runTest(true).catch (err => {
+  console.error(err);
+});

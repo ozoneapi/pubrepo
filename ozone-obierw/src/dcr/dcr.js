@@ -108,7 +108,7 @@ class Dcr {
       return true;
     }
 
-    throw new Error(`Could not complete dynamic client delete: ${JSON.stringify(err)}`);
+    throw new Error(`Could not complete dynamic client delete: ${JSON.stringify(response)}`);
   }
 }
 
