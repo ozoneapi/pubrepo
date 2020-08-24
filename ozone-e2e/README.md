@@ -57,3 +57,25 @@ https://s3-eu-west-1.amazonaws.com/certs.o3bank.co.uk/jwks/9e15b042-e8e7-476b-97
 ## Accessing accounts resources
 
 ### Get a client credentials grant
+
+use ozone-oid-client/examples/get-ccg-access-token.js
+
+### Get the redirect uri
+
+use ozone-obierw/examples/get-account-request-url.js
+
+Copy the generated url, paste in a browser. copy the `code` generated after authentication
+
+### Get the access token
+
+use ozone-oidc-client/examples/get-acg-access-token.js {code}
+
+The authorization code generated above is used as a CLI parameter.
+
+This generates the access token and id_token
+
+### Get the resource
+
+tbc
+
+

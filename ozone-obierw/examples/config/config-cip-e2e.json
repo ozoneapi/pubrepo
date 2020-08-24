@@ -8,7 +8,7 @@
     },
     "issuer": "https://auth1.cip-sandbox.ozoneapi.co.uk/.well-known/openid-configuration",
     "certs": {
-      "ca": "monorepo/crypto/certs/obie/sandbox/ob-sandbox-issuing-chain.pem",
+      "ca": "pubrepo/ozone-e2e/certs/client-transport.pem",
       "cert": "pubrepo/ozone-e2e/certs/client-transport.pem",
       "key": "pubrepo/ozone-e2e/certs/client-transport.key"
     },
