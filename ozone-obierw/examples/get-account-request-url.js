@@ -18,7 +18,7 @@ async function go() {
   const c = await ais.createConsent(consent);
 
   const oidcHelper = new OidcHelper(config, process.env.OZONE_HOME);
-  const x = await oidcHelper.doHeadlessAuth('openid accounts', 'https://auth1.cip-sandbox.ozoneapi.co.uk/simple-redirect-url', 'code id_token', c.Data.ConsentId);
+  const x = await oidcHelper.getAuthorizationCodeUrl('openid accounts', 'https://auth1.cip-sandbox.ozoneapi.co.uk/simple-redirect-url', 'code id_token', c.Data.ConsentId);
   return x;
 
 }

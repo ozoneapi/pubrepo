@@ -1,0 +1,28 @@
+{
+  "rs": "https://rs1.cip-sandbox.ozoneapi.co.uk",
+  "financialId": "b1b553de-b845-401d-b0fd-bd8ce7a85217",
+  "clientConfig": {
+    "logLevels": {
+      "oidcClient": "info",
+      "http": "silent"
+    },
+    "issuer": "https://auth1.cip-sandbox.ozoneapi.co.uk/.well-known/openid-configuration",
+    "certs": {
+      "ca": "monorepo/crypto/certs/obie/sandbox/ob-sandbox-issuing-chain.pem",
+      "cert": "pubrepo/ozone-e2e/certs/client-transport.pem",
+      "key": "pubrepo/ozone-e2e/certs/client-transport.key"
+    },
+    "token_endpoint_auth_method": "tls_client_auth",
+    "token_endpoint_auth_signing_alg": "PS256",
+    "request_object_signing_alg": "PS256",
+    "client_id": "47bd5ad9-901c-4fb4-ab2b-2f534fa3661f",
+    "client_secret": "ff68e038-5038-45b9-bb35-1550c6b2a008",
+    "signingKeyKid": "9yTMPOwepgvLM7zWDFN4iaKIuGKtGgPBLXssguVbi2M",
+    "signingKeyFileName": "pubrepo/ozone-e2e/certs/client-signing.key"
+  },
+  "messageSigning": {
+    "alg": "PS256",
+    "iss": "1/2",
+    "tan": "openbanking.org.uk"
+  }
+}

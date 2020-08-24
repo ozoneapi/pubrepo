@@ -102,6 +102,10 @@ class OidcClient {
     await this._addAuthenticationParams(params, grantType);
 
     // make the call
+    log.info('OidcClient._getAccessToken: token request follows:');
+    log.info(params);
+    log.info('OidcClient._getAccessToken: token request ends:');
+    
     const response = await Http.do(params);
     if (response.json !== undefined) {
       return response.json;
