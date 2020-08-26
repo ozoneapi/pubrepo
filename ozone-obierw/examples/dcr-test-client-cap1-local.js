@@ -77,7 +77,12 @@ const runTest = async (force) => {
     const fetchedClient = await Dcr.fetchClient(params, client);
     throw new Error('Client login still works after delete');
   } catch (err) {
-    console.log('Object deleted so received 404');
+    const errObj = JSON.parse(err.message);
+    if (errObj.Code === "UK.OBIE.Header.Invalid") {
+      console.log("Client deleted successfully");
+    } else {
+      throw err;
+    }
   }
 }
 

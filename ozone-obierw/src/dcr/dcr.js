@@ -75,7 +75,7 @@ class Dcr {
       return response.json;
     }
 
-    throw new Error(`Could not complete dynamic client registration ${response.body}`);
+    throw new Error(response.body);
   }
 
   /**
@@ -90,7 +90,7 @@ class Dcr {
       return response.json;
     }
 
-    throw new Error(`Could not complete dynamic client fetch ${response.body}`);
+    throw new Error(response.body);
   }
 
   static async deleteClient(params, client) {
@@ -100,7 +100,7 @@ class Dcr {
       return true;
     }
 
-    throw new Error(`Could not complete dynamic client delete: ${JSON.stringify(response)}`);
+    throw new Error(response);
   }
 }
 
