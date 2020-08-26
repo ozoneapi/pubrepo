@@ -84,11 +84,7 @@ class Dcr {
    * @param {Object} client 
    */
   static async fetchClient(params, client) {
-    const oidcConfig = await fetchOidcConfig(params);
-
-    const operation = 'get';
-    // submit it
-    const response = await executeTokenBasedOp(operation, oidcConfig.registration_endpoint, client, params);
+    const response = await executeTokenBasedOp('get', client, params);
 
     if ((response.status === 200) && (response.json !== undefined)) {
       return response.json;
@@ -98,13 +94,9 @@ class Dcr {
   }
 
   static async deleteClient(params, client) {
-    const oidcConfig = await fetchOidcConfig(params);
+    const response = await executeTokenBasedOp('delete', client, params);
 
-    const operation = 'delete';
-    // submit it
-    const response = await executeTokenBasedOp(operation, oidcConfig.registration_endpoint, client, params);
-
-    if (response.status === 200) {
+    if (response.status === 204) {
       return true;
     }
 
@@ -114,10 +106,10 @@ class Dcr {
 
 module.exports = Dcr;
 
-async function executeTokenBasedOp(operation, endpoint, client, params) {
+async function executeTokenBasedOp(operation, client, params) {
   const httpParams = {
     verb: operation,
-    url: `${endpoint}/${client.client_id}`,
+    url: client.registration_client_uri,
     headers: {
       'content-type': 'application/jwt',
       'authorization': `bearer ${client.registration_access_token}`
