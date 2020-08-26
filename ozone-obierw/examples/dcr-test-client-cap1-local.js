@@ -1,3 +1,4 @@
+// Test for DCR enableRegistrationAccessToken enabled in the rs-config 
 const Dcr = require('../src/dcr/dcr.js');
 const _ = require('lodash');
 
