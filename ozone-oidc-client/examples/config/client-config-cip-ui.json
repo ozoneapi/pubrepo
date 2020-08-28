@@ -1,0 +1,19 @@
+{
+  "logLevels": {
+    "oidcClient": "info",
+    "http": "silent"
+  },
+  "issuer": "https://auth1.cip-sandbox.ozoneapi.co.uk/.well-known/openid-configuration",
+  "certs": {
+    "ca": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\obie\\sandbox\\ob-sandbox-issuing-chain.pem",
+    "cert": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\pubrepo\\ozone-e2e\\certs\\client-transport.pem",
+    "key": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\pubrepo\\ozone-e2e\\certs\\client-transport.key"
+  },
+  "token_endpoint_auth_method": "private_key_jwt",
+  "token_endpoint_auth_signing_alg": "PS256",
+  "request_object_signing_alg": "PS256",
+  "client_id": "47bd5ad9-901c-4fb4-ab2b-2f534fa3661f",
+  "client_secret": "ff68e038-5038-45b9-bb35-1550c6b2a008",
+  "signingKeyKid": "9yTMPOwepgvLM7zWDFN4iaKIuGKtGgPBLXssguVbi2M",
+  "signingKeyFileName": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\pubrepo\\ozone-e2e\\certs\\client-signing.key"
+}

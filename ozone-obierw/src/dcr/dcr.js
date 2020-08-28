@@ -6,7 +6,7 @@ const uuidv4 = require('uuid/v4');
 const _ = require('lodash');
 
 class Dcr {
-  static async registerClient(params) {
+  static async registerClientRaw(params, baseFolder) {
     // validate the config
     const jsonSchemaValidator = new Validator();
     const validationResult = jsonSchemaValidator.validate(params, schema);
@@ -16,7 +16,7 @@ class Dcr {
 
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
 
-    const oidcConfig = await fetchOidcConfig(params);
+    const oidcConfig = await fetchOidcConfig(params, baseFolder);
 
     // start assembling the jwt
     const now = Date.now() / 1000;
@@ -50,7 +50,7 @@ class Dcr {
       },
       body: registrationJwt,
       signingKeyFileName: params.registrationJws.signingKeyFileName
-    });
+    }, baseFolder);
 
     // submit it
     const httpParams = {
@@ -69,8 +69,12 @@ class Dcr {
       httpParams.headers['x-cert-dn'] = params.emulateSubject;
     }
 
-    const response = await Http.do(httpParams);
+    return Http.do(httpParams, baseFolder);
+  }
 
+  static async registerClient(params, baseFolder) {
+    const response = await Dcr.registerClientRaw(params, baseFolder);
+    
     if ((response.status === 201) && (response.json !== undefined)) {
       return response.json;
     }
@@ -127,12 +131,16 @@ async function executeTokenBasedOp(operation, client, params) {
   return response;
 }
 
-async function fetchOidcConfig(params) {
-  const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true });
+async function fetchOidcConfig(params, baseFolder) {
+  const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true }, baseFolder);
   if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
     throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
   }
   const oidcConfig = wkcResponse.json;
+  if (oidcConfig.registration_endpoint === undefined) {
+    throw new Error('could not find registration_endpoint in oidc config');
+  }
+
   return oidcConfig;
 }
 
