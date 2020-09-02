@@ -3,8 +3,8 @@ const Dcr = require('../src/dcr/dcr.js');
 const _ = require('lodash');
 
 const params = {
-  // issuer: 'https://auth-ui-obsbox.capitalone.co.uk/',
-  issuer: 'http://localhost:3605/',
+  // issuer: 'http://localhost:3605/',
+  issuer: 'https://auth-ui-obsbox.capitalone.co.uk/',
   emulateSubject: 'C=GB,O=OpenBanking,OU=0015800001041RHAAY,CN=5aRav7KBdrEqqs1e1fwNgk',
   aud: '001580000103UAQAA2',
   scope: 'openid accounts',
@@ -15,11 +15,17 @@ const params = {
     'https://modelobankauth2018.o3bank.co.uk:4101/simple-redirect-url'
   ],
   token_endpoint_auth_method: 'client_secret_basic',
-  // token_endpoint_auth_signing_alg: 'none',
+  token_endpoint_auth_signing_alg: 'PS256',
   id_token_signed_response_alg: 'PS256',
   request_object_signing_alg: 'PS256',
-  grant_types: ['authorization_code', 'client_credentials'],
-};
+  grant_types: ['authorization_code', 'client_credentials'],  
+  
+  backchannel_token_delivery_mode: 'ping',
+  backchannel_authentication_request_signing_alg: 'PS256',
+  backchannel_user_code_parameter: false,
+  backchannel_client_notification_endpoint: 'http://callback.me',
+  logLevel: 'info'
+}
 
 const registerClient = async (basePath) => {
   const tppCertPath = `${basePath}/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk`

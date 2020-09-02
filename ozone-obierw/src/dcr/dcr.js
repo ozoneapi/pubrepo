@@ -9,13 +9,14 @@ class Dcr {
   static async registerClientRaw(params, baseFolder) {
     // validate the config
     const jsonSchemaValidator = new Validator();
-    const validationResult = jsonSchemaValidator.validate(params, schema);
+    const { logLevel, ...withoutHttpParams } = params;
+    const validationResult = jsonSchemaValidator.validate(withoutHttpParams, schema);
     if (validationResult.errors.length > 0) {
       throw new Error(`dcr parameters failed validation. ${validationResult.errors}`);
     }
 
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
-
+    // send all params to http
     const oidcConfig = await fetchOidcConfig(params, baseFolder);
 
     // start assembling the jwt
@@ -61,7 +62,8 @@ class Dcr {
         'content-type': 'application/jwt'
       },
       certs: params.certs,
-      parseJson: true
+      parseJson: true,
+      logLevel
     };
 
     // hackity hack for testing ozone on localhosts
@@ -132,7 +134,11 @@ async function executeTokenBasedOp(operation, client, params) {
 }
 
 async function fetchOidcConfig(params, baseFolder) {
-  const wkcResponse = await Http.do({ url: `${params.issuer}.well-known/openid-configuration`, parseJson: true }, baseFolder);
+  const wkcResponse = await Http.do({ 
+    url: `${params.issuer}.well-known/openid-configuration`, 
+    parseJson: true, 
+    logLevel: params.logLevel }, 
+  baseFolder);
   if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
     throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);
   }

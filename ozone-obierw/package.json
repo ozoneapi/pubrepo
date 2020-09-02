@@ -12,7 +12,8 @@
   "scripts": {
     "dcr-register-cap1": "cd examples && node dcr-register-client-cap1.js",
     "dcr-register-cap1-local": "cd examples && node dcr-register-client-cap1-local.js",
-    "dcr-test-client-cap1-local": "cd examples && node dcr-test-client-cap1-local.js"
+    "dcr-test-client-cap1-local": "cd examples && node dcr-test-client-cap1-local.js",
+    "dcr-test-client-cap1": "cd examples && node dcr-test-client-cap1.js"
   },
   "dependencies": {
     "jsonschema": "1.2.4",
