@@ -11,13 +11,13 @@
   "license": "MIT",
   "dependencies": {
     "minimist": "^1.2.5",
-    "mongodb": "^3.6.0",
-    "prettier": "^2.1.1"
+    "mongodb": "^3.6.0"
   },
   "devDependencies": {
     "eslint": "^7.8.1",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "prettier": "^2.1.1",
     "prettier-eslint": "^11.0.0"
   }
 }
