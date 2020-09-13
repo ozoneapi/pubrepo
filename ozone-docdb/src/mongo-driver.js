@@ -1,5 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
-const MongoDb = require('mongodb');
+const { MongoClient, ObjectID } = require('mongodb');
 
 class MongoDriver {
   constructor(connectString) {
@@ -11,7 +10,7 @@ class MongoDriver {
   }
 
   async _connect() {
-    if (this.client === undefined) {
+    if (!this.client) {
       this.client = await MongoClient.connect(this.connectString, { useNewUrlParser: true, useUnifiedTopology: true });
     }
   }
@@ -25,20 +24,20 @@ class MongoDriver {
     // Modify and return the modified document
     MongoDriver._adjustFilter(filter);
 
-    const data = await collection.find(filter, projection).sort(sort).toArray();
+    const data = await collection.find(filter, { projection, sort }).toArray();
 
     return data;
   }
 
   static _adjustFilter(filter) {
-    if ((filter === undefined) || (filter === null)) {
+    if (!filter) {
       return;
     }
 
     Object.keys(filter).forEach((param) => {
       if (param.endsWith('.id')) {
         const newParamName = `${param.substring(0, param.length - 2)}_id`;
-        const newParamValue = new MongoDb.ObjectID(filter[param]);
+        const newParamValue = new ObjectID(filter[param]);
         filter[newParamName] = newParamValue;
         delete filter[param];
       }
