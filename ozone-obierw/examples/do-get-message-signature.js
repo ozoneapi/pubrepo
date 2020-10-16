@@ -1,5 +1,5 @@
 const Signature31 = require('../src/sigs/signature-31.js');
-const config = require('./config/config-tide-sandbox-local.json');
+const config = require('./config/config-cip-obiedir.json');
 
 async function go() {
   const sig = new Signature31(config, process.env.OZONE_HOME);
@@ -27,11 +27,6 @@ async function go() {
   };
 
   const string = JSON.stringify(consent, undefined, '\t');
-  const buf = Buffer.from(string, 'utf8');
-  for (const b of buf) {
-    console.log(b + String.fromCharCode(b));
-  }
-
   console.log(string);
   return sig.sign(string, 'json');
 }

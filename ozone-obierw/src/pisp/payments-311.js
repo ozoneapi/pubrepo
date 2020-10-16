@@ -3,9 +3,11 @@ const Http = require('ozone-http-client');
 const Validator = require('jsonschema').Validator;
 const schema = require('../obie-config-schema.json');
 const uuidv4 = require('uuid/v4');
+const Signature31 = require('../sigs/signature-31.js');
+
 
 class Payments311 {
-  constructor(config) {
+  constructor(config, baseFolder) {
     // validate the config
     const jsonSchemaValidator = new Validator();
     const validationResult = jsonSchemaValidator.validate(config, schema);
@@ -16,7 +18,8 @@ class Payments311 {
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
 
     this.config = config;
-    this.oidcClient = new OidcClient(config.clientConfig);
+    this.baseFolder = baseFolder;
+    this.oidcClient = new OidcClient(config.clientConfig, baseFolder);
   }
 
   async postSimpleDomesticPaymentsConsent(instructionIdentification, amount, sortCodeAccountNumber, creditorName) {
@@ -68,20 +71,26 @@ class Payments311 {
       throw new Error(token);
     }
 
+    // sign the message
+    const sig = new Signature31(this.config, this.baseFolder);
+    const bodyToStream = JSON.stringify(body);
+    const signature = await sig.sign(bodyToStream, 'json');    
+    
     // update the headers
-    headers = this._updateHeaders(headers, token);
+    headers = this._updateHeaders(headers, token, signature);
 
     const httpParams = {
       verb: 'post',
       url: `${this.config.rs}/open-banking/v3.1/pisp/domestic-payment-consents`,
       headers,
-      body,
+      body: bodyToStream,
       certs: this.config.clientConfig.certs,
       parseJson: true
     };
 
+
     // make the call
-    const response = await Http.do(httpParams);
+    const response = await Http.do(httpParams, this.baseFolder);
     if (response.json !== undefined) {
       return response.json;
     }
@@ -89,12 +98,15 @@ class Payments311 {
     throw new Error(`failed to create payment consent ${response.data}`);
   }
 
-  _updateHeaders(headers, token) {
+  _updateHeaders(headers, token, signature) {
+    console.log(signature);
     if (headers === undefined) {
       headers = {};
     }
     headers.authorization = `Bearer ${token.access_token}`;
     headers['x-fapi-financial-id'] = this.config.financialId;
+    headers['x-jws-signature'] = signature;
+    headers['content-type'] = 'application/json';
 
     return headers;
   }

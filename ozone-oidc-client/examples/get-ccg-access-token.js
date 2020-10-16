@@ -1,5 +1,5 @@
 const OidcClient = require('../src/oidc-client.js');
-const clientConfig = require('./config/client-config-cip-ui.json');
+const clientConfig = require('./config/client-config-cip-obiedir.json');
 
 async function go() {
   const oidcClient = new OidcClient(clientConfig);

@@ -1,8 +1,8 @@
 const Payments311 = require('../src/pisp/payments-311.js');
-const config = require('./config/config.json');
+const config = require('./config/config-cip-obiedir.json');
 
 async function go() {
-  const payments = new Payments311(config);
+  const payments = new Payments311(config, process.env.OZONE_HOME);
   const domesticPaymentConsentRequest = {
     Data: {
       Initiation: {
