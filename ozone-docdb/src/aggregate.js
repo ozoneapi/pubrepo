@@ -26,6 +26,7 @@ class Aggregate {
 
   async initMongo() {
     // init mongo
+
     const client = await MongoClient.connect(this.connectString, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -38,8 +39,10 @@ class Aggregate {
     const aggregation = await Aggregate.getInput();
 
     await this.initMongo();
+    console.log('ssd')
 
-    const out = await this.db.collection(this.collection).aggregate(aggregation).toArray();
+    const collection = await this.db.collection(this.collection);
+    const out = collection.aggregate(aggregation).toArray()
 
     console.log(aggregation);
     console.log(this.connectString);
