@@ -1,0 +1,24 @@
+[
+  { "$match": { "$and": [{ "response.status": 200 }] } },
+  {
+    "$lookup": {
+      "from": "client",
+      "localField": "context.clientId",
+      "foreignField": "clientId",
+      "as": "client_details"
+    }
+  },
+  { "$unwind": "$client_details" },
+  {
+    "$project": {
+      "clientName": "$client_details.TPP.TPPName",
+      "consentId": "$context.AccountAccessConsentId",
+      "startTime": "$startTime"
+    }
+  },
+  {
+    "$group": {
+      "_id": { "consentId": "$consentId", "clientName": "$clientName" }
+    }
+  }
+]
