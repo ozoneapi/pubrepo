@@ -42,12 +42,12 @@ class Aggregate {
     console.log('ssd')
 
     const collection = await this.db.collection(this.collection);
-    const out = collection.aggregate(aggregation).toArray()
+    const out = await collection.aggregate(aggregation).toArray()
 
     console.log(aggregation);
     console.log(this.connectString);
     console.log(this.collection);
-    console.log(out);
+    console.log(JSON.stringify(out));
   }
 }
 
