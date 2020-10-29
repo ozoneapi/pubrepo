@@ -42,7 +42,7 @@ class Aggregate {
     console.log('ssd')
 
     const collection = await this.db.collection(this.collection);
-    const out = await collection.aggregate(aggregation).toArray()
+    const out = await collection.aggregate(JSON.stringify(aggregation)).toArray()
 
     console.log(aggregation);
     console.log(this.connectString);
