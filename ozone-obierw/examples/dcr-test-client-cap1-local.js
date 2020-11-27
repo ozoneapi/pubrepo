@@ -1,6 +1,7 @@
 // Test for DCR enableRegistrationAccessToken enabled in the rs-config 
-const Dcr = require('../src/dcr/dcr.js');
 const _ = require('lodash');
+const path = require('path');
+const Dcr = require('../src/dcr/dcr.js');
 
 const params = {
   // issuer: 'https://auth-ui-obsbox.capitalone.co.uk/',
@@ -21,25 +22,30 @@ const params = {
   grant_types: ['authorization_code', 'client_credentials'],
 };
 
+/**
+ * 
+ * @param {string} basePath 
+ * @param {string} certName 
+ */
 const registerClient = async (basePath) => {
-  const tppCertPath = `${basePath}/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk`
+  const tppCertPath = path.join(basePath,'/tpp/dcr-5aRav7KBdrEqqs1e1fwNgk');
 
   params.registrationJws = {
     alg: 'PS256',
     signingKeyKid: '7bFO-HvVxf9MiODft_jh-i9nu1E',
-    signingKeyFileName: `${tppCertPath}/signing-5aRav7KBdrEqqs1e1fwNgk.key`
+    signingKeyFileName: path.join(tppCertPath,'/signing-5aRav7KBdrEqqs1e1fwNgk.key')
   };
 
   params.certs = {
-    ca: `${basePath}/obie/sandbox/ob-sandbox-issuing-chain.pem`,
-    cert: `${tppCertPath}/transport-5aRav7KBdrEqqs1e1fwNgk.pem`,
-    key: `${tppCertPath}/transport-5aRav7KBdrEqqs1e1fwNgk.key`
+    ca: path.join(basePath,'/obie/sandbox/ob-sandbox-issuing-chain.pem'),
+    cert: path.join(tppCertPath,'/transport-5aRav7KBdrEqqs1e1fwNgk.pem'),
+    key: path.join(tppCertPath,'/transport-5aRav7KBdrEqqs1e1fwNgk.key')
   };
 
-  return Dcr.registerClient(params, process.env.OZONE_HOME);
+  return Dcr.registerClient(params);
 }
 
-let basePath = `/monorepo/crypto/certs`;
+let basePath = path.join(process.env.OZONE_HOME,'/monorepo/crypto/certs');
 
 const runTest = async (force) => {
   // 194a2226-3ce0-42c0-adbf-13f61cefa9cf
