@@ -2,7 +2,7 @@ const OidcClient = require('ozone-oidc-client');
 const Http = require('ozone-http-client');
 const Validator = require('jsonschema').Validator;
 const schema = require('../obie-config-schema.json');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const Signature31 = require('../sigs/signature-31.js');
 
 

@@ -10,12 +10,12 @@
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "UNLICENSED",
   "dependencies": {
+    "jsonschema": "^1.2.6",
+    "lodash": "^4.17.20",
+    "loglevel": "^1.6.8",
     "ozone-http-client": "file:../ozone-http-client",
     "ozone-jwt": "file:../ozone-jwt",
-    "lodash": "4.17.14",
-    "jsonschema": "1.2.4",
-    "loglevel": "1.6.3",
-    "uuid": "3.1.0"
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "eslint": "5.16.0",

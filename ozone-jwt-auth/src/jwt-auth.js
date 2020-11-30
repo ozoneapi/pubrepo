@@ -3,7 +3,7 @@ const Validator = require('jsonschema').Validator;
 const signingParamsSchema = require('./signing-params-schema.json');
 const Jwt = require('ozone-jwt');
 const HttpClient = require('ozone-http-client');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const _ = require('lodash');
 
 class JwtAuth {

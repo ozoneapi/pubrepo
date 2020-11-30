@@ -2,7 +2,7 @@ const Http = require('ozone-http-client');
 const Crypto = require('ozone-jwt');
 const Validator = require('jsonschema').Validator;
 const schema = require('./dcr-register-client-schema.json');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const _ = require('lodash');
 
 class Dcr {
