@@ -1,5 +1,6 @@
 {
-    "baseUri": "https://matls-api.openbankingtest.org.uk/scim/v2",
+    "baseScimUri": "https://matls-api.openbankingtest.org.uk/scim/v2",
+    "baseRestUri": "https://matls-dirapi.openbankingtest.org.uk",
     "oidcClient":{
         "tokenUri": "https://matls-sso.openbankingtest.org.uk/as/token.oauth2",
         "issuer": "https://sso.openbankingtest.org.uk/.well-known/openid-configuration",

@@ -24,14 +24,28 @@ class OBDirClient {
 
     const httpParams = {
       verb: 'get',
-      url: OBDirClient.getResourceUri(this.config.baseUri, resource, id),
+      url: OBDirClient.getScimResourceUri(this.config.baseScimUri, resource, id),
       headers,
       parseJson: true,
       certs: this.config.oidcClient.certs,
       logLevel: this.config.oidcClient.logLevels.http,
     };
 
-    // make the call
+    return Http.do(httpParams, this.baseFolder);
+  }
+
+  async getResource(resource, token, type, id, ssa) {
+    const headers = this._updateHeaders(undefined, token);
+
+    const httpParams = {
+      verb: 'get',
+      url: OBDirClient.getResourceUri(this.config.baseRestUri, resource, type, id, ssa),
+      headers,
+      parseJson: true,
+      certs: this.config.oidcClient.certs,
+      logLevel: this.config.oidcClient.logLevels.http,
+    };
+    console.log(httpParams.url);
     return Http.do(httpParams, this.baseFolder);
   }
 
@@ -44,7 +58,45 @@ class OBDirClient {
     return headers;
   }
 
-  static getResourceUri(baseUri, resource, id) {
+  static getResourceUri(baseUri, resource, type, id, ssid) {
+    let toRet;
+    switch (resource) {
+      case 'organisation':
+        if (type === 'aspsp' || type === 'tpp') {
+          if (id) {
+            toRet = `${baseUri}/organisation/${type}/${id}`;
+          } else {
+            toRet = `${baseUri}/organisation/${type}`;
+          }
+        } else {
+          throw new Error(
+            `OBDirClient - undefined type in getResourceUri: ${type}`
+          );
+        }
+        break;
+
+      case 'software-statement':
+        if (type === 'aspsp' || type === 'tpp') {
+          if (id === undefined) {
+            throw new Error(`OBDirClient - undefined id in getResourceUri software-statement: ${id}`);
+          }
+          if (ssid) {
+            toRet = `${baseUri}/organisation/${type}/${id}/software-statement/${ssid}`;
+          } else {
+            toRet = `${baseUri}/organisation/${type}/${id}/software-statement`;
+          }
+        } else {
+          throw new Error(`OBDirClient - undefined type in getResourceUri: ${type}`);
+        }
+        break;
+
+      default:
+        throw new Error(`OBDirClient - undefined resource in getResourceUri: ${resource}`);
+    }
+    return toRet;
+  }
+
+  static getScimResourceUri(baseUri, resource, id) {
     let toRet;
     switch (resource) {
       case 'tpp':
@@ -81,7 +133,7 @@ class OBDirClient {
 
       default:
         throw new Error(
-          `OBDirClient - undefined resource in getResourceUri: ${resource}`
+          `OBDirClient - undefined resource in getScimResourceUri: ${resource}`
         );
     }
 
