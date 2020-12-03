@@ -1,0 +1,25 @@
+{
+    "baseUri": "https://matls-api.openbankingtest.org.uk/scim/v2",
+    "oidcClient":{
+        "tokenUri": "https://matls-sso.openbankingtest.org.uk/as/token.oauth2",
+        "issuer": "https://sso.openbankingtest.org.uk/.well-known/openid-configuration",
+        "scope": "AuthoritiesReadAccess ASPSPReadAccess TPPReadAll",    
+        "logLevels": {
+            "oidcClient": "debug",
+            "http": "debug",
+            "jwt": "debug"
+        },
+        "certs": {
+            "ca": "/home/julianc/ozoneapi/monorepo/crypto/certs/obie/sandbox/ob-sandbox-issuing-chain.pem",
+            "cert": "/home/julianc/ozoneapi/tmpfiles/crypto/certs/aspsp/certTransport.pem",
+            "key": "/home/julianc/ozoneapi/tmpfiles/crypto/certs/aspsp/privateKeyTransport.key"
+        },
+        "token_endpoint_auth_method": "private_key_jwt",
+        "token_endpoint_auth_signing_alg": "PS256",
+        "request_object_signing_alg": "PS256",
+        "backchannel_authentication_request_signing_alg": "PS256",
+        "client_id": "vr1FrD2uEigYbhLqaJZeDP",
+        "signingKeyKid": "TSNr8SdVbk8CWY6OA0MoMCv0ujA",
+        "signingKeyFileName": "/home/julianc/ozoneapi/tmpfiles/crypto/certs/aspsp/privateKeySigning.key"        
+    }
+}

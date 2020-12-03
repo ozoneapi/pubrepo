@@ -1,0 +1,27 @@
+{
+  "name": "ozone-dir-client",
+  "version": "1.0.0",
+  "description": "directory access client",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OzoneFinancialTech/monorepo.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "jsonschema": "1.2.4",
+    "open": "6.4.0",
+    "ozone-http-client": "file:../ozone-http-client",
+    "ozone-jwt": "file:../ozone-jwt",
+    "ozone-oidc-client": "file:../ozone-oidc-client",
+    "uuid": "3.1.0",
+    "lodash": "4.17.13"
+  },
+  "author": "Julian Coombes, Ozone Financial Technology Limited",
+  "license": "MIT"
+}

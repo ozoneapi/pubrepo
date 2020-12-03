@@ -1,0 +1,15 @@
+{
+    "title": "Schema for OidcClient",
+    "type": "object",
+    "properties": {
+        "baseUri": {
+            "type": "string"
+        },
+        "oidcClient": {
+            "type": "object"
+        },
+        "additionalProperties": false
+    },
+    "required": ["baseUri"],
+    "additionalProperties": false
+}
