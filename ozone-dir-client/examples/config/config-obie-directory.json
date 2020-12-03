@@ -5,9 +5,9 @@
         "issuer": "https://sso.openbankingtest.org.uk/.well-known/openid-configuration",
         "scope": "AuthoritiesReadAccess ASPSPReadAccess TPPReadAll",    
         "logLevels": {
-            "oidcClient": "debug",
-            "http": "debug",
-            "jwt": "debug"
+            "oidcClient": "error",
+            "http": "error",
+            "jwt": "error"
         },
         "certs": {
             "ca": "/home/julianc/ozoneapi/monorepo/crypto/certs/obie/sandbox/ob-sandbox-issuing-chain.pem",
