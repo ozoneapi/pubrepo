@@ -10,9 +10,9 @@
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "dependencies": {
-    "jsonschema": "1.2.4",
-    "loglevel": "1.6.3",
-    "lodash": "4.17.13",
+    "jsonschema": "^1.2.6",
+    "lodash": "^4.17.20",
+    "loglevel": "^1.6.8",
     "superagent": "5.0.6"
   },
   "devDependencies": {

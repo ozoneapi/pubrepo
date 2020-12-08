@@ -17,13 +17,13 @@
     "dcr-test-client-cap1-local-eidas": "cd examples && node dcr-test-client-cap1-local-eidas.js"
   },
   "dependencies": {
-    "jsonschema": "1.2.4",
+    "jsonschema": "^1.2.6",
     "open": "6.4.0",
     "ozone-http-client": "file:../ozone-http-client",
     "ozone-jwt": "file:../ozone-jwt",
     "ozone-oidc-client": "file:../ozone-oidc-client",
-    "uuid": "3.1.0",
-    "lodash": "4.17.13"
+    "uuid": "^8.3.1",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
