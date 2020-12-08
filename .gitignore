@@ -1,7 +1,16 @@
+# legacy
 /nbproject/
-**/node_modules/
+
+# package managers
+node_modules
+package-lock.json
+yarn.lock
+.yarnclean
+
+# temp files ?
 *.log
 *.tgz
 *.zip
-package-lock.json
-**/experiments/trusona-server-sdk-js/*
+
+# mac desktop
+.DS_Store

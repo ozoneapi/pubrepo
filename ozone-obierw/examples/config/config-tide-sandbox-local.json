@@ -8,7 +8,7 @@
       "cert": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/transport-HQuZPIt3ipkh33Uxytox1E.pem",
       "key": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/transport-HQuZPIt3ipkh33Uxytox1E.key"
     },
-    "token_endpoint_auth_method": "client_secret_basic",
+    "token_endpoint_auth_method": ["private_key_jwt", "tls_client_auth"],
     "token_endpoint_auth_signing_alg": "PS256",
     "request_object_signing_alg": "PS256",
     "backchannel_authentication_request_signing_alg": "PS256",
