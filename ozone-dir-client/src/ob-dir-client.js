@@ -28,7 +28,7 @@ class OBDirClient {
       headers,
       parseJson: true,
       certs: this.config.oidcClient.certs,
-      logLevel: this.config.oidcClient.logLevels.http,
+      logLevel: this.config.oidcClient.logLevels.http
     };
 
     return Http.do(httpParams, this.baseFolder);
@@ -43,7 +43,24 @@ class OBDirClient {
       headers,
       parseJson: true,
       certs: this.config.oidcClient.certs,
-      logLevel: this.config.oidcClient.logLevels.http,
+      logLevel: this.config.oidcClient.logLevels.http
+    };
+    console.log(httpParams.url);
+    return Http.do(httpParams, this.baseFolder);
+  }
+ 
+  async validateCert(token, pemBytes) {
+    const headers = this._updateHeaders(undefined, token);
+    headers['content-type'] = 'application/x-pem-file';
+
+    const httpParams = {
+      verb: 'post',
+      url: OBDirClient.getResourceUri(this.config.baseRestUri, 'certificate'),
+      headers,
+      body: pemBytes,
+      parseJson: true,
+      certs: this.config.oidcClient.certs,
+      logLevel: this.config.oidcClient.logLevels.http
     };
     console.log(httpParams.url);
     return Http.do(httpParams, this.baseFolder);
@@ -88,6 +105,10 @@ class OBDirClient {
         } else {
           throw new Error(`OBDirClient - undefined type in getResourceUri: ${type}`);
         }
+        break;
+
+      case 'certificate':
+        toRet = `${baseUri}/certificate/validate`;
         break;
 
       default:

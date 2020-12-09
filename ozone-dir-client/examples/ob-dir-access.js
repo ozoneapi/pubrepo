@@ -1,4 +1,5 @@
 const OidcClient = require('ozone-oidc-client');
+const fs = require('fs');
 const clientConfig = require('./config/config-obie-directory.json');
 const OBDirClient = require('../src/ob-dir-client');
 
@@ -13,10 +14,13 @@ async function go() {
   //const resp = await obDirClient.getResource('organisation', token, 'tpp'); // Get all TPPs
   //const resp = await obDirClient.getResource('organisation', token, 'tpp', '0015800001ZEc3hAAD'); //Get TPP info
   //const resp = await obDirClient.getResource('organisation', token, 'aspsp'); // Get all aspsps
-  const resp = await obDirClient.getResource('organisation', token, 'aspsp', '0015800001ZEc3hAAD'); // Get aspsp info
+  //const resp = await obDirClient.getResource('organisation', token, 'aspsp', '0015800001ZEc3hAAD'); // Get aspsp info
   //const resp = await obDirClient.getResource('software-statement', token, 'aspsp', '0015800001041RHAAY'); // Get all software statements for Org
   //const resp = await obDirClient.getResource('software-statement', token, 'aspsp', '0015800001041RbAAI', 'vr1FrD2uEigYbhLqaJZeDP'); // Get software statement info
-  return resp;
+
+  const cert = fs.readFileSync(`${clientConfig.oidcClient.certs.cert}`);
+  const resp = await obDirClient.validateCert(token, cert); // ValidateCertificate
+  return resp.json;
 }
 
 go()
