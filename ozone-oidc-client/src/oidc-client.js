@@ -1,7 +1,7 @@
 const { Validator } = require('jsonschema');
 const Http = require('ozone-http-client');
 const Jwt = require('ozone-jwt');
-const uuidv4 = require('uuid/v4');
+const { v4: uuidv4 } = require('uuid');
 const log = require('loglevel');
 const _ = require('lodash');
 const path = require('path');

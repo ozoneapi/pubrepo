@@ -10,8 +10,8 @@
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "dependencies": {
-    "loglevel": "1.6.3",
-    "node-jose": "2.0.0"
+    "loglevel": "^1.6.8",
+    "node-jose": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "5.16.0",
