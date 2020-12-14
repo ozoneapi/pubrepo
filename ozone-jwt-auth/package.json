@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A template for npm packages used in o3",
   "main": "index.js",
+  "private": true,
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "UNLICENSED",
   "dependencies": {

@@ -3,10 +3,7 @@
   "version": "0.0.1",
   "description": "Command line utility for managing data in document db (or mongodb)",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/OzoneFinancialTech/pubrepo.git"
-  },
+  "private": true,
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "dependencies": {

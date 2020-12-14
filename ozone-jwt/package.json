@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Jwt signer and validator",
   "main": "index.js",
+  "private": true,
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "dependencies": {
