@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "description": "A client for OBIE read-write APIs",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/OzoneFinancialTech/monorepo.git"
-  },
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "scripts": {
