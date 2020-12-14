@@ -16,10 +16,5 @@
     "ozone-http-client": "file:../ozone-http-client",
     "ozone-jwt": "file:../ozone-jwt",
     "uuid": "^8.3.1"
-  },
-  "devDependencies": {
-    "eslint": "5.16.0",
-    "eslint-config-airbnb-base": "13.2.0",
-    "eslint-plugin-import": "2.18.1"
   }
 }

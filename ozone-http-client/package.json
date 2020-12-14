@@ -13,11 +13,6 @@
     "jsonschema": "^1.2.6",
     "lodash": "^4.17.20",
     "loglevel": "^1.6.8",
-    "superagent": "5.0.6"
-  },
-  "devDependencies": {
-    "eslint": "5.16.0",
-    "eslint-config-airbnb-base": "13.2.0",
-    "eslint-plugin-import": "2.18.1"
+    "superagent": "^5.0.6"
   }
 }
