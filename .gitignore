@@ -6,4 +6,3 @@
 package-lock.json
 **/experiments/trusona-server-sdk-js/*
 yarn.lock
-.yarnclean

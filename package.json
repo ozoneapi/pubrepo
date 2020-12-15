@@ -1,0 +1,18 @@
+{
+    "name": "ozone-pubrepo",
+    "version": "1.0.0",
+    "description": "Public repo with samples for using the Ozone API",
+    "author": "Freddi Gyara, Ozone Financial Technology Limited",
+    "private": true,
+    "license": "MIT",
+    "workspaces": [
+        "ozone-crypto",
+        "ozone-docdb",
+        "ozone-http-client",
+        "ozone-jwt",
+        "ozone-jwt-auth",
+        "ozone-oidc-client",
+        "ozone-obierw"
+    ]
+  }
+  

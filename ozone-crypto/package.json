@@ -1,21 +1,13 @@
 {
-  "name": "ozone-jwt",
+  "name": "ozone-crypto",
   "version": "0.0.1",
   "description": "Jwt signer and validator",
+  "private": true,
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/OzoneFinancialTech/monorepo.git"
-  },
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
   "dependencies": {
-    "loglevel": "^1.6.8",
+    "loglevel": "^1.7.1",
     "node-jose": "^2.0.0"
-  },
-  "devDependencies": {
-    "eslint": "5.16.0",
-    "eslint-config-airbnb-base": "13.2.0",
-    "eslint-plugin-import": "2.17.3"
   }
 }
