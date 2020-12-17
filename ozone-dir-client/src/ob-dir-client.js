@@ -35,7 +35,6 @@ class OBDirClient {
 
   async getScimResource(resource, token, id) {
     const headers = this._updateHeaders(undefined, token);
-
     const httpParams = {
       verb: 'get',
       url: OBDirClient.getScimResourceUri(this.config.baseScimUri, resource, id),
@@ -50,7 +49,6 @@ class OBDirClient {
 
   async getResource(resource, token, type, id, ssa) {
     const headers = this._updateHeaders(undefined, token);
-
     const url = OBDirClient.getResourceUri(this.config.baseRestUri, resource, type, id, ssa);
 
     let cachedJson = this._getCache(url);
@@ -64,7 +62,6 @@ class OBDirClient {
         certs: this.config.oidcClient.certs,
         logLevel: this.config.oidcClient.logLevels.http
       };
-      log.debug(httpParams.url);
       let response = await Http.do(httpParams, this.baseFolder);
       if (response.json !== undefined) {
         if (response.status === 200) {
@@ -94,7 +91,6 @@ class OBDirClient {
         certs: this.config.oidcClient.certs,
         logLevel: this.config.oidcClient.logLevels.http
       };
-      console.log(httpParams);
        let certResponse = await Http.do(httpParams, this.baseFolder);
        if (certResponse.status === 200) 
         if (certResponse.json !== undefined) {
