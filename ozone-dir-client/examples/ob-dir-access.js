@@ -2,7 +2,6 @@ const OidcClient = require('ozone-oidc-client');
 const fs = require('fs');
 const clientConfig = require('./config/config-obie-directory.json');
 const OBDirClient = require('../src/ob-dir-client');
-const { DH_UNABLE_TO_CHECK_GENERATOR } = require('constants');
 
 async function go() {
   const obDirClient = new OBDirClient(clientConfig);
