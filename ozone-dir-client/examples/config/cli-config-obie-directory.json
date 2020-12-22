@@ -19,8 +19,8 @@
         "token_endpoint_auth_signing_alg": "PS256",
         "request_object_signing_alg": "PS256",
         "backchannel_authentication_request_signing_alg": "PS256",
-        "client_id": "vr1FrD2uEigYbhLqaJZeDP",
-        "signingKeyKid": "TSNr8SdVbk8CWY6OA0MoMCv0ujA",
+        "client_id": "HQuZPIt3ipkh33Uxytox1E",
+        "signingKeyKid": "hYLbwpnUp5zsPqty4sgv7_ir1wY",
         "signingKeyFileName": "/home/julianc/ozoneapi/tmpfiles/crypto/certs/aspsp/privateKeySigning.key"        
     }
 }

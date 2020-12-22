@@ -1,6 +1,6 @@
 const OidcClient = require('ozone-oidc-client');
 const fs = require('fs');
-const clientConfig = require('./config/config-obie-directory.json');
+const clientConfig = require('./config/cli-config-oz');
 const OBDirClient = require('../src/ob-dir-client');
 
 async function go() {

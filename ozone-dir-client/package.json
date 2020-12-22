@@ -14,13 +14,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "jsonpath-plus": "^4.0.0",
     "jsonschema": "1.2.4",
+    "lodash": "4.17.13",
+    "minimist": "^1.2.5",
     "open": "6.4.0",
     "ozone-http-client": "file:../ozone-http-client",
     "ozone-jwt": "file:../ozone-jwt",
     "ozone-oidc-client": "file:../ozone-oidc-client",
-    "uuid": "3.1.0",
-    "lodash": "4.17.13"
+    "uuid": "3.1.0"
   },
   "author": "Julian Coombes, Ozone Financial Technology Limited",
   "license": "MIT"
