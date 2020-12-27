@@ -1,0 +1,35 @@
+{
+  "title": "Schema for minimist",
+  "type": "object",
+  "properties": {
+    "_": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [ "get", "add", "init" ]
+      }
+    },
+
+    "url": { "type": "string" },
+    "u": { "type": "string" },
+
+    "kid": { "type": "string" },
+    "k": { "type": "string" },
+
+    "size": { "type": "integer" },
+    "s": { "type": "integer" },
+
+    "use": {
+      "type": "string",
+      "enum": [ "sig", "enc" ]
+    },
+
+    "profile": { "type": "string" },
+    "p": { "type": "string" }
+    
+  },
+  "required": ["_", "url"],
+  "additionalProperties": false
+}

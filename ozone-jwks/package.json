@@ -1,0 +1,19 @@
+{
+  "name": "ozone-jwks",
+  "version": "0.0.1",
+  "description": "A library and CLI to manage a JWKS on AWS S3 buckets",
+  "private": true,
+  "main": "index.js",
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^7.0.2",
+    "aws-sdk": "^2.817.0",
+    "jsonpath-plus": "^4.0.0",
+    "minimist": "^1.2.5",
+    "ozone-http-client": "file:../ozone-http-client"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.16"
+  }
+}
