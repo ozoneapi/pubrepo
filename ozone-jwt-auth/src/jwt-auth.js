@@ -63,7 +63,7 @@ class JwtAuth {
     const jwtSigningParams = {
       header: jwtHeader,
       body,
-      signingKeyJwk: signingParams.privateKey
+      signingKeyJwk: signingParams.privateKey    
     };
 
     log.debug('JwtAuth.jws: jwt');

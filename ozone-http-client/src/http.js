@@ -14,7 +14,6 @@ class Http {
     log.info('Http.do: started');
     log.debug('Http.do: params');
     log.debug(params);
-    log.debug('------------------');
 
     // validate the request
     log.info('Http.do: validate http.do schema - start');
@@ -156,11 +155,12 @@ class Http {
 
   static async _getResponse(doRequest, redirects) {
     try {
-      const result = await doRequest.redirects(redirects);
+      const result = await doRequest.redirects(redirects).buffer();
+
       const toRet = {
         status: result.status,
         headers: result.headers,
-        body: result.text
+        body: (result.text) ? (result.text) : (result.body.toString())
       };
 
       return toRet;

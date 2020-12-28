@@ -21,6 +21,9 @@
     "size": { "type": "integer" },
     "s": { "type": "integer" },
 
+    "out": { "type": "string" },
+    "o": { "type": "string" },
+
     "use": {
       "type": "string",
       "enum": [ "sig", "enc" ]

@@ -3,7 +3,6 @@ const minimist = require('minimist');
 const Ajv = require("ajv").default
 const schema = require('./schema.json');
 const process = require('process');
-const { get } = require('../src/jwks.js');
 
 function _displayCLIHelp() {
   console.log(`
@@ -40,7 +39,8 @@ function _parseArgs() {
         u: 'url',
         p: 'profile',
         k: 'kid',
-        s: 'size'   
+        s: 'size',
+        o: 'out'
       } 
     }
   );
@@ -81,7 +81,8 @@ async function go() {
         throw new Error('--use must be specified with add');
       }
 
-      return Jwks.addKey(args.url, args.size, args.use, args.profile);
+      console.log(args);
+      return Jwks.addKey(args.url, args.size, args.use, args.out, args.profile);
 
 
     default:
