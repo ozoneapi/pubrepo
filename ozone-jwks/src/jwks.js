@@ -3,6 +3,7 @@ const log = require('loglevel').getLogger('ozone-jwks');
 const AWS = require('aws-sdk');
 const url = require('url');
 const {JSONPath} = require('jsonpath-plus');
+const fs = require('fs');
 
 class Jwks {
 
@@ -88,7 +89,8 @@ class Jwks {
     const params = {
       Bucket: bucket, 
       Key: key,
-      Body: JSON.stringify(jwks)
+      ACL:'public-read',
+      Body: JSON.stringify(jwks, undefined, 2)
      };
 
      await s3.putObject(params).promise();
@@ -103,20 +105,48 @@ class Jwks {
     return jwks;
   }
 
-  static async addKey(url, keySize, use, profile) {
+  static _writePrivateKeyFile(fileName, keys) {
+    console.log(fileName);
+
+    if (fileName.endsWith('jwks')) {
+      fs.writeFileSync(fileName, JSON.stringify(keys.privateKey, undefined, 2));
+      return;
+    }
+
+    if (fileName.endsWith('pem')) {
+      fs.writeFileSync(fileName, keys.privateKeyFile);
+      return;
+    }
+
+    throw new Error(`invalid output file type - ${fileName}`);
+  }
+
+  /**
+   * 
+   * @param {string} url 
+   * @param {integer} keySize 
+   * @param {string} use 
+   * @param {string?} fileName 
+   * @param {string?} profile 
+   */
+  static async addKey(url, keySize, use, fileName, profile) {
+    console.log(fileName);
     const jwks = await Jwks.get(url, profile);
     
     // create a key
-    const {publicKey, privateKey} = await Crypto.generateRSAKeyPair(keySize, use);
+    const newKeys = await Crypto.generateRSAKeyPair(keySize, use);
 
     // inject in jwks
-    jwks.keys.push(publicKey);
-
-    log.debug(JSON.stringify(privateKey, undefined, 2));
+    jwks.keys.push(newKeys.publicKey);
 
     await Jwks._write(url,jwks, profile );
 
-    return privateKey;
+    // write the files if required
+    if (fileName === undefined) {
+      return newKeys;
+    } else {
+      Jwks._writePrivateKeyFile(fileName, newKeys);
+    }
   }
 
   static async deleteKey(url, kid) {

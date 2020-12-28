@@ -2,8 +2,9 @@ const Http = require('../src/http.js');
 
 async function go() {
   const params = {
-    url: 'https://authui.openbanking.api.tide.co/.well-known/openid-configuration',
-    parseJson: true,
+  //  url: 'http://localhost:5700/.well-known/openid-configuration',
+    url: 'https://s3-eu-west-1.amazonaws.com/keystore.o3bank.co.uk/ks3.jwks',
+    parseJson: false,
     logLevel: 'debug'
   };
 

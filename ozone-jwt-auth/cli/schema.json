@@ -1,0 +1,21 @@
+{
+  "title": "Schema for minimist",
+  "type": "object",
+  "properties": {
+    "_": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 0,
+      "items": {
+        "type": "string"
+      }
+    },
+
+    
+    "sub": { "type": "string" },
+    "iss": { "type": "string" },
+    "in": { "type": "string" }
+  },
+  "required": ["_", "in", "sub", "iss"],
+  "additionalProperties": false
+}
