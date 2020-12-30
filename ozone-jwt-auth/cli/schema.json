@@ -14,7 +14,8 @@
     
     "sub": { "type": "string" },
     "iss": { "type": "string" },
-    "in": { "type": "string" }
+    "in": { "type": "string" },
+    "exp": { "type": "integer" }
   },
   "required": ["_", "in", "sub", "iss"],
   "additionalProperties": false

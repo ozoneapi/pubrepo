@@ -81,7 +81,6 @@ async function go() {
         throw new Error('--use must be specified with add');
       }
 
-      console.log(args);
       return Jwks.addKey(args.url, args.size, args.use, args.out, args.profile);
 
 

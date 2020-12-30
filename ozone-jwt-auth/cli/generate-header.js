@@ -9,11 +9,12 @@ const fs = require('fs');
 
 function _displayCLIHelp() {
   console.log(`
-    Format: node generate-header.js --in [file.pem]
+    Format: node generate-header.js --in [file.pem] --sub [subject] --iss [issuer] --exp [s]
 
     --in: private key file in PEM format
     --sub: e.g. 0015800001041RHAA
     --iss: e.g. 'OpenBanking'
+    --exp: validity in seconds. Optional. Defaults to 10 seconds
   `);
 }
 
@@ -53,11 +54,13 @@ async function go() {
     iss: args.iss,
     sub: args.sub,
     aud: 'aud',
-    validity: 10,
+    validity: (args.exp ? args.exp : 10),
     privateKey
   };
 
-  return JwtAuth.getJws(signingParams);
+  const toRet = await JwtAuth.getJws(signingParams);
+
+  return `Bearer ${toRet}`;
 }
 
 go()

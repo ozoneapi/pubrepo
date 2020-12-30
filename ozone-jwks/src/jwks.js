@@ -106,9 +106,7 @@ class Jwks {
   }
 
   static _writePrivateKeyFile(fileName, keys) {
-    console.log(fileName);
-
-    if (fileName.endsWith('jwks')) {
+    if (fileName.endsWith('jwk')) {
       fs.writeFileSync(fileName, JSON.stringify(keys.privateKey, undefined, 2));
       return;
     }
@@ -130,7 +128,6 @@ class Jwks {
    * @param {string?} profile 
    */
   static async addKey(url, keySize, use, fileName, profile) {
-    console.log(fileName);
     const jwks = await Jwks.get(url, profile);
     
     // create a key
@@ -146,6 +143,7 @@ class Jwks {
       return newKeys;
     } else {
       Jwks._writePrivateKeyFile(fileName, newKeys);
+      return newKeys.publicKey;
     }
   }
 
