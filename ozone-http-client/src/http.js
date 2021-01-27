@@ -7,8 +7,17 @@ const path = require('path');
 const _ = require('lodash');
 
 class Http {
+  /**
+   * 
+   * @typedef {import('./types/http').HttpDoParam} HttpDoParam
+   * 
+   * @param {HttpDoParam} params 
+   * @param {string} [baseFolder] 
+   */
   static async do(params, baseFolder) {
     // set the loglevel
+    params.x = 10;
+    
     log.setLevel(params.logLevel || 'silent');
 
     log.info('Http.do: started');

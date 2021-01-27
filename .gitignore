@@ -6,3 +6,27 @@
 package-lock.json
 **/experiments/trusona-server-sdk-js/*
 yarn.lock
+
+
+# legacy
+/nbproject/
+
+# package managers
+node_modules
+package-lock.json
+yarn.lock
+
+# temp files ?
+**/experiments/trusona-server-sdk-js/*
+*.log
+*.tgz
+*.zip
+
+# mac desktop
+.DS_Store
+
+#downloaded files
+**/o3-sync/eidas/dnload/*
+
+# build status
+build-completed-for.csv
