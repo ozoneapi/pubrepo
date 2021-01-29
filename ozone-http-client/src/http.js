@@ -6,18 +6,19 @@ const log = require('loglevel').getLogger('ozone-http-client');
 const path = require('path');
 const _ = require('lodash');
 
+/**
+ * 
+ * @typedef {import('./types/http-do-param').HttpDoParam} HttpDoParam
+ */
 class Http {
   /**
-   * 
-   * @typedef {import('./types/http').HttpDoParam} HttpDoParam
-   * 
-   * @param {HttpDoParam} params 
-   * @param {string} [baseFolder] 
-   */
+  * 
+  * @param {HttpDoParam} params 
+  * @param {string} [baseFolder] 
+  * 
+  */
   static async do(params, baseFolder) {
-    // set the loglevel
-    params.x = 10;
-    
+    // set the loglevel        
     log.setLevel(params.logLevel || 'silent');
 
     log.info('Http.do: started');
