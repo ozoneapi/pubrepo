@@ -1,29 +1,33 @@
 {
-    "name": "ozone-pubrepo",
-    "version": "1.0.0",
-    "description": "Public repo with samples for using the Ozone API",
-    "author": "Freddi Gyara, Ozone Financial Technology Limited",
-    "private": true,
-    "license": "MIT",
-    "workspaces": [
-        "ozone-crypto",
-        "ozone-docdb",
-        "ozone-http-client",
-        "ozone-jwt",
-        "ozone-jwt-auth",
-        "ozone-oidc-client",
-        "ozone-obierw"
-    ],
-    "dependencies": {
-      "typescript": "^4.0.5"
-    },
-    "devDependencies": {
-      "eslint": "^7.17.0",
-      "eslint-config-airbnb-base": "^14.2.1",
-      "eslint-plugin-import": "^2.22.1",
-      "@tsconfig/node12": "^1.0.7",
-      "@types/mongodb": "^3.5.27",
-      "fast-safe-stringify": "2.0.7"
-    }
+  "name": "ozone-pubrepo",
+  "version": "1.0.0",
+  "description": "Public repo with samples for using the Ozone API",
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "private": true,
+  "license": "MIT",
+  "workspaces": [
+    "ozone-crypto",
+    "ozone-jwks",
+    "ozone-docdb",
+    "ozone-http-client",
+    "ozone-jwt",
+    "ozone-jwt-auth",
+    "ozone-oidc-client",
+    "ozone-obierw"
+  ],
+  "dependencies": {
+    "typescript": "^4.0.5"
+  },
+  "devDependencies": {
+    "eslint": "^7.17.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "@tsconfig/node12": "^1.0.7",
+    "@types/mongodb": "^3.5.27",
+    "fast-safe-stringify": "2.0.7",
+    "ajv": "^7.0.2",
+    "aws-sdk": "^2.817.0",
+    "jsonpath-plus": "^4.0.0",
+    "minimist": "^1.2.5"
   }
-  
+}
