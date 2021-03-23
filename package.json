@@ -13,7 +13,8 @@
     "ozone-jwt",
     "ozone-jwt-auth",
     "ozone-oidc-client",
-    "ozone-obierw"
+    "ozone-obierw",
+    "ozone-openssl"
   ],
   "dependencies": {
     "typescript": "^4.0.5"
