@@ -7,7 +7,6 @@
     "adm-zip": "^0.5.4",
     "del": "^6.0.0",
     "make-dir": "^3.1.0",
-    "mkdirp": "^1.0.4",
-    "openssl-nodejs": "^1.0.5"
+    "mkdirp": "^1.0.4"
   }
 }
