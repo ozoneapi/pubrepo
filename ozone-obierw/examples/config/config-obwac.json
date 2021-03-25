@@ -1,0 +1,19 @@
+{
+  "rs": "https://ob19-rs1.o3bank.co.uk:4501",
+  "financialId": "0015800001041RHAAY",
+  "clientConfig": {
+    "issuer": "https://ob19-auth1-ui.o3bank.co.uk/.well-known/openid-configuration",
+    "certs": {
+      "ca": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\obie\\sandbox\\ob-sandbox-issuing-chain.pem",
+      "cert": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\eidas-0015800001041RHAAY\\transport-eidas-0015800001041RHAAY.pem",
+      "key": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\eidas-0015800001041RHAAY\\transport-eidas-0015800001041RHAAY.key"
+    },
+    "token_endpoint_auth_method": "tls_client_auth",
+    "token_endpoint_auth_signing_alg": "PS256",
+    "backchannel_authentication_request_signing_alg": "none",
+    "client_id": "96694268-c2d3-43e0-85e5-c51cf3f2fa0c",
+    "client_secret": "1a54b0b8-6079-47e0-ba9b-c6bfe0805e3b",
+    "signingKeyKid": "tRi8JtNY8JWJ5SPVSLzxguGM_M8",
+    "signingKeyFileName": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\eidas-0015800001041RHAAY\\signing-eidas-0015800001041RHAAY.key"
+  }
+}

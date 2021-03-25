@@ -1,0 +1,8 @@
+{
+  "name": "o3-package-template",
+  "version": "0.0.1",
+  "description": "A template for npm packages used in o3",
+  "main": "index.js",
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT"
+}

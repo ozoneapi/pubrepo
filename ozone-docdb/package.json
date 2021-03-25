@@ -1,0 +1,13 @@
+{
+  "name": "ozone-docdb",
+  "version": "0.0.1",
+  "description": "Command line utility for managing data in document db (or mongodb)",
+  "main": "index.js",
+  "private": true,
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.5",
+    "mongodb": "^3.6.0"
+  }
+}

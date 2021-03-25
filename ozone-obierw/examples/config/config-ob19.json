@@ -1,0 +1,25 @@
+{
+  "rs": "https://ob19-rs1.o3bank.co.uk:4501",
+  "financialId": "0015800001041RHAAY",
+  "clientConfig": {
+    "issuer": "https://ob19-auth1-ui.o3bank.co.uk/.well-known/openid-configuration",
+    "certs": {
+      "ca": "monorepo/crypto/certs/obie/sandbox/ob-sandbox-issuing-chain.pem",
+      "cert": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/transport-HQuZPIt3ipkh33Uxytox1E.pem",
+      "key": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/transport-HQuZPIt3ipkh33Uxytox1E.key"
+    },
+    "token_endpoint_auth_method": "client_secret_basic",
+    "token_endpoint_auth_signing_alg": "PS256",
+    "request_object_signing_alg": "PS256",
+    "backchannel_authentication_request_signing_alg": "PS256",
+    "client_id": "c133176c-462a-4c76-9f72-35ddc9540b4f",
+    "client_secret": "3b7aa185-6d1b-4dc5-a226-42602cffe0e3",
+    "signingKeyKid": "R5TEKOohqs9BFiv4juOs17APwCo",
+    "signingKeyFileName": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/signing-HQuZPIt3ipkh33Uxytox1E.key"
+  },
+  "messageSigning": {
+    "alg": "PS256",
+    "iss": "1/2",
+    "tan": "openbanking.org.uk"
+  }
+}

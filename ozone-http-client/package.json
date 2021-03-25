@@ -1,0 +1,17 @@
+{
+  "name": "ozone-http-client",
+  "version": "0.0.1",
+  "description": "A veneer over superagent",
+  "main": "index.js",
+  "private": true,
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^4.0.5",
+    "jsonschema": "^1.2.6",
+    "lodash": "^4.17.20",
+    "loglevel": "^1.6.8",
+    "superagent": "^5.0.6"
+  },
+  "types": "index.d.ts"
+}

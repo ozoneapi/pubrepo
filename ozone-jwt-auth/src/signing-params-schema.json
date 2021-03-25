@@ -1,0 +1,56 @@
+{
+  "title": "Schema for http-client.do signingParams",
+  "type": "object",
+  "properties": {
+    "iss": { "type": "string" },
+    "sub": { "type": "string" },
+    "aud": { "type": "string" },
+    "validity": { "type": "number" },
+    "jti": { "type": "string" },
+
+    "alg": {
+      "type": "string",
+      "enum": ["RS256", "PS256", "HS256", "none"]
+    },
+
+    "customClaims": {
+      "type": "object",
+      "additionalProperties": true
+    },
+
+    "privateKey": {
+      "type": "object",
+      "properties": {
+        "kty":  {
+          "type": "string",
+          "enum": ["RSA"]
+        },
+        "kid": { "type": "string" },
+        "use":  {
+          "type": "string",
+          "enum": ["sig"]
+        },
+        "alg":  {
+          "type": "string",
+          "enum": ["RSA"]
+        },
+        "e": { "type": "string" },
+        "n": { "type": "string" },
+        "d": { "type": "string" },
+        "p": { "type": "string" },
+        "q": { "type": "string" },
+        "dp": { "type": "string" },
+        "dq": { "type": "string" },
+        "qi": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "required": [
+        "kty", "kid", "use",
+        "e","n","d","p","q", "dp","dq","qi"
+      ]
+    }
+  },
+
+  "required": ["iss", "sub", "aud", "alg", "validity"],
+  "additionalProperties": false
+}

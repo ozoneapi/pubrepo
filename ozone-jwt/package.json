@@ -1,0 +1,17 @@
+{
+  "name": "ozone-jwt",
+  "version": "0.0.1",
+  "description": "Jwt signer and validator",
+  "main": "index.js",
+  "private": true,
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "jsonschema": "^1.2.6",
+    "jws": "^3.2.2",
+    "lodash": "^4.17.20",
+    "loglevel": "^1.6.8",
+    "node-jose": "^2.0.0",
+    "ozone-http-client": "file:../ozone-http-client"
+  }
+}

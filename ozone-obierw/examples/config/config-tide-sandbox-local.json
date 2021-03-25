@@ -1,0 +1,25 @@
+{
+  "rs": "http://localhost:3105/v1.0",
+  "financialId": "0015800001041RHAAY",
+  "clientConfig": {
+    "issuer": "http://localhost:3605/.well-known/openid-configuration",
+    "certs": {
+      "ca": "monorepo/crypto/certs/obie/sandbox/ob-sandbox-issuing-chain.pem",
+      "cert": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/transport-HQuZPIt3ipkh33Uxytox1E.pem",
+      "key": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/transport-HQuZPIt3ipkh33Uxytox1E.key"
+    },
+    "token_endpoint_auth_method": "client_secret_basic",
+    "token_endpoint_auth_signing_alg": "PS256",
+    "request_object_signing_alg": "PS256",
+    "backchannel_authentication_request_signing_alg": "PS256",
+    "client_id": "3b8adeeb-37dc-4782-9558-dd4e91f291f2",
+    "client_secret": "f8d8bd27-df2c-4e6a-8222-34a0e8ccda7c",
+    "signingKeyKid": "R5TEKOohqs9BFiv4juOs17APwCo",
+    "signingKeyFileName": "monorepo/crypto/certs/tpp/tpp2019-HQuZPIt3ipkh33Uxytox1E/signing-HQuZPIt3ipkh33Uxytox1E.key"
+  },
+  "messageSigning": {
+    "alg": "PS256",
+    "iss": "0015800001041RHAAY/HQuZPIt3ipkh33Uxytox1E",
+    "tan": "openbanking.org.uk"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "rs": "https://o3in-rs1.o3bank.co.uk:4501",
+  "financialId": "0015800001041RHAAY",
+  "clientConfig": {
+    "issuer": "https://o3in-auth1-ui.o3bank.co.uk/.well-known/openid-configuration",
+    "certs": {
+      "ca": "c:\\usr\\freddi\\projects\\ozone\\ca\\certs\\ob-sandbox-issuing-chain.pem",
+      "cert": "c:\\usr\\freddi\\projects\\ozone\\ca\\certs\\ozone-sandbox-transport.pem",
+      "key": "c:\\usr\\freddi\\projects\\ozone\\ca\\keys\\ozone-sandbox-transport.key"
+    },
+    "token_endpoint_auth_method": "client_secret_basic",
+    "token_endpoint_auth_signing_alg": "PS256",
+    "backchannel_authentication_request_signing_alg": "PS256",
+    "client_id": "acabea76-7e63-4a38-981f-916b34833f47",
+    "client_secret": "247f7bb8-8cdc-4462-8bc1-89bb91b99788",
+    "signingKeyKid": "dISF5OP0NEnErg-TfWVc4eFjiZg",
+    "signingKeyFileName": "c:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\o3-internal\\dISF5OP0NEnErg-TfWVc4eFjiZg.key"
+  }
+}

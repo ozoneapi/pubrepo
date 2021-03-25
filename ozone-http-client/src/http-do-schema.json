@@ -1,0 +1,57 @@
+{
+  "title": "Schema for http.do",
+  "type": "object",
+  "properties": {
+    "verb": {
+      "type": "string",
+      "enum": ["get", "post", "delete", "put", "patch"]
+    },
+
+    "url": { "type": "string" },
+
+    "certs": {
+      "type": "object",
+      "properties": {
+        "ca": { "type": "string" },
+        "cert": { "type": "string" },
+        "key": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+
+    "query": {
+      "type": "object",
+      "additionalProperties": true
+    },
+
+    "headers": {
+      "type": "object",
+      "additionalProperties": true
+    },
+
+    "body": {
+      "type": [
+        "string",
+        "number",
+        "object",
+        "array",
+        "boolean"
+      ],
+      "additionalProperties": true
+    },
+
+    "fields": {
+      "type": "object",
+      "additionalProperties": true
+    },
+
+    "maxRedirects": { "type": "integer" },
+    "parseJson":  { "type": "boolean"},
+    "logLevel": {
+      "type": "string",
+      "enum": [ "silent", "info", "debug", "error" ]
+    }
+  },
+  "required": ["url"],
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+{
+  "name": "ozone-crypto",
+  "version": "0.0.1",
+  "description": "Jwt signer and validator",
+  "private": true,
+  "main": "index.js",
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "loglevel": "^1.7.1",
+    "node-jose": "^2.0.0"
+  }
+}

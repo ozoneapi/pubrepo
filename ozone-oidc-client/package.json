@@ -1,0 +1,17 @@
+{
+  "name": "ozone-oidc-client",
+  "version": "0.0.1",
+  "description": "An openid connect RP",
+  "main": "index.js",
+  "private": true,
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "dependencies": {
+    "jsonschema": "^1.2.6",
+    "lodash": "^4.17.20",
+    "loglevel": "^1.6.8",
+    "ozone-http-client": "file:../ozone-http-client",
+    "ozone-jwt": "file:../ozone-jwt",
+    "uuid": "^8.3.1"
+  }
+}

@@ -1,0 +1,20 @@
+
+{
+  "logLevels": {
+    "oidcClient": "info",
+    "http": "silent"
+  },
+  "issuer": "https://auth1.cip-sandbox.ozoneapi.co.uk/.well-known/openid-configuration",
+  "certs": {
+    "ca": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\obie\\sandbox\\ob-sandbox-issuing-chain.pem",
+    "cert": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\tpp2019-HQuZPIt3ipkh33Uxytox1E\\transport-HQuZPIt3ipkh33Uxytox1E.pem",
+    "key": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\tpp2019-HQuZPIt3ipkh33Uxytox1E\\transport-HQuZPIt3ipkh33Uxytox1E.key"
+  },
+  "token_endpoint_auth_method": "private_key_jwt",
+  "token_endpoint_auth_signing_alg": "PS256",
+  "request_object_signing_alg": "PS256",
+  "client_id": "fb88a1fb-2c51-4dd7-8a20-b270a1bd4798",
+  "client_secret": "ace30a81-998f-44ee-ad37-d541b82ed247",
+  "signingKeyKid": "hYLbwpnUp5zsPqty4sgv7_ir1wY",
+  "signingKeyFileName": "C:\\usr\\freddi\\projects\\ozone\\tech\\repos\\monorepo\\crypto\\certs\\tpp\\tpp2019-HQuZPIt3ipkh33Uxytox1E\\signing-HQuZPIt3ipkh33Uxytox1E.key"
+}

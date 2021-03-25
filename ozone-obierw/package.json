@@ -1,0 +1,25 @@
+{
+  "name": "ozone-obierw",
+  "version": "0.0.1",
+  "description": "A client for OBIE read-write APIs",
+  "main": "index.js",
+  "private": true,
+  "author": "Freddi Gyara, Ozone Financial Technology Limited",
+  "license": "MIT",
+  "scripts": {
+    "dcr-register-cap1": "cd examples && node dcr-register-client-cap1.js",
+    "dcr-register-cap1-local": "cd examples && node dcr-register-client-cap1-local.js",
+    "dcr-test-client-cap1-local": "cd examples && node dcr-test-client-cap1-local.js",
+    "dcr-test-client-cap1": "cd examples && node dcr-test-client-cap1.js",
+    "dcr-test-client-cap1-local-eidas": "cd examples && node dcr-test-client-cap1-local-eidas.js"
+  },
+  "dependencies": {
+    "jsonschema": "^1.2.6",
+    "lodash": "^4.17.20",
+    "open": "6.4.0",
+    "ozone-http-client": "file:../ozone-http-client",
+    "ozone-jwt": "file:../ozone-jwt",
+    "ozone-oidc-client": "file:../ozone-oidc-client",
+    "uuid": "^8.3.1"
+  }
+}
