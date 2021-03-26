@@ -63,7 +63,7 @@ function populateCert(cert, attrs) {
     cert.validity.notAfter.setDate(cert.validity.notBefore.getDate() + Number(attrs.validDays));
 }
 
-/** @type {(certAttrs: CertAttributes) => Promise<{privateKey: string, publicKey:string}>} */
+/** @type {(certAttrs: CertAttributes) => Promise<{privateKey: string, publicCertPem:string}>} */
 async function generateOzoneTransportCertPair(certAttrs) {
     const attrs = validateAttrs(certAttrs);
     var pki = forge.pki;
@@ -77,7 +77,7 @@ async function generateOzoneTransportCertPair(certAttrs) {
     var pem_publicKey = pki.certificateToPem(cert);
     var pem_privateKey = pki.privateKeyToPem(keys.privateKey);
 
-    return { publicKey: pem_publicKey, privateKey: pem_privateKey };
+    return { publicCertPem: pem_publicKey, privateKey: pem_privateKey };
 }
 
 module.exports = generateOzoneTransportCertPair;
