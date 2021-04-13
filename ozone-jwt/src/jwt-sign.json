@@ -53,6 +53,12 @@
         "kty", "kid", "use",
         "e","n","d","p","q", "dp","dq","qi"
       ]
+    },
+
+    
+    "logLevel": {
+      "type": "string",
+      "enum": [ "silent", "info", "debug", "error" ]
     }
   },
   "required": ["header", "body"],

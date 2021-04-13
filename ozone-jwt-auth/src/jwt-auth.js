@@ -24,6 +24,8 @@ class JwtAuth {
   }
 
   static async getJws(signingParams, baseFolder) {
+    log.setLevel(signingParams.logLevel || 'silent');
+
     log.info('JwtAuth.getJws: started');
 
     // validate the signingParams
@@ -63,7 +65,8 @@ class JwtAuth {
     const jwtSigningParams = {
       header: jwtHeader,
       body,
-      signingKeyJwk: signingParams.privateKey    
+      signingKeyJwk: signingParams.privateKey,
+      logLevel: signingParams.logLevel
     };
 
     log.debug('JwtAuth.jws: jwt');
