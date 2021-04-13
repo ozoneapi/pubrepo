@@ -6,8 +6,15 @@
   "main": "index.js",
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "license": "MIT",
+  "scripts": {
+    "example-generate-transport-pair": "node ./examples/generate-transport-pair.js"
+  },
   "dependencies": {
     "loglevel": "^1.7.1",
+    "node-forge": "^0.10.0",
     "node-jose": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node-forge": "^0.9.7"
   }
 }
