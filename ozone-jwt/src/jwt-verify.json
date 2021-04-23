@@ -15,7 +15,12 @@
 
     "jwks": { "type": "object"},
 
-    "jwksUrl": { "type": "string"}
+    "jwksUrl": { "type": "string"},
+    
+    "logLevel": {
+      "type": "string",
+      "enum": [ "silent", "info", "debug", "error" ]
+    }
   },
   "required": ["signature", "alg"],
   "additionalProperties": false

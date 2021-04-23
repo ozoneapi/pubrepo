@@ -11,6 +11,8 @@ const _ = require('lodash');
 
 class Jwt {
   static async sign(params, baseFolder) {
+    log.setLevel(params.logLevel || 'silent');
+
     log.debug('Jwt.sign: Started Jwt.sign with params:');
     log.debug(params);
     log.debug(`baseFolder: ${baseFolder}`);
@@ -135,6 +137,8 @@ class Jwt {
   }
 
   static async signDetached(params, baseFolder) {
+    log.setLevel(params.logLevel || 'silent');
+
     log.info('Jwt.signDetached - start');
 
     // sign it
@@ -151,6 +155,8 @@ class Jwt {
   }
 
   static async verify(params) {
+    log.setLevel(params.logLevel || 'silent');
+
     // log the parameters if required
     log.debug('Jwt.verify: params');
     log.debug(params);
