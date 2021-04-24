@@ -11,15 +11,11 @@ async function go() {
 
   const signingParams = {
     alg: 'PS256',
-    iss: 'OpenBanking',
+    iss: 'Ozone Financial Technology Limited',
 //    sub: '0015800001041RHAAY',
-    sub: 'b',
+    sub: 'ozone-monese-dev/emailAddress=contact@ozoneapi.com',
     aud: 'aud',
     validity: 30,
-    customClaims: {
-      alpha: '10',
-      gamma: 2
-    },
     privateKey: {
       "kty": "RSA",
       "kid": "eUft3a55u8HA8vynHl5eOIjAq4TYE-EzpDt6YlxJmv8",
