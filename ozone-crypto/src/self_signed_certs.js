@@ -24,10 +24,7 @@ const CERT_DEFAULT_ATTRS = {
 
 /** @type {CertAttributes} */
 const CERT_ATTR_MAPPER = {
-    country: 'C',
-    issuingOrg: 'O',
-    organisationId: 'OU',
-    softwareStatementId: 'CN'
+    organisationId: 'OU'
 }
 
 /**
@@ -36,7 +33,7 @@ const CERT_ATTR_MAPPER = {
  * @returns {CertAttributes}
  */
 function validateAttrs(certAttrs) {
-    if (!certAttrs.softwareStatementId || !certAttrs.organisationId) {
+    if (!certAttrs.organisationId) {
         throw new Error('Missing mandatory information about Ozone Transport Certificate generation.')
     }
 
@@ -65,8 +62,7 @@ function populateCert(cert, attrs) {
 
 /** @type {(certAttrs: CertAttributes) => Promise<{privateKey: string, publicCertPem:string}>} */
 async function generateOzoneTransportCertPair(certAttrs) {
-    // const attrs = validateAttrs(certAttrs);
-    const attrs = { organisationId: certAttrs.organisationId };
+    const attrs = validateAttrs(certAttrs);
     var pki = forge.pki;
     var keys = pki.rsa.generateKeyPair(2048);
     var cert = pki.createCertificate();
