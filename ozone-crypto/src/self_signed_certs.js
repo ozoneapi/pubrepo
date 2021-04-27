@@ -65,7 +65,8 @@ function populateCert(cert, attrs) {
 
 /** @type {(certAttrs: CertAttributes) => Promise<{privateKey: string, publicCertPem:string}>} */
 async function generateOzoneTransportCertPair(certAttrs) {
-    const attrs = validateAttrs(certAttrs);
+    // const attrs = validateAttrs(certAttrs);
+    const attrs = { organisationId: certAttrs.organisationId };
     var pki = forge.pki;
     var keys = pki.rsa.generateKeyPair(2048);
     var cert = pki.createCertificate();
