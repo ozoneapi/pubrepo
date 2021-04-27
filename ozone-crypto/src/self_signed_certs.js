@@ -24,7 +24,10 @@ const CERT_DEFAULT_ATTRS = {
 
 /** @type {CertAttributes} */
 const CERT_ATTR_MAPPER = {
-    organisationId: 'OU'
+    country: 'C',
+    issuingOrg: 'O',
+    organisationId: 'OU',
+    softwareStatementId: 'CN'
 }
 
 /**
@@ -33,7 +36,7 @@ const CERT_ATTR_MAPPER = {
  * @returns {CertAttributes}
  */
 function validateAttrs(certAttrs) {
-    if (!certAttrs.organisationId) {
+    if (!certAttrs.softwareStatementId || !certAttrs.organisationId) {
         throw new Error('Missing mandatory information about Ozone Transport Certificate generation.')
     }
 
