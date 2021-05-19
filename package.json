@@ -5,6 +5,9 @@
   "author": "Freddi Gyara, Ozone Financial Technology Limited",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "^14.17.0"
+  },
   "workspaces": [
     "ozone-crypto",
     "ozone-jwks",
@@ -16,13 +19,10 @@
     "ozone-obierw"
   ],
   "dependencies": {
-    "typescript": "^4.0.5"
-  },
-  "devDependencies": {
-    "eslint": "^7.17.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "typescript": "^4.2.4",
+    "eslint": "^7.26.0",
     "eslint-plugin-import": "^2.22.1",
-    "@tsconfig/node12": "^1.0.7",
+    "@tsconfig/node14": "^1.0.0",
     "@types/mongodb": "^3.5.27",
     "fast-safe-stringify": "2.0.7",
     "ajv": "^7.0.2",
