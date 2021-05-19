@@ -3,6 +3,7 @@
   "type": "object",
   "properties": {
     "issuer": { "type": "string" },
+    "tokenUri": { "type": "string" },
     "token_endpoint_auth_method":  {
       "type": "string",
       "enum": [
@@ -42,7 +43,7 @@
 
     "signingKeyFileName": { "type": "string" },
     "signingKeyKid": { "type": "string" },
-
+    "scope": { "type": "string" },
     "logLevels": {
       "type": "object",
       "properties": {

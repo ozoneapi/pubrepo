@@ -1,0 +1,25 @@
+{
+    "title": "Schema for OidcClient",
+    "type": "object",
+    "properties": {
+        "baseScimUri": {
+            "type": "string"
+        },
+        "baseRestUri": {
+            "type": "string"
+        },
+        "ttl": {
+            "type": "int"
+        },
+        "state": {
+            "type": "string"
+        },
+
+        "oidcClient": {
+            "type": "object"
+        },
+        "additionalProperties": false
+    },
+    "required": ["baseScimUri","baseRestUri"],
+    "additionalProperties": false
+}

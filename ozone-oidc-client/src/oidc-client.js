@@ -1,4 +1,4 @@
-const Validator = require('jsonschema').Validator;
+const { Validator } = require('jsonschema');
 const Http = require('ozone-http-client');
 const Jwt = require('ozone-jwt');
 const { v4: uuidv4 } = require('uuid');
@@ -40,7 +40,7 @@ class OidcClient {
       }
 
       if (_.get(clientConfig, 'signingKeyFileName') !== undefined) {
-        this.clientConfig.signingKeyFileName = path.join(baseFolder,  _.get(clientConfig, 'signingKeyFileName'));
+        this.clientConfig.signingKeyFileName = path.join(baseFolder, _.get(clientConfig, 'signingKeyFileName'));
       }
     }
   }
@@ -78,6 +78,9 @@ class OidcClient {
     }
     fields.grant_type = grantType;
     fields.scope = scope;
+    if (this.clientConfig.client_id !== undefined) {
+      fields.client_id = this.clientConfig.client_id;
+    }
 
 
     // start building up the request params
@@ -93,7 +96,7 @@ class OidcClient {
     };
 
     // get the token endpoint
-    params.url = this.wellKnownConfiguration.token_endpoint;
+    params.url = this.wellKnownConfiguration.token_endpoint;    
     if (params.url === undefined) {
       throw new Error('token_endpoint not defined in oidc well-known configuration');
     }
@@ -310,8 +313,8 @@ class OidcClient {
       throw new Error('token_endpoint_auth_signing_alg is missing in client config');
     }
 
-    if ((this.clientConfig.token_endpoint_auth_signing_alg === 'none') ||
-      (this.clientConfig.token_endpoint_auth_signing_alg === 'HS256')) {
+    if ((this.clientConfig.token_endpoint_auth_signing_alg === 'none') 
+      || (this.clientConfig.token_endpoint_auth_signing_alg === 'HS256')) {
       throw new Error('token_endpoint_auth_signing_alg cannot be HS256 or none for token_endpoint_auth_method private_key_jwt');
     }
 
@@ -323,19 +326,26 @@ class OidcClient {
       throw new Error('signingKeyFIleName is missing in client config');
     }
 
+    let audience = this.wellKnownConfiguration.token_endpoint;
+    if (this.clientConfig.tokenUri !== undefined) { // allow token endpoint overide 
+      audience = this.clientConfig.tokenUri;
+    }
+
     const iat = Date.now() / 1000;
     const jwt = {
       header: {
         alg: this.clientConfig.token_endpoint_auth_signing_alg,
-        kid: this.clientConfig.signingKeyKid
+        kid: this.clientConfig.signingKeyKid,
+        typ: 'JWT'
       },
       body: {
         iss: this.clientConfig.client_id,
         sub: this.clientConfig.client_id,
-        aud: this.wellKnownConfiguration.token_endpoint,
+        aud: audience,
         jti: uuidv4(),
         exp: iat + 30,
-        iat
+        iat,
+        scope: this.clientConfig.scope
       },
       signingKeyFileName: this.clientConfig.signingKeyFileName
     };
@@ -352,9 +362,9 @@ class OidcClient {
       throw new Error('token_endpoint_auth_signing_alg is missing in client config');
     }
 
-    if ((this.clientConfig.token_endpoint_auth_signing_alg === 'none') ||
-      (this.clientConfig.token_endpoint_auth_signing_alg === 'HS256')) {
-      throw new Error('token_endpoint_auth_signing_alg cannot be HS256 or none for token_endpoint_auth_method private_key_jwt');
+    if ((this.clientConfig.token_endpoint_auth_signing_alg === 'none')
+      || (this.clientConfig.token_endpoint_auth_signing_alg === 'HS256')) {
+      throw new Error('token_endpoint_auth_signing_alg cannot be HS256 or none for token_endpoint_auth_method private_key_jwt');      
     }
 
     if (this.clientConfig.signingKeyKid === undefined) {
