@@ -45,14 +45,14 @@ class JwtAuth {
       kid: _.get(signingParams, 'privateKey.kid')
     };
 
-    const now = Date.now() / 1000;
+    const now = Math.floor(Date.now() / 1000);
 
     const body = (signingParams.customClaims || {});
     body.iss = signingParams.iss;
     body.sub = signingParams.sub;
     body.aud = signingParams.aud;
-    body.exp = Math.ceil(now) + signingParams.validity;
-    body.iat = Math.floor(now);
+    body.exp = now + signingParams.validity;
+    body.iat = now;
     body.nbf = body.iat;
 
     if (signingParams.jti === undefined) {
