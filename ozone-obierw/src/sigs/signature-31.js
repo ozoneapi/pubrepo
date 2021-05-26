@@ -18,7 +18,7 @@ class Signature31 {
         typ: 'JOSE',
         cty: contentType,
         kid: this.config.clientConfig.signingKeyKid,
-        'http://openbanking.org.uk/iat': Date.now() / 1000,
+        'http://openbanking.org.uk/iat': Math.floor(Date.now() / 1000),
         'http://openbanking.org.uk/iss': this.config.messageSigning.iss,
         'http://openbanking.org.uk/tan': this.config.messageSigning.tan,
         crit: [

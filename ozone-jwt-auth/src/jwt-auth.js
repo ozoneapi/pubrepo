@@ -45,7 +45,7 @@ class JwtAuth {
       kid: _.get(signingParams, 'privateKey.kid')
     };
 
-    const now = Date.now() / 1000;
+    const now = Math.floor(Date.now() / 1000);
 
     const body = (signingParams.customClaims || {});
     body.iss = signingParams.iss;
@@ -53,7 +53,7 @@ class JwtAuth {
     body.aud = signingParams.aud;
     body.exp = now + signingParams.validity;
     body.iat = now;
-    body.nbf = now;
+    body.nbf = body.iat;
 
     if (signingParams.jti === undefined) {
       body.jti = uuidv4();

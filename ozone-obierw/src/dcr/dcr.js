@@ -20,7 +20,7 @@ class Dcr {
     const oidcConfig = await fetchOidcConfig(params, baseFolder);
 
     // start assembling the jwt
-    const now = Date.now() / 1000;
+    const now = Math.floor(Date.now() / 1000);
 
     const registrationJwt = {
       aud:  _.get(params, 'aud', oidcConfig.issuer), // use aud if specified, or default to issuer

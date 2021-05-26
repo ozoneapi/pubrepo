@@ -8,9 +8,13 @@ async function go() {
   const oidcClient = new OidcClient(clientConfig.oidcClient);
 
   const token = await oidcClient.getTokenByClientCredentialsGrant(clientConfig.oidcClient.scope);
-
   console.log(token);
-  //const resp = await obDirClient.getScimResource('tpp', token, '0015800001ZEc3hAAD');
+
+  const resp = await obDirClient.getScimResource('tpp', token,  '0015800001ZEc3hAAD');
+  console.log(resp);
+
+  // const resp = await obDirClient.getResource('organisation', token, 'tpp', '0015800001041RHAAY');
+  // console.log(resp);
 
   // const resp = await obDirClient.getResource('organisation', token, 'tpp'); // Get all TPPs
   //const resp = await obDirClient.getResource('organisation', token, 'tpp', '0015800001ZEc3hAAD'); //Get TPP info
@@ -19,8 +23,10 @@ async function go() {
   //const resp = await obDirClient.getResource('software-statement', token, 'aspsp', '0015800001041RHAAY'); // Get all software statements for Org
   //const resp = await obDirClient.getResource('software-statement', token, 'aspsp', '0015800001041RbAAI', 'vr1FrD2uEigYbhLqaJZeDP'); // Get software statement info
 
-  // const cert = fs.readFileSync(`${clientConfig.oidcClient.certs.cert}`);
+  // const cert = fs.readFileSync('/usr/o3/monese-connectors/crypto/prod/transport-monese-prod.pem');
   // let response = await obDirClient.validateCert(token, cert); // ValidateCertificate
+  // console.log(response);
+
   // _chkcert(response.data.certificate)
   // await sleep(2000);
   // response = await obDirClient.validateCert(token, cert); // ValidateCertificate

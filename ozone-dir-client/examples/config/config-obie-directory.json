@@ -1,10 +1,10 @@
 {
-    "baseScimUri": "https://api.openbanking.org.uk/scim/v2",
+    "baseScimUri": "https://tls-api.openbanking.org.uk/scim/v2",
     "baseRestUri": "https://dirapi.openbanking.org.uk",
     "ttl": 3,
     "state": "GB",
     "oidcClient":{
-        "tokenUri": "https://sso.openbanking.org.uk/as/token.oauth2",
+        "tokenUri": "https://matls-sso.openbanking.org.uk/as/token.oauth2",
         "issuer": "https://sso.openbanking.org.uk/.well-known/openid-configuration",
         "scope": "AuthoritiesReadAccess ASPSPReadAccess TPPReadAll",    
         "logLevels": {
