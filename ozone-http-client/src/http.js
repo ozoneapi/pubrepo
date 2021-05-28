@@ -9,13 +9,20 @@ const _ = require('lodash');
 /**
  * 
  * @typedef {import('./types/http-do-param').HttpDoParam} HttpDoParam
+ * @typedef {{
+ *  status: number,
+ *  headers: Record<string, string>,
+ *  body: string,
+ *  json?: unknown,
+ *  jsonError?: unknown
+ * }} HttpClientResponse
  */
 class Http {
   /**
   * 
   * @param {HttpDoParam} params 
-  * @param {string} [baseFolder] 
-  * 
+  * @param {string|undefined} baseFolder
+  * @returns {Promise<HttpClientResponse>}
   */
   static async do(params, baseFolder) {
     // set the loglevel        
@@ -163,6 +170,12 @@ class Http {
     return response;
   }
 
+  /**
+   * 
+   * @param {request.Request} doRequest 
+   * @param {number} redirects 
+   * @returns {Promise<HttpClientResponse>}
+   */
   static async _getResponse(doRequest, redirects) {
     try {
       const result = await doRequest.redirects(redirects).buffer();

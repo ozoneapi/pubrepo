@@ -7,10 +7,10 @@ export interface HttpDoParam {
     key?: string;
   };
   query?: {
-    [k: string]: unknown;
+    [k: string]: string;
   };
   headers?: {
-    [k: string]: unknown;
+    [k: string]: string;
   };
   body?: any
   fields?: {
