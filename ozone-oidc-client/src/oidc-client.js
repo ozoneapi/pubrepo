@@ -326,16 +326,12 @@ class OidcClient {
       throw new Error('signingKeyFIleName is missing in client config');
     }
 
-<<<<<<< HEAD
     let audience = this.wellKnownConfiguration.token_endpoint;
     if (this.clientConfig.tokenUri !== undefined) { // allow token endpoint overide 
       audience = this.clientConfig.tokenUri;
     }
 
-    const iat = Date.now() / 1000;
-=======
     const iat = Math.floor(Date.now() / 1000);
->>>>>>> 7c911843b720751e389dc1e16795fb725077137e
     const jwt = {
       header: {
         alg: this.clientConfig.token_endpoint_auth_signing_alg,
