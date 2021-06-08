@@ -10,8 +10,8 @@
     "jsonschema": "^1.2.6",
     "lodash": "^4.17.20",
     "loglevel": "^1.6.8",
-    "ozone-http-client": "file:../ozone-http-client",
-    "ozone-jwt": "file:../ozone-jwt",
+    "ozone-http-client": "link:../ozone-http-client",
+    "ozone-jwt": "link:../ozone-jwt",
     "uuid": "^8.3.1"
   }
 }

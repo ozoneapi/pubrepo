@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "cwd": "${workspaceFolder}/ozone-obierw",
-            "runtimeExecutable": "npm",
+            "runtimeExecutable": "yarn",
             "runtimeArgs": [
                 "run-script",
                 "dcr-test-client-cap1-local"
