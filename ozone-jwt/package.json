@@ -12,6 +12,6 @@
     "lodash": "^4.17.20",
     "loglevel": "^1.6.8",
     "node-jose": "^2.0.0",
-    "ozone-http-client": "file:../ozone-http-client"
+    "ozone-http-client": "link:../ozone-http-client"
   }
 }

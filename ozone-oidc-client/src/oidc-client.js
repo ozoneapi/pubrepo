@@ -331,7 +331,7 @@ class OidcClient {
       audience = this.clientConfig.tokenUri;
     }
 
-    const iat = Date.now() / 1000;
+    const iat = Math.floor(Date.now() / 1000);
     const jwt = {
       header: {
         alg: this.clientConfig.token_endpoint_auth_signing_alg,
