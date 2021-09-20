@@ -16,14 +16,14 @@ fi
 echo " - running as user ${USER}. Check successful."
 echo " - Assuming user has \"sudo\" permissions with no need for password"
 
-if [[ -f ~/.git-credentials]]; then
+if [[ -f ~/.git-credentials ]]; then
   HAVE_CREDS=$(cat ~/.git-credentials | grep -v bitbucket.org/ozoneapi | wc -l)
 fi
 
 if [[ ! -z $HAVE_CREDS && $HAVE_CREDS != 0 ]]; then
   echo "git https creds configured."
 elif [[ -v GIT_HTTPS_CREDS ]]; then
-  echo "persisteing git https creds"
+  echo "persisting git https creds"
   echo "https://$GIT_HTTPS_CREDS@bitbucket.org/ozoneapi" >> ~/.git-credentials
 else
   echo "Export the git https credentials before running this script. Run:"
