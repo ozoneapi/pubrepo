@@ -46,20 +46,6 @@ else
   exit -1
 fi
 
-# ensure git credentials configured for https://bitbucket.org
-TMP_FILE="/tmp/cred-fill.txt"
-[[ -f ${TMP_FILE} ]] && rm ${TMP_FILE}
-echo "protocol=https" >> ${TMP_FILE}
-echo "host=bitbucket.org" >> ${TMP_FILE}
-echo "path=ozoneapi/geppetto.git" >> ${TMP_FILE}
-# echo >> ${TMP_FILE}
-git credential fill < ${TMP_FILE} > /dev/null 2> /dev/null && HAVE_CREDS=$? 
-rm ${TMP_FILE}
-if [[ $HAVE_CREDS != 0 ]]; then
-  echo "- credential check failed. Please ensure git has the right credentials configured for https://bitbucket.org/ozoneapi/geppetto.git"
-  exit -1
-fi
-
 OZONE_HOME="/usr/o3"
 GEPPETTO_HOME=${OZONE_HOME}/geppetto
 
@@ -81,7 +67,4 @@ fi
 
 echo "- Clone geppetto into ${GEPPETTO_HOME} ${BRANCH_OPTS}"
 git clone ${BRANCH_OPTS} https://bitbucket.org/ozoneapi/geppetto ${GEPPETTO_HOME}
-
-echo "Run the below command to bootstrap the environment:"
-echo "sudo -iu ${USER} CONNECTOR_NAME=<my-connectors> /usr/o3/geppetto/scripts/install-ozone-stage1.sh"
 
