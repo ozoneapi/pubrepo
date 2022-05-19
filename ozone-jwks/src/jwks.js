@@ -106,7 +106,7 @@ class Jwks {
   }
 
   static _writePrivateKeyFile(fileName, keys) {
-    if (fileName.endsWith('jwk')) {
+    if (fileName.endsWith('jwk') || fileName.endsWith('json')) {
       fs.writeFileSync(fileName, JSON.stringify(keys.privateKey, undefined, 2));
       return;
     }
