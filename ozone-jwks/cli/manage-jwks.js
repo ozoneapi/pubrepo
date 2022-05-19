@@ -91,4 +91,11 @@ async function go() {
 
 go()
   .then(out => console.log(JSON.stringify(out, undefined, 2)))
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.error(err);
+    if ( err.code === 'ExpiredToken') {
+      process.exitCode = -1;
+    } else {
+      process.exitCode = 1;
+    }
+  });
