@@ -8,7 +8,7 @@ const fs = require('fs');
 class Jwks {
 
   /**
-   * 
+   *
    * @param {string?} profile The AWS ini file profile to use
    */
   static _startAWS(profile) {
@@ -23,9 +23,9 @@ class Jwks {
   }
 
   /**
-   * 
-   * @param {string?} url 
-   *  
+   *
+   * @param {string?} url
+   *
    */
   static _parseUrl(url) {
     log.debug(`parsing url ${url}`);
@@ -56,7 +56,7 @@ class Jwks {
     const {bucket, key} = Jwks._parseUrl(url);
 
     const params = {
-      Bucket: bucket, 
+      Bucket: bucket,
       Key: key
      };
 
@@ -87,7 +87,7 @@ class Jwks {
     const {bucket, key} = Jwks._parseUrl(url);
 
     const params = {
-      Bucket: bucket, 
+      Bucket: bucket,
       Key: key,
       ACL:'public-read',
       Body: JSON.stringify(jwks, undefined, 2)
@@ -106,12 +106,12 @@ class Jwks {
   }
 
   static _writePrivateKeyFile(fileName, keys) {
-    if (fileName.endsWith('jwk')) {
+    if (fileName.endsWith('jwk') || fileName.endsWith('json')) {
       fs.writeFileSync(fileName, JSON.stringify(keys.privateKey, undefined, 2));
       return;
     }
 
-    if (fileName.endsWith('pem')) {
+    if (fileName.endsWith('pem') || fileName.endsWith('key')) {
       fs.writeFileSync(fileName, keys.privateKeyFile);
       return;
     }
@@ -120,16 +120,16 @@ class Jwks {
   }
 
   /**
-   * 
-   * @param {string} url 
-   * @param {integer} keySize 
-   * @param {string} use 
-   * @param {string?} fileName 
-   * @param {string?} profile 
+   *
+   * @param {string} url
+   * @param {integer} keySize
+   * @param {string} use
+   * @param {string?} fileName
+   * @param {string?} profile
    */
   static async addKey(url, keySize, use, fileName, profile) {
     const jwks = await Jwks.get(url, profile);
-    
+
     // create a key
     const newKeys = await Crypto.generateRSAKeyPair(keySize, use);
 
@@ -148,7 +148,7 @@ class Jwks {
   }
 
   static async deleteKey(url, kid) {
-    
+
   }
 
   static async moveKey(fromUrl, toUrl, kid) {

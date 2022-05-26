@@ -31,17 +31,17 @@ function _displayCLIHelp() {
 }
 
 function _parseArgs() {
-  // parse the cli  
+  // parse the cli
   const args = minimist(
-    process.argv.slice(2), 
-    { 
+    process.argv.slice(2),
+    {
       alias: {
         u: 'url',
         p: 'profile',
         k: 'kid',
         s: 'size',
         o: 'out'
-      } 
+      }
     }
   );
 
@@ -71,7 +71,7 @@ async function go() {
 
     case 'init':
       return Jwks.init(args.url, args.profile);
-  
+
     case 'add':
       if (args.size === undefined) {
         throw new Error('--size must be specified with add');
@@ -90,5 +90,12 @@ async function go() {
 }
 
 go()
-  .then(out => console.log(out))
-  .catch(err => console.log(err));
+  .then(out => console.log(JSON.stringify(out, undefined, 2)))
+  .catch(err => {
+    console.error(err);
+    if ( err.code === 'ExpiredToken') {
+      process.exitCode = -1;
+    } else {
+      process.exitCode = 1;
+    }
+  });
