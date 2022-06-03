@@ -10,8 +10,7 @@
     "ajv": "^7.0.2",
     "aws-sdk": "^2.817.0",
     "jsonpath-plus": "^4.0.0",
-    "minimist": "^1.2.5",
-    "ozone-http-client": "link:../ozone-http-client"
+    "minimist": "^1.2.5"
   },
   "devDependencies": {
     "@types/node": "^14"
