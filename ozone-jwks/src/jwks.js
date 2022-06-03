@@ -4,156 +4,170 @@ const AWS = require('aws-sdk');
 const url = require('url');
 const {JSONPath} = require('jsonpath-plus');
 const fs = require('fs');
+const request = require('https');
 
-class Jwks {
+async function getFromS3Bucket(url, profile) {
+  // connect
+  const s3 = _startAWS(profile);
 
-  /**
-   *
-   * @param {string?} profile The AWS ini file profile to use
-   */
-  static _startAWS(profile) {
-    if (profile !== undefined) {
-      log.debug(`Using profile ${profile}`);
-      AWS.config.credentials = new AWS.SharedIniFileCredentials({profile});
-    } else {
-      log.debug('AWS profile not specified - none set');
-    }
+  const {bucket, key} = _parseUrl(url);
 
-    return new AWS.S3({ apiVersion: '2006-03-01' });
+  const params = {
+    Bucket: bucket,
+    Key: key
+  };
+
+  const data = await s3.getObject(params).promise();
+  return data.Body.toString('utf8');
+}
+
+async function getFromUri(url) {
+  return new Promise((resolve, reject) => {
+    const clientRequest = request.get(new URL(url), {rejectUnauthorized: false} , (res) => {
+      res.setEncoding('utf8');
+      const body = [];
+      res.on('data', chunk => body.push(chunk));
+      res.on('end', () => resolve(body.join('')));
+    });
+    clientRequest.on('error', (e) => reject(e));
+  });
+}
+
+/**
+ *
+ * @param {string?} profile The AWS ini file profile to use
+ */
+function _startAWS(profile) {
+  if (profile !== undefined) {
+    log.debug(`Using profile ${profile}`);
+    AWS.config.credentials = new AWS.SharedIniFileCredentials({profile});
+  } else {
+    log.debug('AWS profile not specified - none set');
   }
 
-  /**
-   *
-   * @param {string?} url
-   *
-   */
-  static _parseUrl(url) {
-    log.debug(`parsing url ${url}`);
+  return new AWS.S3({ apiVersion: '2006-03-01' });
+}
 
-    const parsedUrl = new URL(url);
+/**
+ *
+ * @param {string?} url
+ *
+ */
+function _parseUrl(url) {
+  log.debug(`parsing url ${url}`);
 
-    if (parsedUrl.protocol !== 's3:') {
-      throw new Error(`Expected URL with a protocol of s3 (ie starting with s3://) but got ${parsedUrl.protocol}`);
-    }
+  const parsedUrl = new URL(url);
 
-    if (parsedUrl.pathname === undefined) {
-      throw new Error('URL must have a path element');
-    }
-
-    let pathName = parsedUrl.pathname;
-    if (pathName.startsWith('/')) { pathName = pathName.substring(1) }
-    if (pathName.endsWith('/')) { pathName = pathName.substring(0, pathName.length-1) }
-
-    const toRet = { bucket: parsedUrl.host, key: pathName };
-    log.debug(`Returning ${JSON.stringify(toRet)}`)
-    return toRet;
+  if (parsedUrl.protocol !== 's3:') {
+    throw new Error(`Expected URL with a protocol of s3 (ie starting with s3://) but got ${parsedUrl.protocol}`);
   }
 
-  static async get(url, profile) {
-    // connect
-    const s3 = Jwks._startAWS(profile);
-
-    const {bucket, key} = Jwks._parseUrl(url);
-
-    const params = {
-      Bucket: bucket,
-      Key: key
-     };
-
-     const data = await s3.getObject(params).promise();
-
-     const jwksString = data.Body.toString('utf8');
-
-     return JSON.parse(jwksString);
+  if (parsedUrl.pathname === undefined) {
+    throw new Error('URL must have a path element');
   }
 
-  static async getKeyByKid(url, kid, profile) {
-    const json = await Jwks.get(url, profile);
+  let pathName = parsedUrl.pathname;
+  if (pathName.startsWith('/')) { pathName = pathName.substring(1) }
+  if (pathName.endsWith('/')) { pathName = pathName.substring(0, pathName.length-1) }
+
+  const toRet = { bucket: parsedUrl.host, key: pathName };
+  log.debug(`Returning ${JSON.stringify(toRet)}`)
+  return toRet;
+}
+
+async function get(url, profile) {
+  const jwksPromise = url.startsWith("s3://") ? getFromS3Bucket(url, profile) : getFromUri(url);
+  const jwksString = await jwksPromise;
+  return JSON.parse(jwksString);
+}
+
+async function getKeyByKid(url, kid, profile) {
+  const json = await get(url, profile);
 
 
-    const result = JSONPath({path: `$..[?(@.kid==="${kid}")]`, json});
+  const result = JSONPath({path: `$..[?(@.kid==="${kid}")]`, json});
 
-    if (result.length < 1) {
-      throw new Error(`Could not find keys with kid ${kid}`);
-    }
-
-    return result;
+  if (result.length < 1) {
+    throw new Error(`Could not find keys with kid ${kid}`);
   }
 
-  static async _write(url, jwks, profile) {
-    // connect
-    const s3 = Jwks._startAWS(profile);
+  return result;
+}
 
-    const {bucket, key} = Jwks._parseUrl(url);
+async function _write(url, jwks, profile) {
+  // connect
+  const s3 = _startAWS(profile);
 
-    const params = {
-      Bucket: bucket,
-      Key: key,
-      ACL:'public-read',
-      Body: JSON.stringify(jwks, undefined, 2)
-     };
+  const {bucket, key} = _parseUrl(url);
 
-     await s3.putObject(params).promise();
+  const params = {
+    Bucket: bucket,
+    Key: key,
+    ACL:'public-read',
+    Body: JSON.stringify(jwks, undefined, 2)
+    };
+
+    await s3.putObject(params).promise();
+}
+
+async function init(url, profile) {
+  if (!url.startsWith("s3://")) {
+    throw new Error("Cannot write to non-s3 URLs")
   }
 
-  static async init(url, profile) {
+  const jwks = { keys: [] };
 
-    const jwks = { keys: [] };
+  await _write(url, jwks, profile);
 
-    await Jwks._write(url, jwks, profile);
+  return jwks;
+}
 
-    return jwks;
+function _writePrivateKeyFile(fileName, keys) {
+  if (fileName.endsWith('jwk') || fileName.endsWith('json')) {
+    fs.writeFileSync(fileName, JSON.stringify(keys.privateKey, undefined, 2));
+    return;
   }
 
-  static _writePrivateKeyFile(fileName, keys) {
-    if (fileName.endsWith('jwk') || fileName.endsWith('json')) {
-      fs.writeFileSync(fileName, JSON.stringify(keys.privateKey, undefined, 2));
-      return;
-    }
-
-    if (fileName.endsWith('pem') || fileName.endsWith('key')) {
-      fs.writeFileSync(fileName, keys.privateKeyFile);
-      return;
-    }
-
-    throw new Error(`invalid output file type - ${fileName}`);
+  if (fileName.endsWith('pem') || fileName.endsWith('key')) {
+    fs.writeFileSync(fileName, keys.privateKeyFile);
+    return;
   }
 
-  /**
-   *
-   * @param {string} url
-   * @param {integer} keySize
-   * @param {string} use
-   * @param {string?} fileName
-   * @param {string?} profile
-   */
-  static async addKey(url, keySize, use, fileName, profile) {
-    const jwks = await Jwks.get(url, profile);
+  throw new Error(`invalid output file type - ${fileName}`);
+}
 
-    // create a key
-    const newKeys = await Crypto.generateRSAKeyPair(keySize, use);
-
-    // inject in jwks
-    jwks.keys.push(newKeys.publicKey);
-
-    await Jwks._write(url,jwks, profile );
-
-    // write the files if required
-    if (fileName === undefined) {
-      return newKeys;
-    } else {
-      Jwks._writePrivateKeyFile(fileName, newKeys);
-      return newKeys.publicKey;
-    }
+/**
+ *
+ * @param {string} url
+ * @param {integer} keySize
+ * @param {string} use
+ * @param {string?} fileName
+ * @param {string?} profile
+ */
+async function addKey(url, keySize, use, fileName, profile) {
+  if (!url.startsWith("s3://")) {
+    throw new "URL is not a S3 bucket. Cannot add key to source file. Aborting."
   }
 
-  static async deleteKey(url, kid) {
+  const jwks = await get(url, profile);
 
-  }
+  // create a key
+  const newKeys = await Crypto.generateRSAKeyPair(keySize, use);
 
-  static async moveKey(fromUrl, toUrl, kid) {
+  // inject in jwks
+  jwks.keys.push(newKeys.publicKey);
 
+  await Jwks._write(url,jwks, profile );
+
+  // write the files if required
+  if (fileName === undefined) {
+    return newKeys;
+  } else {
+    _writePrivateKeyFile(fileName, newKeys);
+    return newKeys.publicKey;
   }
 }
 
-module.exports = Jwks;
+module.exports = {
+  init, get, addKey, getKeyByKid
+};
