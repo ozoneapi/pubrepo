@@ -91,6 +91,7 @@ class Jwks {
       Key: key,
       ACL:'public-read',
       Body: JSON.stringify(jwks, undefined, 2),
+      ContentType:"application/jwk-set+json",
       Metadata: {
         "Content-Type": "application/jwk-set+json"
       }
