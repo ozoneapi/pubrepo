@@ -90,7 +90,11 @@ class Jwks {
       Bucket: bucket,
       Key: key,
       ACL:'public-read',
-      Body: JSON.stringify(jwks, undefined, 2)
+      Body: JSON.stringify(jwks, undefined, 2),
+      ContentType:"application/jwk-set+json",
+      Metadata: {
+        "Content-Type": "application/jwk-set+json"
+      }
      };
 
      await s3.putObject(params).promise();
