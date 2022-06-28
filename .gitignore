@@ -3,10 +3,7 @@
 *.log
 *.tgz
 *.zip
-package-lock.json
 **/experiments/trusona-server-sdk-js/*
-yarn.lock
-
 
 # legacy
 /nbproject/
