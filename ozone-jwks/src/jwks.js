@@ -147,7 +147,7 @@ class Jwks {
       return newKeys;
     } else {
       Jwks._writePrivateKeyFile(fileName, newKeys);
-      return newKeys.publicKey;
+      return newKeys;
     }
   }
 
