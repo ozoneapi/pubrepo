@@ -28,5 +28,9 @@
     "aws-sdk": "^2.817.0",
     "jsonpath-plus": "^4.0.0",
     "minimist": "^1.2.5"
+  },
+  "resolutions": {
+    "json5": "~1.0.2",
+    "cookiejar": "~2.1.4"
   }
 }
