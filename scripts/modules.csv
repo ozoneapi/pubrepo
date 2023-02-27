@@ -1,6 +1,7 @@
 ozone-crypto
 ozone-docdb
 ozone-http-client
+ozone-jwks
 ozone-jwt
 ozone-jwt-auth
 ozone-oidc-client
