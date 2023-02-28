@@ -6,7 +6,7 @@ const jws = require('jws');
 const jose = require('node-jose');
 const log = require('loglevel').getLogger('private:ozone-jwt');
 const path = require('path');
-const Http = require('ozone-http-client');
+const Http = require('/usr/o3/pubrepo/ozone-http-client');
 const _ = require('lodash');
 
 class Jwt {
@@ -64,7 +64,7 @@ class Jwt {
 
     if (params.signingKeyFileName !== undefined) {
       log.info(`Jwt._getSigningKey: using signing key file ${params.signingKeyFileName}`);
-      
+
       let signingKeyFileName = params.signingKeyFileName;
 
       // adjust base folder

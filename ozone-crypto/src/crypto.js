@@ -1,5 +1,5 @@
 const jose = require('node-jose');
-const log = require('loglevel').getLogger('ozone-crypto');
+const log = require('loglevel').getLogger('/usr/o3/pubrepo/ozone-crypto');
 
 class Crypto {
   static async generateRSAKeyPair(keySize, use) {

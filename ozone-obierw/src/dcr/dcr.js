@@ -1,5 +1,5 @@
-const Http = require('ozone-http-client');
-const Crypto = require('ozone-jwt');
+const Http = require('/usr/o3/pubrepo/ozone-http-client');
+const Crypto = require('/usr/o3/pubrepo/ozone-jwt');
 const Validator = require('jsonschema').Validator;
 const schema = require('./dcr-register-client-schema.json');
 const { v4: uuidv4 } = require('uuid');
@@ -76,7 +76,7 @@ class Dcr {
 
   static async registerClient(params, baseFolder) {
     const response = await Dcr.registerClientRaw(params, baseFolder);
-    
+
     if ((response.status === 201) && (response.json !== undefined)) {
       return response.json;
     }
@@ -85,9 +85,9 @@ class Dcr {
   }
 
   /**
-   * 
-   * @param {String} url 
-   * @param {Object} client 
+   *
+   * @param {String} url
+   * @param {Object} client
    */
   static async fetchClient(params, client) {
     const response = await executeTokenBasedOp('get', client, params);
@@ -134,10 +134,10 @@ async function executeTokenBasedOp(operation, client, params) {
 }
 
 async function fetchOidcConfig(params, baseFolder) {
-  const wkcResponse = await Http.do({ 
-    url: `${params.issuer}.well-known/openid-configuration`, 
-    parseJson: true, 
-    logLevel: params.logLevel }, 
+  const wkcResponse = await Http.do({
+    url: `${params.issuer}.well-known/openid-configuration`,
+    parseJson: true,
+    logLevel: params.logLevel },
   baseFolder);
   if ((wkcResponse.status !== 200) || (wkcResponse.json === undefined)) {
     throw new Error(`Could not retrieve well known configuration ${wkcResponse.data}`);

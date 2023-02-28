@@ -1,5 +1,5 @@
-const OidcClient = require('ozone-oidc-client');
-const Http = require('ozone-http-client');
+const OidcClient = require('/usr/o3/pubrepo/ozone-oidc-client');
+const Http = require('/usr/o3/pubrepo/ozone-http-client');
 const Validator = require('jsonschema').Validator;
 const schema = require('../obie-config-schema.json');
 const { v4: uuidv4 } = require('uuid');
@@ -69,7 +69,7 @@ class Ais31 {
       return response.json;
     }
 
-    throw new Error(`failed to ${verb} account access consent ${response.data}`);    
+    throw new Error(`failed to ${verb} account access consent ${response.data}`);
   }
 
   async getConsentRaw(consentId, token) {
@@ -146,7 +146,7 @@ class Ais31 {
       headers,
       certs: this.config.clientConfig.certs,
       parseJson: true
-    };    
+    };
 
     // make the call
     return Http.do(httpParams, this.baseFolder);

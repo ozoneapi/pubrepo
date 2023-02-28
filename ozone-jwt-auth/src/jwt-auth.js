@@ -1,8 +1,8 @@
 const log = require('loglevel').getLogger('private:ozone-jwt-auth');
 const Validator = require('jsonschema').Validator;
 const signingParamsSchema = require('./signing-params-schema.json');
-const Jwt = require('ozone-jwt');
-const {Http} = require('ozone-http-client');
+const Jwt = require('/usr/o3/pubrepo/ozone-jwt');
+const {Http} = require('/usr/o3/pubrepo/ozone-http-client');
 const { v4: uuidv4 } = require('uuid');
 const _ = require('lodash');
 
