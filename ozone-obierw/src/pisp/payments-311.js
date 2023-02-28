@@ -1,5 +1,5 @@
-const OidcClient = require('ozone-oidc-client');
-const Http = require('ozone-http-client');
+const OidcClient = require('/usr/o3/pubrepo/ozone-oidc-client');
+const Http = require('/usr/o3/pubrepo/ozone-http-client');
 const Validator = require('jsonschema').Validator;
 const schema = require('../obie-config-schema.json');
 const { v4: uuidv4 } = require('uuid');
@@ -74,8 +74,8 @@ class Payments311 {
     // sign the message
     const sig = new Signature31(this.config, this.baseFolder);
     const bodyToStream = JSON.stringify(body);
-    const signature = await sig.sign(bodyToStream, 'json');    
-    
+    const signature = await sig.sign(bodyToStream, 'json');
+
     // update the headers
     headers = this._updateHeaders(headers, token, signature);
 

@@ -1,6 +1,6 @@
 const { Validator } = require('jsonschema');
-const Http = require('ozone-http-client');
-const Jwt = require('ozone-jwt');
+const Http = require('/usr/o3/pubrepo/ozone-http-client');
+const Jwt = require('/usr/o3/pubrepo/ozone-jwt');
 const { v4: uuidv4 } = require('uuid');
 const log = require('loglevel');
 const _ = require('lodash');
@@ -28,7 +28,7 @@ class OidcClient {
     process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0; // eslint-disable-line dot-notation
 
     this.clientConfig = _.clone(clientConfig);
-    
+
     if (baseFolder !== undefined) {
       log.info(`Base folder is ${baseFolder}. Adjusting all paths`);
       if (clientConfig.certs !== undefined) {
@@ -44,7 +44,7 @@ class OidcClient {
       }
     }
   }
-  
+
   async getWellKnownConfiguration() {
     log.info('OidcClient.getWellKnownConfiguration: get .wellknown - start');
     if (this.wellKnownConfiguration !== undefined) {
@@ -96,7 +96,7 @@ class OidcClient {
     };
 
     // get the token endpoint
-    params.url = this.wellKnownConfiguration.token_endpoint;    
+    params.url = this.wellKnownConfiguration.token_endpoint;
     if (params.url === undefined) {
       throw new Error('token_endpoint not defined in oidc well-known configuration');
     }
@@ -108,7 +108,7 @@ class OidcClient {
     log.info('OidcClient._getAccessToken: token request follows:');
     log.info(params);
     log.info('OidcClient._getAccessToken: token request ends:');
-    
+
     const response = await Http.do(params);
     if (response.json !== undefined) {
       return response.json;
@@ -181,9 +181,9 @@ class OidcClient {
     return this._getAccessToken(
       scope,
       'authorization_code',
-      { 
+      {
         code,
-        redirect_uri: redirectUri 
+        redirect_uri: redirectUri
       }
     );
   }
@@ -273,7 +273,7 @@ class OidcClient {
         } else {
           await this._addPrivateKeyJwtAuthenticationMethod(params);
         }
-        
+
         break;
 
       case 'tls_client_auth':
@@ -313,7 +313,7 @@ class OidcClient {
       throw new Error('token_endpoint_auth_signing_alg is missing in client config');
     }
 
-    if ((this.clientConfig.token_endpoint_auth_signing_alg === 'none') 
+    if ((this.clientConfig.token_endpoint_auth_signing_alg === 'none')
       || (this.clientConfig.token_endpoint_auth_signing_alg === 'HS256')) {
       throw new Error('token_endpoint_auth_signing_alg cannot be HS256 or none for token_endpoint_auth_method private_key_jwt');
     }
@@ -327,7 +327,7 @@ class OidcClient {
     }
 
     let audience = this.wellKnownConfiguration.token_endpoint;
-    if (this.clientConfig.tokenUri !== undefined) { // allow token endpoint overide 
+    if (this.clientConfig.tokenUri !== undefined) { // allow token endpoint overide
       audience = this.clientConfig.tokenUri;
     }
 
@@ -364,7 +364,7 @@ class OidcClient {
 
     if ((this.clientConfig.token_endpoint_auth_signing_alg === 'none')
       || (this.clientConfig.token_endpoint_auth_signing_alg === 'HS256')) {
-      throw new Error('token_endpoint_auth_signing_alg cannot be HS256 or none for token_endpoint_auth_method private_key_jwt');      
+      throw new Error('token_endpoint_auth_signing_alg cannot be HS256 or none for token_endpoint_auth_method private_key_jwt');
     }
 
     if (this.clientConfig.signingKeyKid === undefined) {
@@ -374,7 +374,7 @@ class OidcClient {
     if (this.clientConfig.signingKeyFileName === undefined) {
       throw new Error('signingKeyFIleName is missing in client config');
     }
-    
+
 
     const iat = Math.floor(Date.now() / 1000);
     const jwt = {
@@ -401,7 +401,7 @@ class OidcClient {
 
   async getAuthorizationCodeUrl(scope, redirectUri, responseType, claims, useRequestObject) {
     // ensure we have the .well-known
-    await this.getWellKnownConfiguration();    
+    await this.getWellKnownConfiguration();
 
     const authorizationEndPoint = this.wellKnownConfiguration.authorization_endpoint;
     if (authorizationEndPoint === undefined) {
@@ -435,9 +435,9 @@ class OidcClient {
   async _getSignedRequestObject(scope, redirectUri, claims) {
     const requestObject = {
       aud: this.wellKnownConfiguration.issuer,
-      iss: this.clientConfig.client_id,   
+      iss: this.clientConfig.client_id,
       exp: (Date.now() / 1000) + 300,
-      state: uuidv4(),   
+      state: uuidv4(),
       nonce: uuidv4(),
       scope,
       redirect_uri: redirectUri,

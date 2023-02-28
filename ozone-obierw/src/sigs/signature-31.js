@@ -1,4 +1,4 @@
-const Jwt = require('ozone-jwt');
+const Jwt = require('/usr/o3/pubrepo/ozone-jwt');
 const schema = require('../obie-config-schema.json');
 
 class Signature31 {
