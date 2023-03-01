@@ -1,5 +1,5 @@
-const OidcClient = require('ozone-oidc-client');
-const Http = require('ozone-http-client');
+const OidcClient = require('/usr/o3/pubrepo/ozone-oidc-client');
+const Http = require('/usr/o3/pubrepo/ozone-http-client');
 const _ = require('lodash');
 
 class OidcHelper {
@@ -40,7 +40,7 @@ class OidcHelper {
     }
 
     throw new Error('timeout waiting for access token to be approved');
-    
+
   }
 
   async doHeadlessAuth(scope, redirectUri, responseType, intentId) {
@@ -94,9 +94,9 @@ class OidcHelper {
 
   async getAuthorizationCodeUrl(scope, redirectUri, responseType, intentId) {
     return this.oidcClient.getAuthorizationCodeUrl(
-      scope, 
+      scope,
       redirectUri,
-      responseType, 
+      responseType,
       {
         id_token: {
           openbanking_intent_id: {
