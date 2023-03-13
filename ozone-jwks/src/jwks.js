@@ -1,4 +1,4 @@
-const Crypto = require('ozone-crypto');
+const Crypto = require('/usr/o3/pubrepo/ozone-crypto');
 const log = require('loglevel').getLogger('ozone-jwks');
 const AWS = require('aws-sdk');
 const url = require('url');

@@ -8,16 +8,11 @@
   "engines": {
     "node": ">=14.17.0"
   },
-  "workspaces": [
-    "ozone-crypto",
-    "ozone-jwks",
-    "ozone-docdb",
-    "ozone-http-client",
-    "ozone-jwt",
-    "ozone-jwt-auth",
-    "ozone-oidc-client",
-    "ozone-obierw"
-  ],
+  "scripts": {
+    "build": "./scripts/build.sh",
+    "clean": "./scripts/clean.sh",
+    "postinstall": "yarn run build"
+  },
   "dependencies": {
     "typescript": "~4.5",
     "eslint": "^8.3.0",
@@ -28,5 +23,9 @@
     "aws-sdk": "^2.817.0",
     "jsonpath-plus": "^4.0.0",
     "minimist": "^1.2.5"
+  },
+  "resolutions": {
+    "json5": "~1.0.2",
+    "cookiejar": "~2.1.4"
   }
 }
