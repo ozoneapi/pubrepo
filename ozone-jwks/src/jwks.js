@@ -140,15 +140,13 @@ class Jwks {
     // inject in jwks
     jwks.keys.push(newKeys.publicKey);
 
-    await Jwks._write(url,jwks, profile );
+    await Jwks._write(url, jwks, profile);
 
-    // write the files if required
-    if (fileName === undefined) {
-      return newKeys;
-    } else {
+    // write the file, if required
+    if (fileName !== undefined) {
       Jwks._writePrivateKeyFile(fileName, newKeys);
-      return newKeys;
     }
+    return newKeys;
   }
 
   static async deleteKey(url, kid) {
