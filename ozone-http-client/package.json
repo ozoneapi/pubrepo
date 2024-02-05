@@ -11,7 +11,7 @@
     "jsonschema": "^1.2.6",
     "lodash": "^4.17.20",
     "loglevel": "^1.6.8",
-    "superagent": "~6.1.0"
+    "superagent": "~8.1.2"
   },
   "types": "index.d.ts"
 }
