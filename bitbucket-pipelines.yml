@@ -20,3 +20,14 @@ definitions:
               echo "There is a (^) caret symbol in package.json. To accept only patch releases in dependencies, try to avoid using the caret sign and instead use (~) symbol."
               exit -1
             fi
+pipelines:
+  branches:
+    develop:
+      - parallel:
+          - step: *check-caret
+          - step: *build-only
+  pull-requests:
+    "**":
+      - parallel:
+        - step: *check-caret
+        - step: *build-only
