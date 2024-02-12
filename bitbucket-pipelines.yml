@@ -1,0 +1,22 @@
+image: node:16
+
+definitions:
+  steps:
+    - step: &build-only
+        name: yarn-build
+        script:
+          - yarn audit
+          - |
+            if [[ $? -ge 3 ]]; then
+              echo "Build failed"
+              exit -1
+            fi
+          - yarn install --frozen-lockfile
+    - step: &check-caret
+        name: check-caret-symbol
+        script:
+          - |
+            if grep -qnE '\^[0-9]' package.json; then
+              echo "There is a (^) caret symbol in package.json. To accept only patch releases in dependencies, try to avoid using the caret sign and instead use (~) symbol."
+              exit -1
+            fi
