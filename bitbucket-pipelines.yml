@@ -23,11 +23,7 @@ definitions:
 pipelines:
   branches:
     develop:
-      - parallel:
-          # - step: *check-caret
           - step: *build-only
   pull-requests:
     "**":
-      - parallel:
-        - step: *check-caret
         - step: *build-only
