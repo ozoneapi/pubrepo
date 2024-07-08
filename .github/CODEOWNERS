@@ -1,0 +1,13 @@
+# Each line is a file pattern followed by one or more owners.
+
+# Owners for the entire repository
+*       @ozoneapi/core-reviewers
+
+# Owners for specific folders
+
+
+# Owners for specific files
+
+
+# Owners for specific types of files
+
