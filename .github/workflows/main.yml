@@ -68,6 +68,7 @@ jobs:
         CONFLUENCE_USERNAME: ${{ secrets.CONFLUENCE_USERNAME_SP }}
         CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY_SP }}
         PAGE_CONTENT: ${{ steps.read_json.outputs.json_content }}
+        BRANCH_NAME: ${{ github.event.inputs.ref }}
       run:  |
           page_string=$(echo ${{ env.PAGE_CONTENT }} | jq -Rsa .)
           python -c "
