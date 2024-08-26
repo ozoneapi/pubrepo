@@ -1,4 +1,4 @@
-name: Create Third Party License Report 
+name: Create Third Party License Report
 
 on:
   workflow_dispatch:
@@ -86,13 +86,13 @@ jobs:
           repo_name = os.getenv('GITHUB_REPOSITORY')
           branch_name = os.getenv('BRANCH_NAME')
           parent_page_id = '2033221634'
-          
+
           # Replace these variables with your Confluence instance details
           confluence_base_url = 'https://ozoneapi.atlassian.net/wiki/rest/api/content/'
           
           # Set up the authentication
           auth = HTTPBasicAuth(username, api_token)
-          
+
           if json_data is None:
               raise ValueError('JSON_STRING environment variable is not set')
           
@@ -101,7 +101,7 @@ jobs:
               data = json.loads(json_data)
           except json.JSONDecodeError as e:
               raise ValueError(f'Error decoding JSON: {e}')
-          
+
           # Extract headers and body from JSON data
           if 'data' in data and 'body' in data['data'] and 'head' in data['data']:
               headers = data['data']['head']
@@ -114,43 +114,101 @@ jobs:
               df = pd.DataFrame(body, columns=headers)
           except Exception as e:
               raise ValueError(f'Error creating DataFrame: {e}')
-          
+
           # Convert DataFrame to HTML table
           html_table = df.to_html(index=False)
           
           # Function to create a new page in Confluence
           def create_confluence_page(space_key, title, content):
-              url = f'{confluence_base_url}'
-              headers = {
-                  'Content-Type': 'application/json',
-              }
-              payload = {
-                  'type': 'page',
-                  'title': title,
-                  'space': {
-                      'key': space_key
-                  },
-                  'ancestors': [{'id': parent_page_id}],
-                  'body': {
-                      'storage': {
-                          'value': content,
-                          'representation': 'storage'
+            # API endpoint to search for the page by title in the given space
+            search_url = f'{confluence_base_url}'
+            params = {
+                'title': title,
+                'spaceKey': space_key,
+                'expand': 'version'
+            }
+            # Search for the existing page
+            response = requests.get(search_url, params=params, auth=auth)
+  
+  
+            # Check if the page exists
+            if response.status_code == 200:
+                search_results = response.json()
+                if search_results['size'] > 0:
+                    # Page exists, get the page ID and current version
+                    existing_page_id = search_results['results'][0]['id']
+                    current_version = search_results['results'][0]['version']['number']
+            
+                    # Prepare updated page data
+                    updated_data = {
+                        'id': existing_page_id,
+                        'type': 'page',
+                        'title': title,
+                        'space': {
+                            'key': space_key
+                        },
+                        'version': {
+                            'number': current_version + 1  # Increment the version number
+                        },
+                        'body': {
+                            'storage': {
+                                'value': content,
+                                'representation': 'storage'
+                            }
+                        }
+                    }
+            
+                    # API endpoint to update the page
+                    update_url = f'{confluence_base_url}{existing_page_id}'
+            
+                    # Headers
+                    headers = {
+                        'Content-Type': 'application/json'
+                    }
+            
+                    # Make the API request to update the page
+                    update_response = requests.put(update_url, data=json.dumps(updated_data), headers=headers, auth=auth)
+            
+                    if update_response.status_code == 200:
+                        print('Page updated successfully.')
+                    else:
+                        print(f'Failed to update page. Status code: {update_response.status_code}')
+                        print('Response:', update_response.text)
+                else:
+                  url = f'{confluence_base_url}'
+                  headers = {
+                      'Content-Type': 'application/json',
+                  }
+                  payload = {
+                      'type': 'page',
+                      'title': title,
+                      'space': {
+                          'key': space_key
+                      },
+                      'ancestors': [{'id': parent_page_id}],
+                      'body': {
+                          'storage': {
+                              'value': content,
+                              'representation': 'storage'
+                          }
                       }
                   }
-              }
-          
-              response = requests.post(url, headers=headers, json=payload, auth=auth)
-          
-              if response.status_code == 200 or response.status_code == 201:
-                  print('Page created successfully!')
-                  print('Page URL:', response.json().get('_links').get('webui'))
-              else:
-                  print('Failed to create page:', response.status_code)
-                  print('Response:', response.text)
-          
+            
+                  response = requests.post(url, headers=headers, json=payload, auth=auth)
+            
+                  if response.status_code == 200 or response.status_code == 201:
+                      print('Page created successfully!')
+                      print('Page URL:', response.json().get('_links').get('webui'))
+                  else:
+                      print('Failed to create page:', response.status_code)
+                      print('Response:', response.text)
+            else:
+                print(f'Failed to search for the page. Status code: {response.status_code}')
+                print('Response:', response.text)
+
           #Creating confluence Page
-          title = 'License Report: pubrepo'
-          content = '<h2>License Report: pubrepo</h2>' + html_table
+          title = f'License Report: {repo_name} (branch: {branch_name})'
+          content = f'<h2>License Report: {repo_name}</h2>' + html_table
           create_confluence_page(space_key, title, content)
           "
 
