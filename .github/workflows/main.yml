@@ -83,6 +83,8 @@ jobs:
           api_token = os.getenv('CONFLUENCE_API_TOKEN')
           space_key = os.getenv('CONFLUENCE_SPACE_KEY')
           json_data = os.getenv('PAGE_CONTENT')
+          repo_name = os.getenv('GITHUB_REPOSITORY')
+          branch_name = os.getenv('BRANCH_NAME')
           parent_page_id = '2033221634'
           
           # Replace these variables with your Confluence instance details
