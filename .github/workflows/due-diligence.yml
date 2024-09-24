@@ -1,0 +1,70 @@
+name: Due Diligence Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch or tag to run the workflow on'
+        required: true
+        default: 'develop'
+
+jobs:
+  create-page:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.ref }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # Specify the Node.js version you are using
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Get licenses in JSON format
+      id: read_json
+      run:  |
+        echo $GITHUB_REPOSITORY
+        pwd
+        yarn licenses list --json | jq 'select(.type == "table")' > ${GITHUB_WORKSPACE}/license.json
+        json_content=$(jq -Rs '.' < ${GITHUB_WORKSPACE}/license.json)
+        json_content=$( echo ${json_content} | sed ':a;N;$!ba;s/\n//g')
+        echo "::set-output name=json_content::$json_content"
+
+    - name: Upload generated license.json as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: license-json
+        path: license.json
+
+    - name: Checkout second repository into 'dd-confluence-update'
+      uses: actions/checkout@v3
+      with:
+        repository: ozoneapi/tools-common     # Replace with your second repo's name
+        ref: develop                # Replace with the branch you need
+        path: dd-confluence-update
+        token: ${{ secrets.GH_TOKEN }}
+
+    - name: Create Confluence Page
+      env:
+        CONFLUENCE_BASE_URL: ${{ secrets.CONFLUENCE_BASE_URL_SP }}
+        CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN_SP }}
+        CONFLUENCE_USERNAME: ${{ secrets.CONFLUENCE_USERNAME_SP }}
+        CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY_SP }}
+        PAGE_CONTENT: ${{ steps.read_json.outputs.json_content }}
+        BRANCH_NAME: ${{ github.event.inputs.ref }}
+        GIT_SHA: ${{ github.sha }}
+      run:  |
+          ls -a
+          cd dd-confluence-update/dd_report
+          yarn install
+          yarn build
+          yarn start
