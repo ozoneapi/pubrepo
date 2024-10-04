@@ -1,0 +1,77 @@
+name: Trivy scan
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch or tag to run the workflow on'
+        required: true
+        default: 'develop'
+        
+jobs:
+  trivy-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.ref || 'develop' }}
+        fetch-depth: 0 
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # Specify the Node.js version you are using
+
+    - name: Run Trivy filesystem scan on modified files
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        ignore-unfixed: 'false'
+        format: 'sarif'
+        exit-code: '1'
+        output: 'raw-trivy-results.sarif'
+        severity: 'HIGH,CRITICAL'
+      continue-on-error: true
+
+    # Filter out medium severity vulnerabilities from SARIF
+    - name: Remove medium severity from SARIF file
+      run: |
+        jq 'del(.runs[].results[] | select(.properties.severity == "MEDIUM" or .level == "warning"))' raw-trivy-results.sarif > trivy-results.sarif
+
+    - name: Upload trivy report on github security tab
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Archive Trivy report
+      uses: actions/upload-artifact@v4
+      with:
+        name: trivy-report
+        path: 'trivy-results.sarif'
+
+    - name: Check for Issues in SARIF report
+      id: read_issue_count
+      run: |
+        echo "Checking for issues in the SARIF file..."
+        if [ -s trivy-results.sarif ]; then
+          ISSUES_COUNT=`echo $(jq -r '.runs[].results | length' "trivy-results.sarif" | awk '{s+=$1} END {print s}')`
+          
+          echo "Number of issues found: $ISSUES_COUNT"
+          echo "::set-output name=issue_count::$ISSUES_COUNT"
+          
+          if [ "$ISSUES_COUNT" -gt 0 ]; then
+            echo "$ISSUES_COUNT issues found by Trivy."
+          else
+            echo "No issues found."
+          fi
+        else
+          echo "SARIF file is empty or not found. Assuming no issues."
+        fi
+
+
+        
