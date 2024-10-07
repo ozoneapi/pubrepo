@@ -1,0 +1,67 @@
+name: Yarn Audit Check
+
+on:
+  push:
+    branches:
+      - develop
+      - 'release/*'
+    tags:
+      - 'release/*'
+  pull_request:
+    branches:
+      - develop
+      - 'release/*'
+  workflow_dispatch:
+  # Add any additional triggers as needed
+
+env:
+  NPM_REGISTRY_TOKEN: ${{ secrets.NPM_REGISTRY_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug
+        run: |
+          echo $NPM_REGISTRY_TOKEN
+          echo ${{ secrets.NPM_REGISTRY_TOKEN }}
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Clear npm cache
+        run: yarn cache clean
+
+      - name: Delete node_modules and package-lock.json
+        run: |
+          rm -rf node_modules dist tsconfig.tsbuildinfo
+
+      - name: Configure npm for GitHub Packages
+        run: |
+          npm config set @ozoneapi:registry https://npm.pkg.github.com
+          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.NPM_REGISTRY_TOKEN }}
+
+      - name: Install dependencies
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Audit packages
+        run: |
+          yarn audit
+
+      - name: Check caret symbol in package.json
+        run: |
+          if grep -qnE '\^[0-9]' package.json; then
+            echo "There is a (^) caret symbol in package.json. To accept only patch releases in dependencies, try to avoid using the caret sign and instead use (~) symbol."
+            exit 1
+          fi
+
+          if grep -qnE '[0-9]+\.[0-9]+\.[0-9]+-[a-zA-Z0-9]+' package.json; then
+            echo "There is a prerelease version in package.json. Prerelease versions (e.g., 1.0.0-beta) should not be used in dependencies."
+            exit 1
+          fi
