@@ -1,0 +1,195 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches:
+      - develop  # Specify the branches you want to run the action on
+jobs:
+  pull-request-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+
+    - name: Identify changed files
+      id: changed-files
+      run: |
+        git fetch origin ${{ github.base_ref }}
+        git fetch origin ${{ github.head_ref }}
+        git diff --name-only origin/${{ github.base_ref }}...origin/${{ github.head_ref }} > changed_files.txt
+        cat changed_files.txt
+
+    - name: Identify if yarn.lock files align with package.json
+      id: yarn-lock-files
+      run: |
+        while IFS= read -r file; do
+          echo "Processing file: $file"  # Debugging output
+          # If the changed file is a package.json, run yarn install in its directory
+          if echo "$file" | grep -q "package.json"; then
+            dir=$(dirname "$file")
+            echo "Checking package.json and yarn.lock alignment in $dir"
+
+            # Run yarn install with the frozen-lockfile flag to ensure alignment
+            if ! yarn install --cwd "$dir" --frozen-lockfile; then
+              echo "Error: package.json and yarn.lock are not aligned in $dir"
+              exit 1  # Exit with a non-zero status to fail the stage
+            fi
+          fi
+        done < changed_files.txt
+        cat changed_files.txt
+
+    - name: Create temporary scan directory
+      run: mkdir -p ./temp_scan
+
+    - name: Copy changed files to temp_scan
+      run: |
+        while IFS= read -r file; do
+          if [ -f "$file" ]; then
+            mkdir -p "./temp_scan/$(dirname "$file")"
+            cp "$file" "./temp_scan/$file"
+          fi
+        done < changed_files.txt
+        echo "going to temp folder"
+        cd ./temp_scan && ls -a
+
+    - name: Run Trivy filesystem scan on modified files
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: './temp_scan'
+        ignore-unfixed: 'false'
+        format: 'sarif'
+        exit-code: '1'
+        output: 'raw-trivy-results.sarif'
+        scanners: 'vuln,config,secret'
+        severity: 'HIGH,CRITICAL'
+      continue-on-error: true
+
+    # Filter out medium severity vulnerabilities from SARIF
+    - name: Remove medium severity from SARIF file
+      run: |
+        jq 'del(.runs[].results[] | select(.properties.severity == "MEDIUM" or .level == "warning" or .level == "note"))' raw-trivy-results.sarif > trivy-results.sarif
+
+    - name: Upload trivy report on github security tab
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Archive Trivy report
+      uses: actions/upload-artifact@v4
+      with:
+        name: trivy-report
+        path: trivy-results.sarif
+
+    # Check if there are package.json or package-lock.json files
+    - name: Check for package.json files
+      id: check_package_json
+      run: |
+        if grep -E 'package(-lock)?\.json$' changed_files.txt; then
+          echo "found_package_json=true" >> $GITHUB_ENV
+        else
+          echo "found_package_json=false" >> $GITHUB_ENV
+        fi
+
+    - name: Run License Checker
+      if: env.found_package_json == 'true'
+      run: |
+        echo "Running License Checker"
+        cd temp_scan && yarn licenses list --json | jq 'select(.type == "table")' > license-checker-results.json
+      continue-on-error: true
+
+    # Upload License Checker Results (if License Checker was run)
+    - name: Upload License Checker Results
+      if: env.found_package_json == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: license-checker-results
+        path: temp_scan/license-checker-results.json
+
+    # Check if there are any .js or .ts files
+    - name: Check for JavaScript/TypeScript files
+      id: check_js_ts
+      run: |
+        if grep -E '\.(js|ts)$' changed_files.txt; then
+          echo "found_js_ts=true" >> $GITHUB_ENV
+        else
+          echo "found_js_ts=false" >> $GITHUB_ENV
+        fi
+
+    - name: Check for Issues in SARIF and Block PR
+      id: read_issue_count
+      run: |
+        BLOCK_PR=0
+        echo "Checking for issues in the SARIF file..."
+        if [ -s trivy-results.sarif ]; then
+          ISSUES_COUNT=`echo $(jq -r '.runs[].results | length' "trivy-results.sarif" | awk '{s+=$1} END {print s}')`
+
+          echo "Number of issues found in trivy: $ISSUES_COUNT"
+          echo "::set-output name=issue_count::$ISSUES_COUNT"
+
+          if [ "$ISSUES_COUNT" -gt 0 ]; then
+            echo "Blocking PR due to $ISSUES_COUNT issues found by Trivy."
+            BLOCK_PR=1
+          else
+            echo "No issues found in Trivy."
+          fi
+        else
+          echo "SARIF file is empty or not found. Assuming no issues. PR can proceed."
+          exit 0
+        fi
+
+          if [ -s temp_scan/license-checker-results.json ]; then
+         # GPL_LICENSE_COUNT=$(jq -r '. | to_entries | map(select(.value.licenses | test("GPL"))) | length' "license-checker-results.json")
+          GPL_LICENSE_COUNT=$(grep -oi 'gpl' temp_scan/license-checker-results.json | wc -l | xargs)
+          echo "Number of gpl license found in license: $GPL_LICENSE_COUNT"
+          echo "::set-output name=license_issue_count::$GPL_LICENSE_COUNT"
+            if [ "$GPL_LICENSE_COUNT" -gt 0 ]; then
+            echo "Blocking PR due to GPL count $GPL_LICENSE_COUNT  found by License."
+            BLOCK_PR=1
+          else
+            echo "No issues found in License."
+          fi
+        else
+          echo "SARIF file is empty or not found. Assuming no issues. PR can proceed."
+          exit 0
+        fi
+
+        if [ "$BLOCK_PR" -eq 1 ]; then
+          echo "Blocking PR due to issues found by one or more tools:"
+          exit 1
+        else
+          echo "No issues found by Trivy, Hadolint, or License Check. PR can proceed."
+          exit 0
+        fi
+
+    - name: Create PR comment
+      if: always()  # Always create a comment regardless of success/failure
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+        ISSUES_COUNT: ${{ steps.read_issue_count.outputs.issue_count }}
+        GPL_LICENSE_COUNT: ${{ steps.read_issue_count.outputs.license_issue_count }}
+      run: |
+        echo "Creating PR comment..."
+        COMMENT_BODY=$(cat <<EOF
+        **Trivy Scan Results**
+
+        Number of trivy issues found: $ISSUES_COUNT
+
+        **License Scan Result**
+
+        Number of GPL License found: $GPL_LICENSE_COUNT
+
+        EOF
+                  )
+
+                  # Post the comment to the pull request
+                  echo "Posting comment to pull request #$GITHUB_PR_NUMBER..."
+                  gh pr comment $GITHUB_PR_NUMBER --body "$COMMENT_BODY"
