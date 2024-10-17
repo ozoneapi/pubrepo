@@ -24,7 +24,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16' # Specify the Node.js version you are using
+        node-version: '20' # Specify the Node.js version you are using
 
     - name: Install dependencies
       run: yarn install
@@ -37,7 +37,7 @@ jobs:
         yarn licenses list --json | jq 'select(.type == "table")' > ${GITHUB_WORKSPACE}/license.json
         json_content=$(jq -Rs '.' < ${GITHUB_WORKSPACE}/license.json)
         json_content=$( echo ${json_content} | sed ':a;N;$!ba;s/\n//g')
-        echo "::set-output name=json_content::$json_content"
+        echo "json_content=$json_content" >> $GITHUB_OUTPUT
 
     - name: Upload generated license.json as artifact
       uses: actions/upload-artifact@v3
@@ -51,7 +51,7 @@ jobs:
         repository: ozoneapi/tools-common     # Replace with your second repo's name
         ref: develop                # Replace with the branch you need
         path: dd-confluence-update
-        token: ${{ secrets.GH_TOKEN }}
+        token: ${{ secrets.GH_REPO_READ }}
 
     - name: Create Confluence Page
       env:
